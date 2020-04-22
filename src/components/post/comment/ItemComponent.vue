@@ -1,15 +1,15 @@
 <template>
   <div>
     <q-item clickable v-ripple v-if="comment != null">
-      <q-item-section avatar>
+      <q-item-section avatar @click="$router.push(`/user/profile/${comment.user.id}`)">
         <q-avatar>
-          <img :src="`${Setting.storageUrl}/${comment.user.avatar}`" />
+          <q-img :src="`${Setting.storageUrl}/${comment.user.avatar}`" no-default-spinner />
         </q-avatar>
       </q-item-section>
 
-      <q-item-section>
-        <q-item-label lines="1">{{ comment.user.name }}</q-item-label>
-        <q-item-label caption lines="2">
+      <q-item-section @click="$router.push(`/user/profile/${comment.user.id}`)">
+        <q-item-label>{{ comment.user.name }}</q-item-label>
+        <q-item-label caption>
           {{ comment.value }}
         </q-item-label>
       </q-item-section>

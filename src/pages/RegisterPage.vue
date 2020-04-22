@@ -73,20 +73,20 @@
                 val => val == credential.password || 'Password tidak sama'
               ]"
             />
-            <q-select 
+            <q-select
               :rules="[
                 val => !!val || 'Harus diisi'
               ]"
-              style="opacity:0.8" 
-              dense 
+              style="opacity:0.8"
+              dense
               class="q-pa-none"
-              rounded 
-              outlined 
-              bg-color="white" 
-              v-model="credential.role" 
-              :options="roles" 
-              option-label="name" 
-              option-value="id" 
+              rounded
+              outlined
+              bg-color="white"
+              v-model="credential.role"
+              :options="roles"
+              option-label="name"
+              option-value="id"
               @input="(item)=>credential.role_id = item.id"
               label="Daftar sebagai"
             />
@@ -157,7 +157,7 @@ export default {
               this.$router.push('/')
               window.history.pushState(null, null ,window.location.href)
           }).catch(err=>{
-
+            this.$q.notify('Maaf email sudah digunakan, silahkan gunakan email lain')
           }).finally(()=>{
               this.loading = false
           })

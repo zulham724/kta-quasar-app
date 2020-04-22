@@ -19,7 +19,7 @@
         <div class="row q-pb-md">
           <div class="col-3">
               <q-avatar size="15vw">
-                <img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" />
+                <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
               </q-avatar>
           </div>
           <div class="col-9 self-center">
@@ -121,6 +121,7 @@
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
           <q-select
+            :disabled="isDisabled"
             dense
             rounded
             outlined
@@ -137,13 +138,14 @@
             }"
           />
           <q-select
+            :disabled="isDisabled"
             dense
             rounded
             outlined
             :options="cities"
             :option-value="item=>item.id"
             :option-label="item=>item.name"
-            label="Provinsi"
+            label="Kab/ Kota"
             v-model="auth.profile.city"
             @input="item =>{
                auth.profile.city_id = item.id
@@ -158,7 +160,7 @@
             :options="districts"
             :option-value="item=>item.id"
             :option-label="item=>item.name"
-            label="Provinsi"
+            label="Kecamatan/ Daerah"
             v-model="auth.profile.district"
             @input="item => {
               auth.profile.district_id = item.id
@@ -175,6 +177,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -184,11 +187,21 @@ export default {
       cities:[],
       districts:[],
       loading: false,
-      file: null
+      file: null,
+      isDisabled: true,
     };
   },
   computed:{
     ...mapState(['Setting','Auth'])
+  },
+  created(){
+    // console.log('umur ',moment(this.Auth.auth.created_at).diff(moment(), 'days'))
+    // umur lebih sehari dan district sudah diisi
+    if(moment(this.Auth.auth.created_at).diff(moment(), 'days') < -3 && this.Auth.auth.profile.city_id != null && this.Auth.auth.profile.province_id != null){
+      this.isDisabled = true
+    } else {
+      this.isDisabled = false
+    }
   },
   mounted(){
     this.auth = {

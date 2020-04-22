@@ -15,7 +15,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page>
       <div class="q-pa-md row justify-center">
         <div style="width: 100%; max-width: 400px" v-chat-scroll>
           <q-chat-message label="Sunday, 19th" />
@@ -36,7 +36,7 @@
           <div id="bottom"></div>
         </div>
       </div>
-    </q-page-container>
+    </q-page>
 
     <q-footer style="padding:5px;background-color:white">
       <q-input dense label="Tulis sesuatu" flat bg-color="white">

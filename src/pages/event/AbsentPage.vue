@@ -18,10 +18,10 @@
 
     <q-page-container>
       <q-list bordered separator v-if="event != null">
-        <q-item v-for="user in event.users" :key="user.id">
+        <q-item v-for="user in event.users" :key="user.id" clickable @click="$router.push(`/user/profile/${user.id}`)">
           <q-item-section avatar>
             <q-avatar>
-              <img :src="`${Setting.storageUrl}/${user.avatar}`" />
+              <q-img :src="`${Setting.storageUrl}/${user.avatar}`" no-default-spinner/>
             </q-avatar>
           </q-item-section>
           <q-item-section>

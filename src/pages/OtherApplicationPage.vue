@@ -14,7 +14,7 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-    <q-page-container>
+    <q-page>
         <q-list bordered separator>
           <q-item
             v-for="app in applications"
@@ -29,7 +29,7 @@
             </q-item-section>
           </q-item>
         </q-list>
-    </q-page-container>
+    </q-page>
   </q-layout>
 </template>
 

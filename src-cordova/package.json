@@ -15,6 +15,8 @@
   "dependencies": {
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
+    "cordova-plugin-app-version": "^0.1.9",
+    "cordova-plugin-inappbrowser": "^3.2.0",
     "cordova-plugin-qr-barcode-scanner": "^8.0.3"
   },
   "devDependencies": {
@@ -25,7 +27,9 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-qr-barcode-scanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-app-version": {}
     },
     "platforms": [
       "android",

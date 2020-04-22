@@ -14,7 +14,7 @@
         <div class="row">
           <div class="col-2 self-center">
             <q-avatar>
-              <img :src="`${Setting.storageUrl}/${post.author_id.avatar}`" />
+              <q-img :src="`${Setting.storageUrl}/${post.author_id.avatar}`" no-default-spinner />
             </q-avatar>
           </div>
           <div class="col-10 self-center">
@@ -26,8 +26,9 @@
             <div
               class="text-caption"
               style="overflow-wrap:break-word; white-space:pre-line"
+              v-html="post.body"
+              v-linkified
             >
-              {{ post.body }}
             </div>
           </div>
         </div>
@@ -35,11 +36,11 @@
       <q-list bordered class="rounded-borders">
         <q-item-label header>Komentar</q-item-label>
 
-        <post-item-comment-component
+        <item-component
           v-for="comment in post.comments"
           :key="comment.id"
           :comment="comment"
-        ></post-item-comment-component>
+        ></item-component>
       </q-list>
     </q-page-container>
 
@@ -50,6 +51,7 @@
         v-model="comment.value"
         flat
         bg-color="white"
+        ref="keyboard"
       >
         <template v-slot:after>
           <div>
@@ -72,7 +74,7 @@
 import { mapState } from "vuex";
 export default {
   components:{
-    PostItemCommentComponent: ()=> import('components/PostItemCommentComponent')
+    ItemComponent: ()=> import('components/post/comment/ItemComponent')
   },
   props: {
     postId: null
@@ -91,6 +93,7 @@ export default {
   },
   mounted() {
     this.post == null ? this.getPost() : null;
+    this.$refs.keyboard.focus()
   },
   methods: {
     getPost() {

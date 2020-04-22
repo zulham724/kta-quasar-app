@@ -1,13 +1,20 @@
 <template>
   <div>
+    <div class="row justify-center q-mt-lg" style="opacity:0.5" v-if="Auth.auth.posts.filter(post=>post.files.length == 0).length == 0">
+      <div class="col">
+        <center>
+          <q-icon name="rate_review" size="40vw" color="grey" />
+          <div class="text-body1 text-bold text-grey">Kosong</div>
+        </center>
+      </div>
+    </div>
     <div class="row q-gutter-sm">
       <q-intersection
         v-for="post in Auth.auth.posts.filter(post=>post.files.length == 0)"
         :key="post.id"
-        :style="`min-height: 40vh;width: 100vw`"
-        transition="scale"
+        :style="`min-height: 30vh;width: 100vw`"
       >
-        <post-item-component :post="post"></post-item-component>
+        <item-component :post="post"></item-component>
       </q-intersection>
     </div>
   </div>
@@ -17,7 +24,7 @@
 import {mapState} from 'vuex'
 export default {
   components: {
-    PostItemComponent: () => import("components/PostItemComponent.vue")
+    ItemComponent: () => import("components/post/ItemComponent.vue")
   },
   computed:{
     ...mapState(['Auth','Setting'])

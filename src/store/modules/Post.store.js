@@ -9,6 +9,7 @@ const state = {
 // Mutations
 const mutations = {
     set(state, payload) {
+        // payload.posts.data.map(item => item.isReadMore = false)
         state.posts = payload.posts;
     },
     remove(state, payload) {
@@ -16,13 +17,27 @@ const mutations = {
         state.posts.data.splice(index, 1);
     },
     add(state, payload) {
+        // payload.post.isReadMore = false
         state.posts.data = [payload.post, ...state.posts.data];
     },
     next(state, payload) {
+        // payload.posts.data.map(item => item.isReadMore = false)
         state.posts = {
             ...payload.posts,
             data: [...state.posts.data, ...payload.posts.data]
         };
+    },
+    addReadMore(state, payload) {
+        const index = state.posts.data.findIndex(item => item.id == payload.id);
+        state.posts.data[index].isReadMore = false
+    },
+    setReadMore(state, payload) {
+        const index = state.posts.data.findIndex(item => item.id == payload.id);
+        state.posts.data[index].isReadMore = true
+    },
+    setSize(state, payload) {
+        const index = state.posts.data.findIndex(item => item.id == payload.id);
+        state.posts.data[index].size = payload.size
     }
 };
 
@@ -69,7 +84,7 @@ const actions = {
     },
     next({ commit, state }) {
         return new Promise((resolve, reject) => {
-            console.log(state.posts.next_page_url);
+            // console.log(state.posts.next_page_url);
             axios
                 .get(`${state.posts.next_page_url}`)
                 .then(res => {

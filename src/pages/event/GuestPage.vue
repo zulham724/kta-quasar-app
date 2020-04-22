@@ -19,12 +19,14 @@
       <q-pull-to-refresh @refresh="getEvent" color="teal">
         <q-list bordered separator>
           <q-item
+            clickable
             v-for="user in event.users"
             :key="user.id"
+            @click="$router.push(`/user/profile/${user.id}`)"
           >
             <q-item-section avatar>
               <q-avatar>
-                <img :src="`${Setting.storageUrl}/${user.avatar}`">
+                <q-img :src="`${Setting.storageUrl}/${user.avatar}`" no-default-spinner/>
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -58,7 +60,7 @@ export default {
     getEvent(done){
       this.$store.dispatch('Event/show',this.eventId).then(res=>{
         this.event = res.data
-        done()
+        if(done) done();
       })
     }
   }

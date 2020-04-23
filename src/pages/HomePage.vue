@@ -15,6 +15,13 @@
           @click="$router.push({ name: 'usersearch' })"
         />
         <q-btn
+          flat
+          round
+          icon="favorite_outline"
+          color="teal"
+          @click="$q.notify('Dalam kontruksi')"
+        />
+        <q-btn
           color="teal"
           flat
           round

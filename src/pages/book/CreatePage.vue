@@ -104,6 +104,7 @@ export default {
           this.$store
             .dispatch("Book/store", access)
             .then(res => {
+              this.sendNotif();
               this.$q.notify("Buku berhasil diupload");
             })
             .finally(() => {
@@ -115,6 +116,22 @@ export default {
           this.$q.notify("Periksa kembali");
         }
       });
+    },
+    sendNotif(){
+      const payload = {
+        title: `AGPAII DIGITAL`,
+        body: `Buku baru telah rilis dari ${this.Auth.auth.name} - ${this.form.title}`,
+        // params:{
+        //   sender_id: this.Auth.auth.id, // hanya formatt, tidak dipakai untuk db
+        //   target_id: this.event.id, // hanya formatt, tidak dipakai untuk db
+        //   target_type: `App\Event`, // hanya formatt, tidak dipakai untuk db
+        //   text: `Acara baru dari ${this.Auth.auth.name} - ${this.event.name}`, // hanya formatt, tidak dipakai untuk db
+        // },
+        to: `/topics/books`
+      }
+      this.$store.dispatch('Notif/send',payload).then(res=>{
+        console.log(res)
+      })
     }
   }
 };

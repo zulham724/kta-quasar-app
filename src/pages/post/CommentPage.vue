@@ -11,7 +11,7 @@
 
     <q-page-container v-if="post != null">
       <div class="q-pa-md">
-        <div class="row">
+        <div class="row q-pb-md">
           <div class="col-2 self-center">
             <q-avatar>
               <q-img :src="`${Setting.storageUrl}/${post.author_id.avatar}`" no-default-spinner />
@@ -111,6 +111,7 @@ export default {
       this.$store
         .dispatch("PostComment/store", payload)
         .then(res => {
+            if(this.post.author_id.id != this.Auth.auth.id) this.sendNotif();
             this.post.comments.splice(0, 0, res.data);
             this.post.comments_like += 1;
             this.comment.value = ''
@@ -119,6 +120,22 @@ export default {
         .finally(()=>{
           this.loading = false
         })
+    },
+    sendNotif(){
+      const payload = {
+        title: `AGPAII DIGITAL`,
+        body: `Postingan anda dikomentari oleh ${this.Auth.auth.name}: ${this.comment.value}`,
+        params:{
+          sender_id: this.Auth.auth.id,
+          target_id: this.post.id,
+          target_type: `Post`,
+          text: `Postingan anda dikomentari oleh ${this.Auth.auth.name}: ${this.comment.value}`,
+        },
+        to: `/topics/user_${this.post.author_id.id}_post_${this.post.id}_comment`
+      }
+      this.$store.dispatch('Notif/send',payload).then(res=>{
+        console.log(res)
+      })
     }
   }
 };

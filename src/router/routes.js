@@ -76,7 +76,21 @@ const routes = [{
                     import ('pages/user/ProfilePage.vue'),
                 props: true
             },
+            {
+                path: '/user/photolist/:userId/:postId',
+                name: 'userphotolist',
+                component: () =>
+                    import ('pages/user/PhotoListPage.vue'),
+                props: true
+            }
         ]
+    },
+    {
+        path: '/activity',
+        beforeEnter: multiguard([auth, actived]),
+        name: 'activity',
+        component: () =>
+            import ('pages/ActivityPage.vue'),
     },
     {
         path: "/user/search",

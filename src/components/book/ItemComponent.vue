@@ -40,22 +40,25 @@ export default {
     showMenu() {
       this.$q
         .bottomSheet({
-          message: `Buku ${this.book.name}`,
+          message: `Buku ${this.book.title}`,
           actions: [
             {
               label: "Baca",
-              img: "statics/icons/absent.webp",
+              icon:'search',
+              color:'teal',
               id: "read"
             },
             {
               label: "Download",
-              img: "statics/icons/download.png",
+              icon:'cloud_download',
+              color:'teal',
               id: "download"
             },
             this.book.user.id == this.Auth.auth.id
               ? {
                   label: "Hapus",
-                  img: "statics/icons/delete.png",
+                  icon:'delete',
+                  color:'teal',
                   id: "destroy"
                 }
               : false

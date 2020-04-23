@@ -9,7 +9,7 @@ const state = {
     assets: {
         bgToolbar: "statics/bg-toolbar.jpeg"
     },
-    count: {}
+    count: {},
 };
 
 // Mutations

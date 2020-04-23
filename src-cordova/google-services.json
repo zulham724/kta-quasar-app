@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "488917299279",
+    "firebase_url": "https://agpaiidigital-kta.firebaseio.com",
+    "project_id": "agpaiidigital-kta",
+    "storage_bucket": "agpaiidigital-kta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488917299279:android:fd15010d18694cbe533a3a",
+        "android_client_info": {
+          "package_name": "org.agpaiidigital.kta2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "488917299279-vaeji1ni4hmlmhd5vdev5ot4sncbbdih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.agpaiidigital.kta2",
+            "certificate_hash": "b7162c1c88de2d38ebbedad040588968cbc8b565"
+          }
+        },
+        {
+          "client_id": "488917299279-iqc2r72f8im0dvskf8bgbm55c83qvk3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbvS_g0KWWHxWHIDs1eUci8WOyb2hU1w8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "488917299279-iqc2r72f8im0dvskf8bgbm55c83qvk3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

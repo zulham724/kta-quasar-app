@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white">
         <q-btn color="teal" flat dense icon="arrow_back" @click="$router.back()" />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">{{ user ? user.name : 'Loading...' }}</div>
+          <div class="text-body1 text-teal text-bold">{{ user ? user.name : null }}</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

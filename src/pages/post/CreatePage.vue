@@ -127,6 +127,7 @@ export default {
           this.$store
             .dispatch("Post/store", formData)
             .then(res => {
+              this.sendNotif(res.data);
               this.$store.dispatch('Auth/getAuth')
               this.$q.notify("Berhasil");
             })
@@ -135,6 +136,22 @@ export default {
             });
         }
       });
+    },
+    sendNotif(post){
+      const payload = {
+        title: `AGPAII DIGITAL`,
+        body: `Postingan baru dari ${this.Auth.auth.name} - ${this.post.body}`,
+        params:{
+          sender_id: this.Auth.auth.id,
+          target_id: post.id,
+          target_type: `Post`,
+          text: `Postingan baru dari ${this.Auth.auth.name} - ${this.post.body}`,
+        },
+        to: `/topics/posts`
+      }
+      this.$store.dispatch('Notif/send',payload).then(res=>{
+        console.log(res)
+      })
     }
   }
 };

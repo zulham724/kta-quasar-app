@@ -202,6 +202,7 @@ export default {
     },
     like() {
       this.$store.dispatch("Post/like", this.post.id).then(res => {
+        if(this.post.author_id.id != this.Auth.auth.id) this.sendNotif();
         this.post.liked_count = res.data.liked_count;
         this.post.likes_count = res.data.likes_count;
         this.$forceUpdate();
@@ -222,7 +223,8 @@ export default {
             this.post.author_id.id == this.Auth.auth.id
               ? {
                   label: "Hapus",
-                  img: "statics/icons/delete.png",
+                  icon:'delete',
+                  color:'teal',
                   id: "destroy"
                 }
               : false
@@ -240,6 +242,22 @@ export default {
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
         });
+    },
+    sendNotif(){
+      const payload = {
+        title: `AGPAII DIGITAL`,
+        body: `Postingan anda disukai oleh ${this.Auth.auth.name}`,
+        params:{
+          sender_id: this.Auth.auth.id,
+          target_id: this.post.id,
+          target_type: `Post`,
+          text: `Postingan anda disukai oleh ${this.Auth.auth.name}`,
+        },
+        to: `/topics/user_${this.post.author_id.id}_post_${this.post.id}_like`
+      }
+      this.$store.dispatch('Notif/send',payload).then(res=>{
+        console.log(res)
+      })
     }
   }
 };

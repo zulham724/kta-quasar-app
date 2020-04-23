@@ -9,6 +9,7 @@
         style="padding:0.4vw"
         v-for="post in Auth.auth.posts.filter(post => post.files.length)"
         :key="post.id"
+        @click="$router.push(`/user/photolist/${Auth.auth.id}/${post.id}`)"
       >
         <q-img
           :src="`${Setting.storageUrl}/${post.files[0].src}`"

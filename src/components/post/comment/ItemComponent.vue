@@ -31,10 +31,10 @@
 import { mapState } from "vuex";
 export default {
   props: {
-    comment: null
+    comment: null,
   },
   computed: {
-    ...mapState(["Setting"])
+    ...mapState(["Setting",'Auth'])
   },
   methods: {
     like(commentId) {

@@ -72,14 +72,15 @@ export default {
           actions: [
             {
               label: "Buat Absen Kegiatan",
-              img:
-                "statics/icons/absent.webp",
+              icon: 'fingerprint',
+              color: 'teal',
               id: "makeabsent"
             },
             {},
             {
               label: "Hapus",
-              img: "statics/icons/delete.png",
+              icon:'delete',
+              color:'teal',
               id: "destroy"
             }
           ]

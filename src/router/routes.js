@@ -82,6 +82,20 @@ const routes = [{
                 component: () =>
                     import ('pages/user/PhotoListPage.vue'),
                 props: true
+            },
+            {
+                path: '/post/like/:postId',
+                name: 'postlike',
+                component: ()=> 
+                    import ('pages/post/LikePage.vue'),
+                props: true
+            },
+            {
+                path: '/post/comment/like/:commentId',
+                name: 'postcommentlike',
+                component: ()=> 
+                    import ('pages/post/comment/LikePage.vue'),
+                props: true
             }
         ]
     },

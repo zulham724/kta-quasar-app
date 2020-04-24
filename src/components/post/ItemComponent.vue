@@ -32,7 +32,9 @@
               <q-btn
                 flat
                 round
-                icon="more_horiz"
+                dense
+                size="md"
+                icon="more_vert"
                 v-if="post.author_id.id == Auth.auth.id"
                 @click="showMenu()"
               />
@@ -96,7 +98,7 @@
         <div class="row">
           <div class="col-6 self-center">
             <div class="row">
-              <div class="text-caption text-bold" v-show="post.likes_count">
+              <div class="text-caption text-bold" v-show="post.likes_count" @click="$router.push(`/post/like/${post.id}`)">
                 {{ post.likes_count }} Suka
               </div>
             </div>

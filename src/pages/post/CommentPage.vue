@@ -18,7 +18,7 @@
             </q-avatar>
           </div>
           <div class="col-10 self-center">
-            {{ post.author_id.name }}
+            <div class="text-caption text-black text-bold">{{ post.author_id.name }}</div>
           </div>
         </div>
         <div class="row">
@@ -30,6 +30,11 @@
               v-linkified
             >
             </div>
+          </div>
+        </div>
+        <div class="row justify-start q-pt-md">
+          <div class="text-caption text-grey">
+            {{ post.created_at | moment("from", "now") }}
           </div>
         </div>
       </div>
@@ -50,6 +55,8 @@
         label="Tulis sesuatu"
         v-model="comment.value"
         flat
+        borderless
+        color="teal"
         bg-color="white"
         ref="keyboard"
       >

@@ -10,21 +10,24 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
-            Cari guru
-          </div>
+          <q-input
+            dense
+            color="teal"
+            square
+            v-model="search"
+            label="Cari"
+            borderless
+            class="q-ml-sm q-mr-sm"
+            @input="onSearch"
+          >
+            <template v-slot:after>
+              <q-icon name="search" />
+            </template>
+          </q-input>
         </q-toolbar-title>
-        <q-space />
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <q-input
-        square
-        v-model="search"
-        label="Kata Kunci"
-        class="q-ml-sm q-mr-sm"
-        @input="onSearch"
-      />
       <q-infinite-scroll @load="onLoad" :offset="250">
         <q-list bordered class="rounded-borders">
           <div v-if="loading">

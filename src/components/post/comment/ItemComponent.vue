@@ -7,16 +7,28 @@
         </q-avatar>
       </q-item-section>
 
-      <q-item-section @click="$router.push(`/user/profile/${comment.user.id}`)">
-        <q-item-label>{{ comment.user.name }}</q-item-label>
+      <q-item-section>
+        <q-item-label>
+          <div class="text-caption text-black text-bold" @click="$router.push(`/user/profile/${comment.user.id}`)">{{ comment.user.name }}</div>
+        </q-item-label>
         <q-item-label caption>
-          {{ comment.value }}
+          <div class="text-caption text-black">{{ comment.value }}</div>
+        </q-item-label>
+        <q-item-label caption>
+          <div class="row">
+            <div class="text-caption text-grey q-pr-md">
+              {{comment.created_at | moment('from','now')}}
+            </div>
+            <div class="text-caption text-grey text-bold" v-show="comment.likes_count" @click="$router.push(`/post/comment/like/${comment.id}`)">{{comment.likes_count}} suka</div>
+          </div>
         </q-item-label>
       </q-item-section>
 
       <q-item-section side top>
         <q-btn
           flat
+          size="sm"
+          class="q-pt-md"
           round
           :color="comment.liked_count ? 'red' : null"
           :icon="comment.liked_count ? 'favorite' : 'favorite_border'"

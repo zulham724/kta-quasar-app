@@ -38,6 +38,11 @@
             Penilaian Digital
           </q-item-section>
         </q-item>
+        <q-item clickable v-ripple @click="goToApp('https://wasap.at/OLW45f')">
+          <q-item-section>
+            Hubungi Kami
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-page>
   </div>

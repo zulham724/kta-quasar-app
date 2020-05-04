@@ -42,7 +42,7 @@
         </div>
         <div class="col-12">
           <div class="row justify-center">
-             <q-btn class="text-white" type="a" href="https://wasap.at/qGxvLs" label="Bantuan Pendaftaran Manual" />
+             <q-btn class="text-white" type="a" href="https://wasap.at/OLW45f" label="Bantuan Pendaftaran Manual" />
           </div>
           <div class="row justify-center q-pt-md">
             <q-btn class="text-white" type="a" href="https://agpaiidigital.org/password/reset" label="Lupa Password" />

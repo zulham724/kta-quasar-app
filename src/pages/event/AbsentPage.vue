@@ -66,6 +66,7 @@ export default {
             user_id: result.text
           };
           this.$store.dispatch("Event/attendance", access).then(res => {
+            this.$store.dispatch('Auth/getAuth')
             this.event = res.data;
           });
         },

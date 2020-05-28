@@ -86,14 +86,14 @@ const routes = [{
             {
                 path: '/post/like/:postId',
                 name: 'postlike',
-                component: ()=> 
+                component: () =>
                     import ('pages/post/LikePage.vue'),
                 props: true
             },
             {
                 path: '/post/comment/like/:commentId',
                 name: 'postcommentlike',
-                component: ()=> 
+                component: () =>
                     import ('pages/post/comment/LikePage.vue'),
                 props: true
             }
@@ -148,6 +148,14 @@ const routes = [{
         name: "district",
         component: () =>
             import ("pages/DistrictPage.vue"),
+        props: true
+    },
+    {
+        path: "/districtuserlist/:districtId",
+        name: "districtuserlist",
+        beforeEnter: multiguard([auth, actived]),
+        component: () =>
+            import ('pages/user/DistrictUserListPage.vue'),
         props: true
     },
     {

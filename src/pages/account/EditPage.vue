@@ -74,21 +74,13 @@
             lazy-rules
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
-          <q-input color="teal" readonly v-model="auth.profile.birthdate" rounded outlined dense label="Tanggal dan Jam*"
+          <q-input color="teal" @click="$refs.datepicker.show()" readonly v-model="auth.profile.birthdate" rounded outlined dense label="Tanggal Lahir*"
             lazy-rules :rules="[ val => val && val.length > 0 || 'Please type something']"
           >
             <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-date v-model="auth.profile.birthdate" mask="YYYY-MM-DD HH:mm" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-time v-model="auth.profile.birthdate" mask="YYYY-MM-DD HH:mm" format24h />
+                <q-popup-proxy ref="datepicker" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="auth.profile.birthdate" mask="YYYY-MM-DD" @input="$refs.datepicker.hide()" />
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -268,7 +260,7 @@ export default {
           reject(err)
         })
       })
-    }
+    },
   }
 };
 </script>

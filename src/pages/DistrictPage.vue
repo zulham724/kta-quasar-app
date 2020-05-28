@@ -23,6 +23,7 @@
           v-ripple
           v-for="district in districts"
           :key="district.id"
+          @click="$router.push(`/districtuserlist/${district.id}`)"
         >
           <q-item-section>
             <q-item-label lines="1">{{ district.name }}</q-item-label>

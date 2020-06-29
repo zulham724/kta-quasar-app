@@ -10,10 +10,11 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
-            Daerah {{ name }}
+          <div class="text-body2 text-teal text-bold">
+            {{ name }}
           </div>
         </q-toolbar-title>
+        <q-select label="Urutkan" @input="item=>item.handler()" style="width:40%" color="teal" filled :options="sorts" v-model="selected" option-label="name" dense/>
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -23,6 +24,7 @@
           v-ripple
           v-for="district in districts"
           :key="district.id"
+          @click="$router.push(`/districtuserlist/${district.id}`)"
         >
           <q-item-section>
             <q-item-label lines="1">{{ district.name }}</q-item-label>
@@ -48,7 +50,17 @@ export default {
   },
   data() {
     return {
-      districts: []
+      districts: [],
+      sorts:[
+        {
+          name: 'Jumlah terbanyak',
+          handler: ()=> this.sortCountDesc()
+        },{
+          name: 'Jumlah terkecil',
+          handler: ()=> this.sortCountAsc()
+        }
+      ],
+      selected: null
     };
   },
   mounted() {
@@ -71,7 +83,13 @@ export default {
             reject(err);
           });
       });
-    }
+    },
+    sortCountDesc(){
+      this.districts = this.districts.sort((a,b)=>(a.users_count < b.users_count) ? 1 : -1)
+    },
+    sortCountAsc(){
+      this.districts = this.districts.sort((a,b)=>(a.users_count > b.users_count) ? 1 : -1)
+    },
   }
 };
 </script>

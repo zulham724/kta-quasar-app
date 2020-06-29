@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Tambah Baru
           </div>
         </q-toolbar-title>
@@ -19,7 +19,7 @@
     </q-header>
     <q-page-container>
       <div class="q-pa-md">
-        <q-form class="q-gutter-md" ref="form">
+        <q-form ref="form">
           <q-input
             v-model="form.title"
             label="Judul Buku*"
@@ -39,7 +39,7 @@
             :options="BookCategory.bookcategories"
             option-label="name"
             option-value="id"
-            label="Square outlined"
+            label="Kategori*"
             :rules="[val => !!val || 'Please type something']"
             @input="item => (form.book_category_id = item.id)"
           />

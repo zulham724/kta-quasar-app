@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white">
         <q-btn color="teal" flat dense icon="arrow_back" @click="$router.back()" />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Komentar</div>
+          <div class="text-body2 text-teal text-bold">Komentar</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -13,12 +13,28 @@
       <div class="q-pa-md">
         <div class="row q-pb-md">
           <div class="col-2 self-center">
-            <q-avatar>
+            <q-avatar @click="$router.push(`/user/profile/${post.author_id.id}`)">
               <q-img :src="`${Setting.storageUrl}/${post.author_id.avatar}`" no-default-spinner />
             </q-avatar>
           </div>
           <div class="col-10 self-center">
-            <div class="text-caption text-black text-bold">{{ post.author_id.name }}</div>
+
+            <div class="row">
+              <div class="col">
+                <div
+                  class="text-bold text-body2"
+                  @click="$router.push(`/user/profile/${post.author_id.id}`)"
+                >
+                  {{ post.author_id.name }}
+                </div>
+                <div
+                  class="text-grey text-caption"
+                  @click="$router.push(`/user/profile/${post.author_id.id}`)"
+                >
+                  {{ post.author_id.role ? post.author_id.role.display_name : null }} {{post.author_id.profile ? post.author_id.profile.school_place : null}}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -119,7 +135,8 @@ export default {
         .dispatch("PostComment/store", payload)
         .then(res => {
             if(this.post.author_id.id != this.Auth.auth.id) this.sendNotif();
-            this.post.comments.splice(0, 0, res.data);
+            // this.post.comments.splice(0, 0, res.data);
+            this.post.comments.push(res.data)
             this.post.comments_like += 1;
             this.comment.value = ''
         })

@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Chat</div>
+          <div class="text-body2 text-teal text-bold">Chat</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

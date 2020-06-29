@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white">
         <q-icon name="event" color="teal" size="sm" />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Acara</div>
+          <div class="text-body2 text-teal text-bold">Acara</div>
         </q-toolbar-title>
         <q-space />
         <q-btn
@@ -46,8 +46,8 @@
                   :subtitle="moment(item.start_at).format('LLLL')"
                 >
                   <template v-slot:default>
-                    <div>
-                      <div class="text-body2">{{ item.description }}</div>
+                    <div style="overflow-wrap:break-word; white-space:pre-line">
+                      <div class="text-body2" v-linkified>{{ item.description }}</div>
                       <div class="text-caption text-teal q-pt-md">
                         {{ item.users.length }} orang peserta
                       </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-item clickable v-ripple v-if="comment != null">
-      <q-item-section avatar @click="$router.push(`/user/profile/${comment.user.id}`)">
+      <q-item-section avatar top class="q-pt-md" @click="$router.push(`/user/profile/${comment.user.id}`)">
         <q-avatar>
           <q-img :src="`${Setting.storageUrl}/${comment.user.avatar}`" no-default-spinner />
         </q-avatar>
@@ -12,7 +12,7 @@
           <div class="text-caption text-black text-bold" @click="$router.push(`/user/profile/${comment.user.id}`)">{{ comment.user.name }}</div>
         </q-item-label>
         <q-item-label caption>
-          <div class="text-caption text-black">{{ comment.value }}</div>
+          <div class="text-caption text-black" v-linkified>{{ comment.value }}</div>
         </q-item-label>
         <q-item-label caption>
           <div class="row">
@@ -24,11 +24,10 @@
         </q-item-label>
       </q-item-section>
 
-      <q-item-section side top>
+      <q-item-section side top class="q-pt-md">
         <q-btn
           flat
           size="sm"
-          class="q-pt-md"
           round
           :color="comment.liked_count ? 'red' : null"
           :icon="comment.liked_count ? 'favorite' : 'favorite_border'"

@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Informasi
           </div>
         </q-toolbar-title>
@@ -19,9 +19,7 @@
     </q-header>
     <q-page-container>
       <q-list bordered padding class="rounded-borders">
-        <q-item-label header>Jumlah anggota didaerah anda</q-item-label>
-
-        <q-item clickable v-ripple>
+        <q-item>
           <q-item-section>
             <q-item-label lines="1">Nasional</q-item-label>
           </q-item-section>
@@ -33,51 +31,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
-          <q-item-section>
-            <q-item-label lines="1"
-              >Provinsi {{ Auth.auth.profile.province.name }}</q-item-label
-            >
-          </q-item-section>
-
-          <q-item-section side>
-            <q-item-label lines="2"
-              >{{ Setting.count.user_provinces }} anggota</q-item-label
-            >
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section>
-            <q-item-label lines="1"
-              >Kab/ Kota {{ Auth.auth.profile.city.name }}</q-item-label
-            >
-          </q-item-section>
-
-          <q-item-section side>
-            <q-item-label lines="2"
-              >{{ Setting.count.user_cities }} anggota</q-item-label
-            >
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section>
-            <q-item-label lines="1"
-              >Kecamatan/ Daerah
-              {{ Auth.auth.profile.district.name }}</q-item-label
-            >
-          </q-item-section>
-
-          <q-item-section side>
-            <q-item-label lines="2"
-              >{{ Setting.count.user_districts }} anggota</q-item-label
-            >
-          </q-item-section>
-        </q-item>
-
-        <q-separator spaced />
-        <q-item-label header>Top 5 DPW dengan user terbanyak</q-item-label>
+        <q-item-label header>Top 10 DPW dengan user terbanyak</q-item-label>
 
         <q-item clickable v-ripple @click="$router.push(`/province`)">
           <q-item-section>
@@ -135,8 +89,7 @@ export default {
     };
   },
   mounted() {
-    this.getCountUser();
-    this.getDetailTotalMember();
+    this.getDetailTotalMember()
     if (this.provinces.length == 0) {
       this.loading = true;
       this.getProvinces().finally(() => {
@@ -157,7 +110,7 @@ export default {
               .sort((a, b) => {
                 return b.users_count - a.users_count;
               })
-              .slice(0, 5);
+              .slice(0, 10);
             resolve(res);
           })
           .catch(err => {

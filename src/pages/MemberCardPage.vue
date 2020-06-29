@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Kartu Tanda Anggota
           </div>
         </q-toolbar-title>
@@ -18,24 +18,45 @@
     </q-header>
     <q-page-container>
       <q-page padding>
-        <div class="row justify-center full-width">
+        <div class="row justify-center full-width full-height">
+          <q-slider
+            class="q-ml-lg q-mr-lg"
+            v-model="scale"
+            :min="0"
+            :max="100"
+            color="teal"
+          />
           <q-img
             :src="`${Setting.url}/img/membercard.jpeg`"
             alt=""
-            width="90vw"
-            height="90vh"
             native-context-menu
             @load="initQR()"
+            id="membercard"
+            :style="`transform: scale(${scale/100},${scale/100})`"
           >
             <div class="q-pa-md full-width full-height">
-              <div class="row justify-center align-center" style="padding-top:20vh">
-                <q-avatar square style="height:30vw;width:30vw">
-                  <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
+              <div
+                class="row justify-center align-center"
+                style="padding-top:50%"
+              >
+                <q-avatar square size="100px">
+                  <q-img
+                    :src="`${Setting.storageUrl}/${Auth.auth.avatar}`"
+                    no-default-spinner
+                  />
                 </q-avatar>
               </div>
-              <div class="row justify-center align-center" style="padding-top:5vh">
-                <div class="text-body1">
+              <div
+                class="row justify-center align-center"
+                style="padding-top:10%"
+              >
+                <div class="text-body1" style="text-align:center">
                   {{ Auth.auth.name }}
+                </div>
+              </div>
+              <div class="row justify-center align-center">
+                <div class="text-body2 text-weight-bold">
+                  ({{ Auth.auth.role.display_name }})
                 </div>
               </div>
               <div class="row justify-center align-center">
@@ -57,7 +78,10 @@
                   {{ Auth.auth.email }}
                 </div>
               </div>
-              <div class="row justify-center align-center" style="padding-top:5vh">
+              <div
+                class="row justify-center align-center"
+                style="padding-top:5%"
+              >
                 <canvas id="previewbarcode" ref="previewbarcode"></canvas>
               </div>
             </div>
@@ -72,8 +96,14 @@
 import { mapState } from "vuex";
 import QRCode from "qrcode";
 export default {
+  data(){
+    return {
+      scale: 100
+    }
+  },
   computed: {
-    ...mapState(["Setting", "Auth"])
+    ...mapState(["Setting", "Auth"]),
+
   },
   created() {},
   mounted() {},
@@ -83,7 +113,7 @@ export default {
         QRCode.toCanvas(
           document.getElementById("previewbarcode"),
           this.Auth.auth.id.toString(),
-          { scale: 6 },
+          { scale: 4 },
           error => {
             if (error) console.error(error);
             console.log("success!");
@@ -100,4 +130,7 @@ export default {
   color: black;
   background: none;
 }
+/* #membercard > div {
+  transform: scale(0.6,0.6)
+} */
 </style>

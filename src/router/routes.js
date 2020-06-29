@@ -1,7 +1,7 @@
 import multiguard from "vue-router-multiguard";
 import store from "./../store";
 import moment from "moment";
-import { Notify } from 'quasar'
+import { Notify } from "quasar";
 
 // cek auth apakah sudah login atau belum
 const auth = function(to, from, next) {
@@ -34,7 +34,7 @@ const checkProfile = function(to, from, next) {
     if (store().getters["Auth/auth"].profile.district_id != null) {
         next();
     } else {
-        Notify.create('Tolong lengkapi lokasi instansi anda')
+        Notify.create("Tolong lengkapi lokasi instansi anda");
         next("/account/edit");
     }
 };
@@ -70,41 +70,82 @@ const routes = [{
             },
             // ---------------------
             {
-                path: '/user/profile/:userId',
-                name: 'userprofile',
+                path: '/user/:userId/book',
+                name: 'userbook',
                 component: () =>
-                    import ('pages/user/ProfilePage.vue'),
+                    import ('pages/user/BookPage.vue'),
                 props: true
             },
             {
-                path: '/user/photolist/:userId/:postId',
-                name: 'userphotolist',
+                path: '/user/:userId/event',
+                name: 'userevent',
                 component: () =>
-                    import ('pages/user/PhotoListPage.vue'),
+                    import ('pages/user/EventPage.vue'),
                 props: true
             },
             {
-                path: '/post/like/:postId',
-                name: 'postlike',
-                component: ()=> 
-                    import ('pages/post/LikePage.vue'),
+                path: "/user/profile/:userId",
+                name: "userprofile",
+                component: () =>
+                    import ("pages/user/ProfilePage.vue"),
                 props: true
             },
             {
-                path: '/post/comment/like/:commentId',
-                name: 'postcommentlike',
-                component: ()=> 
-                    import ('pages/post/comment/LikePage.vue'),
+                path: "/user/photolist/:userId/:postId",
+                name: "userphotolist",
+                component: () =>
+                    import ("pages/user/PhotoListPage.vue"),
+                props: true
+            },
+            {
+                path: "/post/like/:postId",
+                name: "postlike",
+                component: () =>
+                    import ("pages/post/LikePage.vue"),
+                props: true
+            },
+            {
+                path: "/post/comment/like/:commentId",
+                name: "postcommentlike",
+                component: () =>
+                    import ("pages/post/comment/LikePage.vue"),
+                props: true
+            },
+            {
+                path: "/murottal",
+                beforeEnter: multiguard([auth, actived]),
+                name: "murottal",
+                component: () =>
+                    import ("pages/MurottalPage.vue")
+            },
+            {
+                path: "/dailyprayer",
+                beforeEnter: multiguard([auth, actived]),
+                name: "dailyprayer",
+                component: () =>
+                    import ("pages/DailyPrayerPage.vue")
+            },
+            {
+                path: "/bookmark",
+                name: "bookmark",
+                component: () =>
+                    import ("pages/BookmarkPage.vue")
+            },
+            {
+                path: "/bookmarklist/:userId/:postId",
+                name: "bookmarklist",
+                component: () =>
+                    import ("pages/bookmark/ListPage.vue"),
                 props: true
             }
         ]
     },
     {
-        path: '/activity',
+        path: "/activity",
         beforeEnter: multiguard([auth, actived]),
-        name: 'activity',
+        name: "activity",
         component: () =>
-            import ('pages/ActivityPage.vue'),
+            import ("pages/ActivityPage.vue")
     },
     {
         path: "/user/search",
@@ -151,6 +192,14 @@ const routes = [{
         props: true
     },
     {
+        path: "/districtuserlist/:districtId",
+        name: "districtuserlist",
+        beforeEnter: multiguard([auth, actived]),
+        component: () =>
+            import ("pages/user/DistrictUserListPage.vue"),
+        props: true
+    },
+    {
         path: "/book/create",
         beforeEnter: multiguard([auth, actived]),
         name: "bookcreate",
@@ -163,20 +212,6 @@ const routes = [{
         name: "booksearch",
         component: () =>
             import ("pages/book/SearchPage.vue")
-    },
-    {
-        path: "/murottal",
-        beforeEnter: multiguard([auth, actived]),
-        name: "murottal",
-        component: () =>
-            import ("pages/MurottalPage.vue")
-    },
-    {
-        path: "/dailyprayer",
-        beforeEnter: multiguard([auth, actived]),
-        name: "dailyprayer",
-        component: () =>
-            import ("pages/DailyPrayerPage.vue")
     },
     {
         path: "/membercard",
@@ -235,6 +270,14 @@ const routes = [{
         name: "postcomment",
         component: () =>
             import ("pages/post/CommentPage.vue"),
+        props: true
+    },
+    {
+        path: "/post/:postId/edit",
+        beforeEnter: multiguard([auth, actived]),
+        component: () =>
+            import ("pages/post/EditPage.vue"),
+        name: "postedit",
         props: true
     },
     {

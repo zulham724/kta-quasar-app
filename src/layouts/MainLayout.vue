@@ -8,6 +8,35 @@
 
     <q-footer bordered class="bg-white text-primary">
       <q-tabs
+        dense
+        class="bg-grey"
+        v-if="MusicPlayer.item"
+      >
+        <div class="row full-width">
+          <div class="col-2">
+            <div class="row align-center justify-center">
+              <q-btn :icon="MusicPlayer.isPlay ? 'pause' : 'play_arrow'" flat round color="white" @click="MusicPlayer.isPlay ? pause() : resume()" />
+            </div>
+          </div>
+          <div class="col-6 self-center text-center">
+            <div class="caption text-white">{{ MusicPlayer.item.name }}</div>
+          </div>
+          <div class="col-2">
+             <div class="row align-center justify-center">
+               <q-btn icon="favorite" flat round color="white" @click="$q.notify('Dalam kontruksi')"/>
+             </div>
+          </div>
+          <div class="col-2">
+            <div class="row align-center justify-center">
+              <q-btn icon="close" flat round color="white" @click="close()" />
+            </div>
+          </div>
+          <div class="col-12">
+            <q-linear-progress :value="((this.MusicPlayer.item.audio.currentTime/this.MusicPlayer.item.audio.duration*100)/100)" color="teal" />
+          </div>
+        </div>
+      </q-tabs>
+      <q-tabs
         v-model="tab"
         no-caps
         stretch
@@ -54,12 +83,31 @@ export default {
   name: "MainLayout",
   data() {
     return {
-      tab: this.$route.name
+      tab: this.$route.name,
+      perc: 0.4
     };
   },
   computed: {
-    ...mapState(["Setting",'Auth'])
+    ...mapState(["Setting",'Auth','MusicPlayer'])
   },
-  mounted() {}
+  mounted() {
+    setInterval(()=>{
+      if(this.MusicPlayer.item){
+        this.$forceUpdate()
+        if(((this.MusicPlayer.item.audio.currentTime/this.MusicPlayer.item.audio.duration*100)/100) >= 1) this.pause();
+      }
+    },500)
+  },
+  methods:{
+    pause(){
+      this.$store.commit('MusicPlayer/pause')
+    },
+    resume(){
+      this.$store.commit('MusicPlayer/resume')
+    },
+    close(){
+      this.$store.commit('MusicPlayer/close')
+    }
+  }
 };
 </script>

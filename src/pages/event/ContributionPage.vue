@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Kegiatan Anda</div>
+          <div class="text-body2 text-teal text-bold">Kegiatan Anda</div>
         </q-toolbar-title>
         <q-space />
         <q-btn
@@ -38,7 +38,7 @@
             <q-item-section>
               <q-item-label>{{ event.name }}</q-item-label>
               <q-item-label caption>{{ event.address }}</q-item-label>
-              <q-item-label caption>{{ event.start_at }}</q-item-label>
+              <q-item-label caption>{{ event.start_at | moment('LLLL') }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>

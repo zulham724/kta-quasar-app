@@ -2,9 +2,17 @@
   <div>
     <q-header elevated>
       <q-toolbar class="bg-white">
-        <q-btn color="teal" flat dense icon="arrow_back" @click="$router.back()" />
+        <q-btn
+          color="teal"
+          flat
+          dense
+          icon="arrow_back"
+          @click="$router.back()"
+        />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">{{ user ? user.name : null }}</div>
+          <div class="text-body2 text-teal text-bold">
+            {{ user ? user.name : null }}
+          </div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -16,21 +24,24 @@
             <div class="col-3">
               <div class="row justify-start align-center">
                 <q-avatar size="20vw" @click="zoom(user.avatar)">
-                  <q-img :src="`${Setting.storageUrl}/${user.avatar}`" no-default-spinner />
+                  <q-img
+                    :src="`${Setting.storageUrl}/${user.avatar}`"
+                    no-default-spinner
+                  />
                 </q-avatar>
               </div>
             </div>
             <div class="col-3 self-center">
               <div class="row justify-center">
                 <div class="text-body1 text-bold">
-                  {{ user.posts.length }}
+                  {{ user.posts.filter(item => item.files.length).length }}
                 </div>
               </div>
               <div class="row justify-center">
-                <div class="text-caption">Diskusi</div>
+                <div class="text-caption">Media</div>
               </div>
             </div>
-            <div class="col-3 self-center">
+            <div class="col-3 self-center" @click="$router.push(`/user/${user.id}/event`)">
               <div class="row justify-center">
                 <div class="text-body1 text-bold">
                   {{ user.guest_events.length }}
@@ -40,7 +51,7 @@
                 <div class="text-caption">Acara</div>
               </div>
             </div>
-            <div class="col-3 self-center">
+            <div class="col-3 self-center" @click="$router.push(`/user/${user.id}/book`)">
               <div class="row justify-center">
                 <div class="text-body1 text-bold">
                   {{ user.books_count }}
@@ -62,7 +73,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="text-caption">
+            <div class="text-caption" v-if="user.profile" v-linkified style="overflow-wrap:break-word; white-space:pre-line">
               {{ user.profile.long_bio }}
             </div>
           </div>
@@ -70,18 +81,20 @@
         <div class="row">
           <div class="col-12">
             <q-btn-group spread>
+              <q-btn dense @click="$q.notify('Dalam kontruksi')">
+                <div class="text-caption">Kirim pesan</div>
+              </q-btn>
               <q-btn
-                :icon-right="selected_view_post.value == view_posts[0].value ? 'keyboard_arrow_down' : null"
+                icon-right="keyboard_arrow_down"
                 dense
-                :label="view_posts[0].label"
-                @click="selected_view_post = view_posts[0]"
-              />
-              <q-btn
-                :icon-right="selected_view_post.value == view_posts[1].value ? 'keyboard_arrow_down' : null"
-                dense
-                :label="view_posts[1].label"
-                @click="selected_view_post = view_posts[1]"
-              />
+                @click="
+                  selected_view_post.value == view_posts[0].value
+                    ? (selected_view_post = view_posts[1])
+                    : (selected_view_post = view_posts[0])
+                "
+              >
+                <div class="text-caption">{{ selected_view_post.label }}</div>
+              </q-btn>
             </q-btn-group>
           </div>
         </div>
@@ -95,7 +108,6 @@
         ></post-text-component>
       </q-pull-to-refresh>
     </q-page>
-
   </div>
 </template>
 
@@ -104,24 +116,24 @@ import { mapState } from "vuex";
 import ImageZoomer from "components/ImageZoomerComponent.vue";
 
 export default {
-  props:{
+  props: {
     userId: null
   },
   components: {
-    PostPhotoComponent: () =>
-      import("components/user/PostPhotoComponent.vue"),
+    PostPhotoComponent: () => import("components/user/PostPhotoComponent.vue"),
     PostTextComponent: () => import("components/user/PostTextComponent.vue")
   },
-  created(){
-    if(this.userId == this.Auth.auth.id) this.$router.push({name:'account'});
-    this.getUser()
+  created() {
+    if (this.userId == this.Auth.auth.id)
+      this.$router.push({ name: "account" });
+    this.getUser();
   },
   data() {
     return {
       user: null,
       view_posts: [
         {
-          label: "Post Gambar",
+          label: "Post Media",
           value: "photo"
         },
         {
@@ -130,16 +142,16 @@ export default {
         }
       ],
       selected_view_post: {
-        label: "Post Gambar",
+        label: "Post Media",
         value: "photo"
       }
     };
   },
   methods: {
     getUser(done) {
-      this.$store.dispatch("User/show",this.userId).then(res => {
-        this.user = res.data
-        if(done)done();
+      this.$store.dispatch("User/show", this.userId).then(res => {
+        this.user = res.data;
+        if (done) done();
       });
     },
     onLogout() {
@@ -163,7 +175,7 @@ export default {
         .onDismiss(() => {
           console.log("Called on OK or Cancel");
         });
-    },
+    }
   },
   computed: {
     ...mapState(["Setting", "Auth"])

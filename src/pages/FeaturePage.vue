@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white">
         <q-icon name="apps" color="teal" size="sm" />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Fitur</div>
+          <div class="text-body2 text-teal text-bold">Fitur</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -18,12 +18,12 @@
             Buku Digital
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple @click="goToPage('/murottal')" disable>
+        <q-item clickable v-ripple @click="goToPage('/murottal')">
           <q-item-section>
             Murottal
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple @click="goToPage('/dailyprayer')" disable>
+        <q-item clickable v-ripple @click="goToPage('/dailyprayer')">
           <q-item-section>
             Doa Harian
           </q-item-section>
@@ -36,6 +36,21 @@
         <q-item clickable v-ripple disable>
           <q-item-section>
             Penilaian Digital
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple disable>
+          <q-item-section>
+            Modul Digital
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple disable>
+          <q-item-section>
+            Marketplace
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple @click="goToApp('https://wasap.at/OLW45f')">
+          <q-item-section>
+            Hubungi Kami
           </q-item-section>
         </q-item>
       </q-list>

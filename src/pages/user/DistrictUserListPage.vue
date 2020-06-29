@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Daftar Anggota</div>
+          <div class="text-body2 text-teal text-bold">Daftar Anggota</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -26,11 +26,19 @@
         >
           <q-item-section avatar>
               <q-avatar>
-                <q-img :src="`${Setting.storageUrl}/${user.avatar}`"/>
+                <q-img :src="`${Setting.storageUrl}/${user.avatar}`" no-default-spinner/>
               </q-avatar>
           </q-item-section>
           <q-item-section>
-            {{user.name}}
+            <q-item-label>{{user.name}}</q-item-label>
+            <q-item-label caption>
+              <div class="row q-gutter-md">
+                <div class="text-caption">{{user.posts.filter(item=>item.files.length).length}} Media</div>
+                <div class="text-caption">{{user.guest_events.length}} Acara</div>
+                <div class="text-caption">{{user.books.length}} Buku</div>
+                <div class="text-caption">{{user.lesson_plans_count}} RPP</div>
+              </div>
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

@@ -10,10 +10,11 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
-            Kab/ Kota Provinsi {{ name }}
+          <div class="text-body2 text-teal text-bold">
+            {{ name }}
           </div>
         </q-toolbar-title>
+        <q-select label="Urutkan" @input="item=>item.handler()" style="width:40%" color="teal" filled :options="sorts" v-model="selected" option-label="name" dense/>
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -49,7 +50,17 @@ export default {
   },
   data() {
     return {
-      cities: []
+      cities: [],
+      sorts:[
+        {
+          name: 'Jumlah terbanyak',
+          handler: ()=> this.sortCountDesc()
+        },{
+          name: 'Jumlah terkecil',
+          handler: ()=> this.sortCountAsc()
+        }
+      ],
+      selected: null
     };
   },
   mounted() {
@@ -72,7 +83,13 @@ export default {
             reject(err);
           });
       });
-    }
+    },
+    sortCountDesc(){
+      this.cities = this.cities.sort((a,b)=>(a.users_count < b.users_count) ? 1 : -1)
+    },
+    sortCountAsc(){
+      this.cities = this.cities.sort((a,b)=>(a.users_count > b.users_count) ? 1 : -1)
+    },
   }
 };
 </script>

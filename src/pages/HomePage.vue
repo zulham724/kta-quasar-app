@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white">
         <q-icon name="home" color="teal" size="sm" />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Home</div>
+          <div class="text-body2 text-teal text-bold">Home</div>
         </q-toolbar-title>
 
         <q-btn
@@ -38,7 +38,10 @@
             <div class="row">
               <div class="col-2 self-center">
                 <q-avatar size="lg">
-                  <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
+                  <q-img
+                    :src="`${Setting.storageUrl}/${Auth.auth.avatar}`"
+                    no-default-spinner
+                  />
                 </q-avatar>
               </div>
               <div class="col-10" @click="$router.push('/post/create')">
@@ -51,7 +54,12 @@
                 >
                   <template v-slot:after>
                     <div>
-                      <q-btn flat round icon="add_photo_alternate" color="teal" />
+                      <q-btn
+                        flat
+                        round
+                        icon="add_photo_alternate"
+                        color="teal"
+                      />
                     </div>
                   </template>
                 </q-input>
@@ -63,7 +71,14 @@
         <q-infinite-scroll @load="onLoad" :offset="250">
           <div class="q-pt-sm row items-start q-gutter-sm">
             <div v-if="!this.Post.posts.data" style="width:100%">
-              <q-card flat bordered class="q-mt-sm" style="width:100%" v-for="n in 3" :key="`loading-${n}`">
+              <q-card
+                flat
+                bordered
+                class="q-mt-sm"
+                style="width:100%"
+                v-for="n in 3"
+                :key="`loading-${n}`"
+              >
                 <q-item>
                   <q-item-section avatar>
                     <q-skeleton type="QAvatar" animation="fade" />
@@ -101,8 +116,13 @@
               :key="post.id"
               :style="
                 `min-height: ${
-                  post.size ? `${post.size.height}` : post.files.length ? '80vh' : '30vh'
-                };width: 100vw`"
+                  post.size
+                    ? `${post.size.height}`
+                    : post.files.length
+                    ? '80vh'
+                    : '30vh'
+                };width: 100vw`
+              "
             >
               <item-component :post="post"></item-component>
             </q-intersection>

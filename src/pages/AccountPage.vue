@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white">
         <q-icon name="person_outline" color="teal" size="sm" />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">{{ Auth.auth.name }}</div>
+          <div class="text-body2 text-teal text-bold">{{ Auth.auth.name }}</div>
         </q-toolbar-title>
         <q-btn
           flat
@@ -23,21 +23,24 @@
             <div class="col-3">
               <div class="row justify-start align-center">
                 <q-avatar size="20vw" @click="zoom(Auth.auth.avatar)">
-                  <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
+                  <q-img
+                    :src="`${Setting.storageUrl}/${Auth.auth.avatar}`"
+                    no-default-spinner
+                  />
                 </q-avatar>
               </div>
             </div>
             <div class="col-3 self-center">
               <div class="row justify-center">
                 <div class="text-body1 text-bold">
-                  {{ Auth.auth.posts.length }}
+                  {{ Auth.auth.posts.filter(item => item.files.length).length }}
                 </div>
               </div>
               <div class="row justify-center">
-                <div class="text-caption">Diskusi</div>
+                <div class="text-caption">Media</div>
               </div>
             </div>
-            <div class="col-3 self-center">
+            <div class="col-3 self-center" @click="$router.push(`/user/${Auth.auth.id}/event`)">
               <div class="row justify-center">
                 <div class="text-body1 text-bold">
                   {{ Auth.auth.guest_events.length }}
@@ -47,7 +50,7 @@
                 <div class="text-caption">Acara</div>
               </div>
             </div>
-            <div class="col-3 self-center">
+            <div class="col-3 self-center" @click="$router.push(`/user/${Auth.auth.id}/book`)">
               <div class="row justify-center">
                 <div class="text-body1 text-bold">
                   {{ Auth.auth.books_count }}
@@ -69,7 +72,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="text-caption">
+            <div class="text-caption" v-if="Auth.auth.profile" v-linkified style="overflow-wrap:break-word; white-space:pre-line">
               {{ Auth.auth.profile.long_bio }}
             </div>
           </div>
@@ -77,21 +80,20 @@
         <div class="row">
           <div class="col-12">
             <q-btn-group spread>
-              <q-btn
-                dense
-                label="Edit Profile"
-                @click="$router.push('/account/edit')"
-              />
+              <q-btn dense @click="$router.push('/account/edit')">
+                <div class="text-caption">Edit Profile</div>
+              </q-btn>
               <q-btn
                 icon-right="keyboard_arrow_down"
                 dense
-                :label="selected_view_post.label"
                 @click="
                   selected_view_post.value == view_posts[0].value
                     ? (selected_view_post = view_posts[1])
                     : (selected_view_post = view_posts[0])
                 "
-              />
+              >
+                <div class="text-caption">{{ selected_view_post.label }}</div>
+              </q-btn>
             </q-btn-group>
           </div>
         </div>
@@ -115,7 +117,11 @@
     >
       <q-scroll-area class="fit">
         <q-list padding class="menu-list">
-          <q-item clickable v-ripple @click="$router.push({name:'information'})">
+          <q-item
+            clickable
+            v-ripple
+            @click="$router.push({ name: 'information' })"
+          >
             <q-item-section avatar>
               <q-icon name="help_outline" size="xs" color="teal" />
             </q-item-section>
@@ -125,13 +131,37 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple @click="$router.push({name:'paymenthistory'})">
+          <q-item
+            clickable
+            v-ripple
+            @click="$router.push({ name: 'paymenthistory' })"
+          >
             <q-item-section avatar>
               <q-icon name="payment" size="xs" color="teal" />
             </q-item-section>
 
             <q-item-section>
               <div class="text-caption">Riwayat Pembayaran</div>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple @click="$router.push('/bookmark')">
+            <q-item-section avatar>
+              <q-icon name="bookmark_border" size="xs" color="teal" />
+            </q-item-section>
+
+            <q-item-section>
+              <div class="text-caption">Disimpan</div>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple disable>
+            <q-item-section avatar>
+              <q-icon name="favorite_outline" size="xs" color="teal" />
+            </q-item-section>
+
+            <q-item-section>
+              <div class="text-caption">Postingan yang disukai</div>
             </q-item-section>
           </q-item>
 
@@ -165,7 +195,7 @@ export default {
       drawer: false,
       view_posts: [
         {
-          label: "Post Gambar",
+          label: "Post Media",
           value: "photo"
         },
         {
@@ -174,7 +204,7 @@ export default {
         }
       ],
       selected_view_post: {
-        label: "Post Gambar",
+        label: "Post Media",
         value: "photo"
       }
     };
@@ -182,7 +212,7 @@ export default {
   methods: {
     getAuth(done) {
       this.$store.dispatch("Auth/getAuth").then(res => {
-        if(done)done();
+        if (done) done();
       });
     },
     onLogout() {
@@ -206,7 +236,7 @@ export default {
         .onDismiss(() => {
           console.log("Called on OK or Cancel");
         });
-    },
+    }
   },
   computed: {
     ...mapState(["Setting", "Auth"])

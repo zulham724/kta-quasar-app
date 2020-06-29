@@ -46,7 +46,7 @@ const actions = {
                 reject(err)
             })
         })
-    }
+    },
 };
 
 // Getter functions

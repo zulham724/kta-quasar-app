@@ -19,11 +19,19 @@
           </div>
           <div class="col-8 self-center">
             <div class="row">
-              <div
-                class="text-bold text-body2"
-                @click="$router.push(`/user/profile/${post.author_id.id}`)"
-              >
-                {{ post.author_id.name }}
+              <div class="col">
+                <div
+                  class="text-bold text-body2"
+                  @click="$router.push(`/user/profile/${post.author_id.id}`)"
+                >
+                  {{ post.author_id.name }}
+                </div>
+                <div
+                  class="text-grey text-caption"
+                  @click="$router.push(`/user/profile/${post.author_id.id}`)"
+                >
+                  {{ post.author_id.role ? post.author_id.role.display_name : null }} {{post.author_id.profile ? post.author_id.profile.school_place : null}}
+                </div>
               </div>
             </div>
           </div>
@@ -67,6 +75,12 @@
           </div>
         </div>
       </q-card-section>
+      <!-- <q-card-section class="q-pa-none">
+        <q-video
+          ratio="1"
+          src="https://instagram.fcgk23-1.fna.fbcdn.net/v/t50.2886-16/103553283_126117292432111_8775059075118879134_n.mp4?_nc_ht=instagram.fcgk23-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=lgEjLaIDdlkAX8MTGdr&oe=5EDD1667&oh=9cb553eeac6ea0f8819e431c01ed4d27"
+        />
+      </q-card-section> -->
       <q-card-section class="q-pa-none" v-if="post.files.length">
         <q-carousel
           v-model="slide"
@@ -74,7 +88,7 @@
           transition-next="slide-left"
           animated
           :navigation="post.files.length > 1"
-          control-color="white"
+          control-color="teal"
           swipeable
           class="rounded-borders q-pa-none"
         >
@@ -84,13 +98,24 @@
             :key="file.id"
             :name="f"
             class="column no-wrap flex-center"
-            @click="zoom(file)"
           >
-            <q-img :src="`${Setting.storageUrl}/${file.src}`" ratio="1">
+            <q-img
+              v-if="file.type.includes('image')"
+              :src="`${Setting.storageUrl}/${file.src}`"
+              ratio="1"
+              @click="zoom(file)"
+            >
               <template v-slot:loading>
                 <div class="bg-grey-2" style="height:100%;width:100%"></div>
               </template>
             </q-img>
+            <vue-plyr v-if="file.type.includes('video')" style="width:100vw">
+              <video
+                preload="none"
+                :poster="`${Setting.storageUrl}/${file.value}`"
+                :src="`${Setting.storageUrl}/${file.src}`"
+              ></video>
+            </vue-plyr>
           </q-carousel-slide>
         </q-carousel>
       </q-card-section>
@@ -98,7 +123,11 @@
         <div class="row">
           <div class="col-6 self-center">
             <div class="row">
-              <div class="text-caption text-bold" v-show="post.likes_count" @click="$router.push(`/post/like/${post.id}`)">
+              <div
+                class="text-caption text-bold"
+                v-show="post.likes_count"
+                @click="$router.push(`/post/like/${post.id}`)"
+              >
                 {{ post.likes_count }} Suka
               </div>
             </div>
@@ -117,6 +146,13 @@
                 round
                 icon="message"
                 @click="$router.push(`/post/comment/${post.id}`)"
+              />
+              <q-btn
+                v-if="post.files.length"
+                flat
+                round
+                :icon="post.bookmarked ? 'bookmark' : 'bookmark_border'"
+                @click="post.bookmarked ? unBookmark() : bookmark()"
               />
             </div>
           </div>
@@ -161,7 +197,27 @@ export default {
       file: null
     };
   },
+  mounted(){
+  },
   methods: {
+    bookmark() {
+      this.$store.dispatch("PostBookmark/store", this.post.id).then(res => {
+        this.post.bookmarked = res.data.bookmarked;
+        this.post.bookmarks = res.data.bookmarks;
+        this.$q.notify("Tersimpan");
+        this.$store.dispatch("Auth/getAuth");
+        this.$forceUpdate();
+      });
+    },
+    unBookmark() {
+      this.$store.dispatch("PostBookmark/destroy", this.post.id).then(res => {
+        this.post.bookmarked = res.data.bookmarked;
+        this.post.bookmarks = res.data.bookmarks;
+        this.$q.notify("Terhapus dari daftar simpan");
+        this.$store.dispatch("Auth/getAuth");
+        this.$forceUpdate();
+      });
+    },
     zoom(file) {
       this.$q
         .dialog({
@@ -202,19 +258,22 @@ export default {
             });
         });
     },
+    edit() {
+      this.$router.push(`/post/${this.post.id}/edit`);
+    },
     like() {
       this.$store.dispatch("Post/like", this.post.id).then(res => {
-        if(this.post.author_id.id != this.Auth.auth.id) this.sendNotif();
+        if (this.post.author_id.id != this.Auth.auth.id) this.sendNotif();
         this.post.liked_count = res.data.liked_count;
         this.post.likes_count = res.data.likes_count;
-        this.$forceUpdate();
+        this.$forceUpdate()
       });
     },
     dislike() {
       this.$store.dispatch("Post/dislike", this.post.id).then(res => {
         this.post.liked_count = res.data.liked_count;
         this.post.likes_count = res.data.likes_count;
-        this.$forceUpdate();
+        this.$forceUpdate()
       });
     },
     showMenu() {
@@ -224,9 +283,17 @@ export default {
           actions: [
             this.post.author_id.id == this.Auth.auth.id
               ? {
+                  label: "Edit",
+                  icon: "edit",
+                  color: "teal",
+                  id: "edit"
+                }
+              : false,
+            this.post.author_id.id == this.Auth.auth.id
+              ? {
                   label: "Hapus",
-                  icon:'delete',
-                  color:'teal',
+                  icon: "delete",
+                  color: "teal",
                   id: "destroy"
                 }
               : false
@@ -237,6 +304,9 @@ export default {
           if (action.id == "destroy") {
             this.destroy();
           }
+          if (action.id == "edit") {
+            this.edit();
+          }
         })
         .onCancel(() => {
           // console.log('Dismissed')
@@ -245,21 +315,21 @@ export default {
           // console.log('I am triggered on both OK and Cancel')
         });
     },
-    sendNotif(){
+    sendNotif() {
       const payload = {
         title: `AGPAII DIGITAL`,
         body: `Postingan anda disukai oleh ${this.Auth.auth.name}`,
-        params:{
+        params: {
           sender_id: this.Auth.auth.id,
           target_id: this.post.id,
           target_type: `Post`,
-          text: `Postingan anda disukai oleh ${this.Auth.auth.name}`,
+          text: `Postingan anda disukai oleh ${this.Auth.auth.name}`
         },
         to: `/topics/user_${this.post.author_id.id}_post_${this.post.id}_like`
-      }
-      this.$store.dispatch('Notif/send',payload).then(res=>{
-        console.log(res)
-      })
+      };
+      this.$store.dispatch("Notif/send", payload).then(res => {
+        console.log(res);
+      });
     }
   }
 };

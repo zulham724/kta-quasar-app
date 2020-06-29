@@ -16,8 +16,8 @@
         <q-btn
           color="teal"
           flat
-          label="Posting"
-          @click="store()"
+          label="Perbarui"
+          @click="update()"
           :loading="loading"
           :disable="loading"
         />
@@ -47,67 +47,18 @@
             lazy-rules
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
-          <div class="row justify-end q-ma-none">
-            <q-btn
-              size="md"
-              color="teal"
-              flat
-              icon="add_photo_alternate"
-              @click="$refs.selectfiles.pickFiles()"
-            ></q-btn>
-            <q-file
-              v-show="false"
-              label="Tambahkan foto/ gambar"
-              dense
-              v-model="files"
-              filled
-              multiple
-              ref="selectfiles"
-              outlined
-              @input="check()"
-              bg-color="transparent"
-              display-value
-              color="teal"
-            >
-            </q-file>
-          </div>
           <div class="list row">
-            <sortable
-              v-for="(item, index) in files"
+            <div
+              class="col-6 q-pa-sm"
+              v-for="(item, index) in post.files"
               :key="index"
-              v-model="dragData"
-              :index="index"
-              @sortend="sortend($event, files)"
-              :class="files.filter(item=>item.type.includes('video')).length ? 'col-12' : 'col-6'"
             >
-              <div class="q-pa-sm">
-                  <q-img :src="item.src" :ratio="1" v-if="item.type.includes('image')">
-                    <q-badge color="white" v-if="!files.filter(item=>item.type.includes('video')).length" floating outline>{{
-                      index + 1
-                    }}</q-badge>
-                    <q-btn
-                      style="position:absolute; bottom:0;right:0"
-                      color="red"
-                      flat
-                      dense
-                      icon="close"
-                      @click="removeFile(index)"
-                    />
-                  </q-img>
-                  <q-card v-if="item.type.includes('video')">
-                    <q-card-section class="q-pa-none">
-                      <vue-plyr v-if="item.type.includes('video')">
-                        <video
-                          preload="metadata"
-                          :src="`${item.src}#t=0.1}`"
-                          style="margin-left:auto;margin-right:auto;display:block;height:90vw"
-                        >
-                        </video>
-                      </vue-plyr>
-                    </q-card-section>
-                  </q-card>
-              </div>
-            </sortable>
+              <q-img :src="item.src" :ratio="1">
+                <q-badge color="white" floating outline>{{
+                  index + 1
+                }}</q-badge>
+              </q-img>
+            </div>
           </div>
         </q-form>
       </div>
@@ -119,8 +70,8 @@
 import { mapState } from "vuex";
 import Sortable from "vue-drag-sortable";
 export default {
-  components: {
-    Sortable
+  props: {
+    postId: null
   },
   computed: {
     ...mapState(["Setting", "Auth"])
@@ -133,10 +84,20 @@ export default {
       dragData: {}
     };
   },
-  mounted() {},
+  mounted() {
+    this.init();
+  },
   methods: {
-    removeFile(index) {
-      this.files.splice(index, 1);
+    init() {
+      this.$store.dispatch("Post/show", this.postId).then(res => {
+        this.post = {
+          ...res.data,
+          files: res.data.files.map(item => {
+            item.src = `${this.Setting.storageUrl}/${item.src}`;
+            return item;
+          })
+        };
+      });
     },
     onSubmit() {},
     check() {
@@ -148,7 +109,6 @@ export default {
           return file;
         });
       });
-      // console.log(this.files)
     },
     toBase64(file) {
       return new Promise((resolve, reject) => {
@@ -158,34 +118,22 @@ export default {
         reader.onerror = error => reject(error);
       });
     },
-    store() {
+    update() {
       this.$refs.form.validate().then(success => {
         if (success) {
-          if(this.files.filter(file=>file.size > 20000000).length){
-            this.$q.notify('File anda terlalu besar, maksimal size upload 20mb')
-            return false
-          }
-
           this.loading = true;
           this.$q.notify("Tunggu sebentar");
           this.$router.back();
-          let formData = new FormData();
-          this.files.forEach(file => {
-            formData.append("files[]", file);
-          });
-          formData.append("title", "KTA POST");
-          formData.append("body", this.post.body);
-          formData.append("status", "PUBLISHED");
-          formData.append("featured", 0);
-
+          let access = {
+            id: this.post.id,
+            body: this.post.body
+          }
           this.$store
-            .dispatch("Post/store", formData)
+            .dispatch("Post/update", access)
             .then(res => {
-              this.sendNotif(res.data)
-              this.$store.dispatch("Auth/getAuth").then(res=>{
-                this.$store.dispatch('Notif/init')
-              })
-              this.$q.notify("Berhasil")
+              this.sendNotif(res.data);
+              this.$store.dispatch("Auth/getAuth");
+              this.$q.notify("Berhasil");
             })
             .finally(() => {
               this.loading = false;

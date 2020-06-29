@@ -86,7 +86,9 @@ export default {
             axios
               .post(`${this.Setting.url}/api/v1/user/${this.Auth.auth.id}`, access, config)
               .then(res => {
-                this.$store.dispatch('Auth/getAuth')
+                this.$store.dispatch('Auth/getAuth').then(res=>{
+
+                })
                 this.$q.notify('Foto Terupload')
               }).finally(()=>{
                 this.loading = false

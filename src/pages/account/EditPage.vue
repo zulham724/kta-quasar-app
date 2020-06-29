@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Edit Profile</div>
+          <div class="text-body2 text-teal text-bold">Edit Profile</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -35,6 +35,7 @@
         </div>
         <q-form class="q-gutter-sm" ref="form">
           <q-input
+            color="teal"
             outlined
             rounded
             type="textarea"
@@ -43,7 +44,24 @@
             lazy-rules
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
+          <q-select
+              color="teal"
+              :rules="[val => !!val || 'Harus diisi']"
+              style="opacity:0.8"
+              dense
+              class="q-pa-none"
+              rounded
+              outlined
+              bg-color="white"
+              v-model="auth.role"
+              :options="roles"
+              option-label="name"
+              option-value="id"
+              @input="item => (auth.role_id = item.id)"
+              label="Anda sebagai"
+            />
           <q-input
+            color="teal"
             outlined
             rounded
             dense
@@ -54,18 +72,20 @@
           />
           <div v-if="auth.role_id != 7">
             <q-select
+              color="teal"
               dense
               rounded
               outlined
               :options="educationallevels"
               :option-value="item=>item.id"
               :option-label="item=>item.name"
-              label="Jenjang pendidikan"
+              label="Jenjang pendidikan yang diajar"
               v-model="auth.profile.educational_level"
               @input="item => auth.profile.educational_level_id = item.id"
             />
           </div>
           <q-input
+            color="teal"
             outlined
             rounded
             dense
@@ -86,6 +106,7 @@
             </template>
           </q-input>
           <q-input
+            color="teal"
             outlined
             rounded
             dense
@@ -95,6 +116,7 @@
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
           <q-input
+            color="teal"
             outlined
             rounded
             dense
@@ -104,6 +126,7 @@
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
           <q-input
+            color="teal"
             outlined
             rounded
             dense
@@ -113,7 +136,8 @@
             :rules="[val => (val && val.length > 0) || 'Please type something']"
           />
           <q-select
-            :disabled="isDisabled"
+            color="teal"
+            :readonly="isDisabled"
             dense
             rounded
             outlined
@@ -130,7 +154,8 @@
             }"
           />
           <q-select
-            :disabled="isDisabled"
+            color="teal"
+            :readonly="isDisabled"
             dense
             rounded
             outlined
@@ -146,6 +171,7 @@
             }"
           />
           <q-select
+            color="teal"
             dense
             rounded
             outlined
@@ -155,6 +181,7 @@
             label="Kecamatan/ Daerah"
             v-model="auth.profile.district"
             @input="item => {
+              auth.profile.district_id ? $q.notify('Merubah kecamatan yang berbeda dari sebelumnya akan merubah nomor KTA anda, harap berhati-hati.') : null
               auth.profile.district_id = item.id
             }"
           />
@@ -181,6 +208,24 @@ export default {
       loading: false,
       file: null,
       isDisabled: true,
+      roles: [
+        {
+          id: 2,
+          name: "Guru PAI"
+        },
+        {
+          id: 11,
+          name: "Kepala Sekolah dan Guru PAI"
+        },
+        {
+          id: 7,
+          name: "Pengawas PAI"
+        },
+        {
+          id: 9,
+          name: "Pembina"
+        },
+      ]
     };
   },
   computed:{
@@ -196,23 +241,34 @@ export default {
     }
   },
   mounted(){
-    this.auth = {
-      ...this.Auth.auth,
-      profile: {
-        ...this.Auth.auth.profile
-      }
-    }
-    this.getEducationalLevels()
-    this.getProvinces()
-    if(this.auth.profile.province_id){
-      this.getCities().then(res=>{
-        if(this.auth.profile.city_id){
-          this.getDistricts()
-        }
-      })
+    this.init()
+  },
+  watch:{
+    'Auth.auth.avatar': {
+      handler: function(){
+        this.init()
+      },
+      deep: true
     }
   },
   methods:{
+    init(){
+      this.auth = {
+        ...this.Auth.auth,
+        profile: {
+          ...this.Auth.auth.profile
+        }
+      }
+      this.getEducationalLevels()
+      this.getProvinces()
+      if(this.auth.profile.province_id){
+        this.getCities().then(res=>{
+          if(this.auth.profile.city_id){
+            this.getDistricts()
+          }
+        })
+      }
+    },
     onSubmit(){
       this.$refs.form.validate().then(success=>{
         if(success){

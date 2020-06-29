@@ -6,7 +6,8 @@
       <q-card style="width:90vw">
         <q-card-section>
           <p>
-            <img src="~assets/sad.svg" style="width:30vw;max-width:150px;" />
+            <!-- <img src="~assets/sad.svg" style="width:30vw;max-width:150px;" /> -->
+            <img src="statics/images/agpaii-logo-teal.png" style="width:30vw;max-width:150px;">
           </p>
           <q-btn
             flat

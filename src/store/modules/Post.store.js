@@ -27,6 +27,10 @@ const mutations = {
             data: [...state.posts.data, ...payload.posts.data]
         };
     },
+    update(state, payload) {
+        const index = state.posts.data.findIndex(item => item.id == payload.id);
+        state.posts.data[index].body = payload.body
+    },
     addReadMore(state, payload) {
         const index = state.posts.data.findIndex(item => item.id == payload.id);
         state.posts.data[index].isReadMore = false
@@ -38,6 +42,16 @@ const mutations = {
     setSize(state, payload) {
         const index = state.posts.data.findIndex(item => item.id == payload.id);
         state.posts.data[index].size = payload.size
+    },
+    like(state, payload) {
+        const index = state.posts.data.findIndex(item => item.id == payload.id);
+        state.posts.data[index].liked_count = payload.liked_count
+        state.posts.data[index].likes_count = payload.likes_count
+    },
+    dislike(state, payload) {
+        const index = state.posts.data.findIndex(item => item.id == payload.id);
+        state.posts.data[index].liked_count = payload.liked_count
+        state.posts.data[index].likes_count = payload.likes_count
     }
 };
 
@@ -81,6 +95,20 @@ const actions = {
                     reject(err);
                 });
         });
+    },
+    update({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            let access = {
+                _method: 'put',
+                ...payload
+            }
+            axios.post(`${this.state.Setting.url}/api/v1/post/${payload.id}`, access).then(res => {
+                commit('update', res.data)
+                resolve(res)
+            }).catch(err => {
+                reject(err)
+            })
+        })
     },
     next({ commit, state }) {
         return new Promise((resolve, reject) => {

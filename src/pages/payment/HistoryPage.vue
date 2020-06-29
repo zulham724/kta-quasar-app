@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Riwayat Pembayaran
           </div>
         </q-toolbar-title>

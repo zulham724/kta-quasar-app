@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Cari Buku
           </div>
         </q-toolbar-title>
@@ -19,6 +19,7 @@
     </q-header>
     <q-page-container>
       <q-select
+        color="teal"
         square
         v-model="selectedcategory"
         label="Kata Kunci"

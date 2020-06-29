@@ -14,7 +14,7 @@
         :key="post.id"
         :style="`min-height: 30vh;width: 100vw`"
       >
-        <item-component :post="post"></item-component>
+        <item-component :post="{...post}"></item-component>
       </q-intersection>
     </div>
   </div>

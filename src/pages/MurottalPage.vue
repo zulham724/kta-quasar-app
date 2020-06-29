@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Murottal
           </div>
         </q-toolbar-title>
@@ -20,16 +20,28 @@
     <q-page-container>
       <q-list bordered class="rounded-borders">
         <q-item-label header>List murottal</q-item-label>
-        <item-component></item-component>
+        <item-component v-for="item in Murottal.items" :key="item.id" :item="item"></item-component>
       </q-list>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   components:{
     ItemComponent:()=>import('components/murottal/ItemComponent.vue')
+  },
+  computed:{
+    ...mapState(['Murottal','Setting','Auth'])
+  },
+  mounted(){
+    if(this.Murottal.items.length == 0) this.init();
+  },
+  methods:{
+    init(){
+      this.$store.dispatch('Murottal/index')
+    },
   }
 }
 </script>

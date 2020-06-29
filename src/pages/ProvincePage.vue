@@ -10,11 +10,11 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">
+          <div class="text-body2 text-teal text-bold">
             Informasi
           </div>
         </q-toolbar-title>
-        <q-space />
+        <q-select label="Urutkan" @input="item=>item.handler()" style="width:40%" color="teal" filled :options="sorts" v-model="selected" option-label="name" dense/>
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -48,7 +48,17 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      provinces: []
+      provinces: [],
+      sorts:[
+        {
+          name: 'Jumlah terbanyak',
+          handler: ()=> this.sortCountDesc()
+        },{
+          name: 'Jumlah terkecil',
+          handler: ()=> this.sortCountAsc()
+        }
+      ],
+      selected: null
     };
   },
   mounted() {
@@ -70,7 +80,13 @@ export default {
             reject(err);
           });
       });
-    }
+    },
+    sortCountDesc(){
+      this.provinces = this.provinces.sort((a,b)=>(a.users_count < b.users_count) ? 1 : -1)
+    },
+    sortCountAsc(){
+      this.provinces = this.provinces.sort((a,b)=>(a.users_count > b.users_count) ? 1 : -1)
+    },
   }
 };
 </script>

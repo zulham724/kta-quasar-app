@@ -10,7 +10,7 @@
           @click="$router.back()"
         />
         <q-toolbar-title>
-          <div class="text-body1 text-teal text-bold">Absensi Kegiatan</div>
+          <div class="text-body2 text-teal text-bold">Absensi Kegiatan</div>
         </q-toolbar-title>
         <q-btn color="teal" flat label="Scan Barcode" @click="openScanner()" />
       </q-toolbar>

@@ -26,6 +26,7 @@
               style="width:100%"
               v-for="n in 3"
               :key="`loading-${n}`"
+              f
             >
               <q-item>
                 <q-item-section avatar>
@@ -60,7 +61,9 @@
             </q-card>
           </div>
           <q-intersection
-            v-for="post in user.posts"
+            v-for="post in user.bookmark_posts.filter(
+              item => item.files.length
+            )"
             :key="post.id"
             :style="`min-height: 80vh;width: 100vw`"
             :id="`post${post.id}`"
@@ -113,10 +116,7 @@ export default {
         this.$store
           .dispatch("User/show", this.userId)
           .then(res => {
-            this.user = {
-              ...res.data,
-              posts: res.data.posts.filter(item=>item.files.length)
-            };
+            this.user = res.data;
             resolve(res);
             if (done) done();
           })

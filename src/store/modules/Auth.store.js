@@ -121,7 +121,7 @@ const actions = {
                 });
         });
     },
-    updateProfile({ commit }, user) {
+    updateProfile({ commit, dispatch }, user) {
         return new Promise((resolve, reject) => {
             const access = {
                 _method: "put",
@@ -133,7 +133,8 @@ const actions = {
                     access
                 )
                 .then(res => {
-                    commit("setProfile", { profile: res.data.profile });
+                    // commit("setProfile", { profile: res.data.profile });
+                    dispatch('getAuth')
                     resolve(res);
                 })
                 .catch(err => {

@@ -35,7 +35,7 @@
               </div>
             </div>
           </div>
-          <div class="col-2 self-center">
+          <div class="col-2 self-center" v-if="Auth.auth">
             <div class="row justify-end">
               <q-btn
                 flat

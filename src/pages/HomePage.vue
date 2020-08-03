@@ -33,7 +33,7 @@
     </q-header>
     <q-page>
       <q-pull-to-refresh @refresh="refresh" color="teal">
-        <q-card>
+        <q-card v-if="Auth.auth">
           <q-card-section>
             <div class="row">
               <div class="col-2 self-center">

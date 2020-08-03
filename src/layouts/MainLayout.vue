@@ -63,6 +63,7 @@
         <q-tab
           name="account"
           @click="$route.name == 'account' ? null : $router.push('/account')"
+          v-if="Auth.auth"
         >
           <template v-slot:default>
             <div>

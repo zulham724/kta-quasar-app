@@ -41,7 +41,6 @@ const checkProfile = function(to, from, next) {
 
 const routes = [{
         path: "/",
-        beforeEnter: multiguard([auth, actived]),
         component: () =>
             import ("layouts/MainLayout.vue"),
         children: [{
@@ -53,39 +52,45 @@ const routes = [{
             {
                 name: "account",
                 path: "account",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/AccountPage.vue")
             },
             {
                 name: "event",
                 path: "event",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/EventPage.vue")
             },
             {
                 path: "feature",
                 name: "feature",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/FeaturePage.vue")
             },
             // ---------------------
             {
-                path: '/user/:userId/book',
-                name: 'userbook',
+                path: "/user/:userId/book",
+                name: "userbook",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
-                    import ('pages/user/BookPage.vue'),
+                    import ("pages/user/BookPage.vue"),
                 props: true
             },
             {
-                path: '/user/:userId/event',
-                name: 'userevent',
+                path: "/user/:userId/event",
+                name: "userevent",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
-                    import ('pages/user/EventPage.vue'),
+                    import ("pages/user/EventPage.vue"),
                 props: true
             },
             {
                 path: "/user/profile/:userId",
                 name: "userprofile",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/user/ProfilePage.vue"),
                 props: true
@@ -93,6 +98,7 @@ const routes = [{
             {
                 path: "/user/photolist/:userId/:postId",
                 name: "userphotolist",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/user/PhotoListPage.vue"),
                 props: true
@@ -100,6 +106,7 @@ const routes = [{
             {
                 path: "/post/like/:postId",
                 name: "postlike",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/post/LikePage.vue"),
                 props: true
@@ -107,6 +114,7 @@ const routes = [{
             {
                 path: "/post/comment/like/:commentId",
                 name: "postcommentlike",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/post/comment/LikePage.vue"),
                 props: true
@@ -128,12 +136,14 @@ const routes = [{
             {
                 path: "/bookmark",
                 name: "bookmark",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/BookmarkPage.vue")
             },
             {
                 path: "/bookmarklist/:userId/:postId",
                 name: "bookmarklist",
+                beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/bookmark/ListPage.vue"),
                 props: true

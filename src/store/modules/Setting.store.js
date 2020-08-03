@@ -5,6 +5,7 @@ const state = {
     // url: "http://localhost:8000",
     storageUrl: "https://S3.wasabisys.com/agpaiidigital.org",
     url: 'https://agpaiidigital.org',
+    // url: 'http://agpaiidi.wwwsg1-ts2.a2hosted.com/public',
     // storageUrl: 'http://localhost:8000/storage',
     assets: {
         bgToolbar: "statics/bg-toolbar.jpeg"

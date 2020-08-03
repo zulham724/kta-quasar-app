@@ -27,20 +27,41 @@ if (token.access_token) {
                     message: "Masa Penggunaan RPP DIGITAL anda sudah habis. Silahkan lakukan iuran untuk menambah masa pemakaian. atau melalui halaman riwayat pembayaran.",
                     textColor: "white",
                     actions: [{
-                        label: "Perpanjang",
-                        color: "white",
-                        handler: () => {
-                            store()
-                                .dispatch("Payment/getPaymentUrl")
-                                .then(res => {
-                                    cordova.InAppBrowser.open(
-                                        `${res.data.payment_url}`,
-                                        "_system",
-                                        "location=no"
-                                    );
-                                });
+                            label: "Konfirmasi",
+                            color: "white",
+                            handler: () => {
+                                store()
+                                    .dispatch("Auth/getAuth")
+                                    .then(res => {
+                                        if (moment(new Date()).diff(
+                                                new Date(res.data.user_activated_at),
+                                                "months",
+                                                true
+                                            ) <= 6) {
+                                            Notify.create({
+                                                position: "center",
+                                                message: "Pembayaran telah kami terima"
+                                            });
+                                        }
+                                    });
+                            }
+                        },
+                        {
+                            label: "Perpanjang",
+                            color: "white",
+                            handler: () => {
+                                store()
+                                    .dispatch("Payment/getPaymentUrl")
+                                    .then(res => {
+                                        cordova.InAppBrowser.open(
+                                            `${res.data.payment_url}`,
+                                            "_system",
+                                            "location=no"
+                                        );
+                                    });
+                            }
                         }
-                    }]
+                    ]
                 });
             }
         });

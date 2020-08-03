@@ -6,7 +6,7 @@ store().dispatch('Setting/index').then(res => {
     cordova.getAppVersion.getVersionNumber(function(appVersionNumber) {
         // 1.0.0
         // console.log("version number", appVersionNumber, version);
-        // console.log(appVersionNumber < version)
+        console.log(appVersionNumber)
         if (appVersionNumber < version) {
             Notify.create({
                 position: 'top',

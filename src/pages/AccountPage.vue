@@ -155,6 +155,16 @@
             </q-item-section>
           </q-item>
 
+          <q-item clickable v-ripple @click="$router.push('/sharedmedia')">
+            <q-item-section avatar>
+              <q-icon name="o_share" size="xs" color="teal" />
+            </q-item-section>
+
+            <q-item-section>
+              <div class="text-caption">Dibagikan ke SISWA PAI</div>
+            </q-item-section>
+          </q-item>
+
           <q-item clickable v-ripple disable>
             <q-item-section avatar>
               <q-icon name="favorite_outline" size="xs" color="teal" />

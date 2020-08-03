@@ -141,11 +141,24 @@ const routes = [{
                     import ("pages/BookmarkPage.vue")
             },
             {
+                path: "/sharedmedia",
+                name: "sharedmedia",
+                component: () =>
+                    import ("pages/SharedMedia.vue")
+            },
+            {
                 path: "/bookmarklist/:userId/:postId",
                 name: "bookmarklist",
                 beforeEnter: multiguard([auth, actived]),
                 component: () =>
                     import ("pages/bookmark/ListPage.vue"),
+                props: true
+            },
+            {
+                path: "/sharedmedialist/:userId/:postId",
+                name: "sharedmedialist",
+                component: () =>
+                    import ("pages/sharedmedia/ListPage.vue"),
                 props: true
             }
         ]

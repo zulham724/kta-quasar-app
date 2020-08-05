@@ -135,7 +135,7 @@
           <div class="col-6">
             <div class="row justify-end">
              <q-btn
-                v-if="post.files.length && post.author_id.id == this.Auth.auth.id"
+                v-if="post.files.length && post.author_id.id == (Auth.auth ? Auth.auth.id : null)"
                 flat
                 round
                 :icon="post.is_public ? 'share' : 'o_share'"
@@ -161,9 +161,9 @@
                 :icon="post.bookmarked ? 'bookmark' : 'bookmark_border'"
                 @click="post.bookmarked ? unBookmark() : bookmark()"
               />
-             
-              
-              
+
+
+
             </div>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default {
     };
   },
   mounted(){
-    
+
   },
   methods: {
     bookmark() {

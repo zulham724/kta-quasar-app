@@ -78,9 +78,7 @@ export default {
       } else {
         var successCallback = data => {
           window.plugins.launcher.launch(
-            { packageName: package_name },
-            successCallback,
-            errorCallback
+            { packageName: package_name }
           );
         };
         var errorCallback = errMsg => {

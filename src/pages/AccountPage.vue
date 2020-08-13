@@ -22,7 +22,7 @@
           <div class="row">
             <div class="col-3">
               <div class="row justify-start align-center">
-                <q-avatar size="20vw" @click="zoom(Auth.auth.avatar)">
+                <q-avatar size="80px" @click="zoom(Auth.auth.avatar)">
                   <q-img
                     :src="`${Setting.storageUrl}/${Auth.auth.avatar}`"
                     no-default-spinner

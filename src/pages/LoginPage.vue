@@ -1,6 +1,6 @@
 <template>
   <div
-    style="height:100vh;background-image:linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url('/statics/images/bg-login.jpg');background-size:cover"
+    style="height:100vh;background-image:linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url('statics/images/bg-login.jpg');background-size:cover"
   >
     <div class="q-pa-md full-height">
       <div
@@ -8,7 +8,7 @@
       >
         <div class="col-12">
           <div class="row justify-center" style="text-align:center">
-            <img src="/statics/images/agpaii-logo-transparent.png" style="height:15vh" />
+            <img src="statics/images/agpaii-logo-transparent.png" style="height:15vh" />
             <div class="text-body2 q-pt-md text-white">Jika sudah mendaftar. Silahkan masuk dengan email dan password anda</div>
           </div>
         </div>

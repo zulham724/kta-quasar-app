@@ -22,7 +22,7 @@
           <div class="row">
             <div class="col-3">
               <div class="row justify-start align-center">
-                <q-avatar size="20vw" @click="zoom(Auth.auth.avatar)">
+                <q-avatar size="80px" @click="zoom(Auth.auth.avatar)">
                   <q-img
                     :src="`${Setting.storageUrl}/${Auth.auth.avatar}`"
                     no-default-spinner
@@ -152,6 +152,16 @@
 
             <q-item-section>
               <div class="text-caption">Disimpan</div>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple @click="$router.push('/sharedmedia')">
+            <q-item-section avatar>
+              <q-icon name="o_share" size="xs" color="teal" />
+            </q-item-section>
+
+            <q-item-section>
+              <div class="text-caption">Dibagikan ke SISWA PAI</div>
             </q-item-section>
           </q-item>
 

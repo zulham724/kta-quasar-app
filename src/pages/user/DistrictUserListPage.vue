@@ -37,6 +37,7 @@
                 <div class="text-caption">{{user.guest_events.length}} Acara</div>
                 <div class="text-caption">{{user.books.length}} Buku</div>
                 <div class="text-caption">{{user.lesson_plans_count}} RPP</div>
+                <div class="text-caption">{{user.question_lists_count}} Soal</div>
               </div>
             </q-item-label>
           </q-item-section>

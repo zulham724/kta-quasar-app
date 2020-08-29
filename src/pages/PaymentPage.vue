@@ -59,11 +59,15 @@ export default {
         this.loading = true;
         this.$store.dispatch("Payment/getPaymentUrl").then(res => {
           this.loading = false;
-          cordova.InAppBrowser.open(
-            `${res.data.payment_url}`,
-            "_system",
-            "location=no"
-          );
+          if(this.$q.platform.is.mobile){
+            cordova.InAppBrowser.open(
+              `${res.data.payment_url}`,
+              "_system",
+              "location=no"
+            );
+          } else {
+            window.location.href = `${res.data.payment_url}`
+          }
         });
       });
     }

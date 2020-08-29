@@ -4,9 +4,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     // Now safe to use device APIs
-    const isLoggedIn = store().getters["Auth/isLoggedIn"];
+    const token = store().getters["Auth/token"];
 
-    if (isLoggedIn) {
+    if (token.access_token) {
         store().dispatch('Notif/init')
     }
 }

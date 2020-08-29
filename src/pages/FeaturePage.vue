@@ -28,12 +28,20 @@
             Doa Harian
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple @click="goToApp('https://play.google.com/store/apps/details?id=org.agpaiidigital.rpp')">
+        <q-item
+          clickable
+          v-ripple
+          @click="goToApp(null, 'org.agpaiidigital.rpp')"
+        >
           <q-item-section>
             RPP Digital
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple disable>
+        <q-item
+          clickable
+          v-ripple
+          @click="goToApp(null, 'org.agpaiidigital.assigment.app')"
+        >
           <q-item-section>
             Penilaian Digital
           </q-item-section>
@@ -60,21 +68,36 @@
 
 <script>
 export default {
-  data(){
-    return {
-
-    }
+  data() {
+    return {};
   },
-  methods:{
-    goToApp(url){
-      cordova.InAppBrowser.open(
-        `${url}`,
-        "_system",
-        "location=no"
-      );
+  methods: {
+    goToApp(url = null, package_name = null) {
+      if (package_name == null && url) {
+        cordova.InAppBrowser.open(`${url}`, "_system", "location=no");
+      } else {
+        var successCallback = data => {
+          window.plugins.launcher.launch(
+            { packageName: package_name }
+          );
+        };
+        var errorCallback = errMsg => {
+          cordova.InAppBrowser.open(
+            `https://play.google.com/store/apps/details?id=${package_name}`,
+            "_system",
+            "location=no"
+          );
+        };
+
+        window.plugins.launcher.canLaunch(
+          { packageName: package_name },
+          successCallback,
+          errorCallback
+        );
+      }
     },
-    goToPage(page){
-      this.$router.push(page)
+    goToPage(page) {
+      this.$router.push(page);
     }
   }
 };

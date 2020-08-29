@@ -5,7 +5,6 @@ const state = {
     // url: "http://localhost:8000",
     storageUrl: "https://S3.wasabisys.com/agpaiidigital.org",
     url: 'https://agpaiidigital.org',
-    // storageUrl: 'http://localhost:8000/storage',
     assets: {
         bgToolbar: "statics/bg-toolbar.jpeg"
     },
@@ -50,7 +49,10 @@ const actions = {
 };
 
 // Getter functions
-const getters = {};
+const getters = {
+    url: (state) => state.url,
+    storageUrl: state => state.storageUrl
+};
 
 export default {
     namespaced: true,

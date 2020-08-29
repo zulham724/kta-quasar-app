@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       loading: false,
-      events: []
+      events: [],
     };
   },
   computed: {

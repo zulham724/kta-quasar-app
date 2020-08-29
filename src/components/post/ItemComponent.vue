@@ -35,7 +35,7 @@
               </div>
             </div>
           </div>
-          <div class="col-2 self-center">
+          <div class="col-2 self-center" v-if="Auth.auth">
             <div class="row justify-end">
               <q-btn
                 flat
@@ -134,6 +134,13 @@
           </div>
           <div class="col-6">
             <div class="row justify-end">
+             <q-btn
+                v-if="post.files.length && post.author_id.id == (Auth.auth ? Auth.auth.id : null)"
+                flat
+                round
+                :icon="post.is_public ? 'share' : 'o_share'"
+                @click="post.is_public ? unPublic() : setPublic()"
+              />
               <q-btn
                 flat
                 round
@@ -154,6 +161,9 @@
                 :icon="post.bookmarked ? 'bookmark' : 'bookmark_border'"
                 @click="post.bookmarked ? unBookmark() : bookmark()"
               />
+
+
+
             </div>
           </div>
         </div>
@@ -180,6 +190,7 @@
 <script>
 import { mapState } from "vuex";
 import ImageZoomer from "components/ImageZoomerComponent.vue";
+import { matShare } from '@quasar/extras/material-icons'
 
 export default {
   props: {
@@ -198,6 +209,7 @@ export default {
     };
   },
   mounted(){
+
   },
   methods: {
     bookmark() {
@@ -214,6 +226,22 @@ export default {
         this.post.bookmarked = res.data.bookmarked;
         this.post.bookmarks = res.data.bookmarks;
         this.$q.notify("Terhapus dari daftar simpan");
+        this.$store.dispatch("Auth/getAuth");
+        this.$forceUpdate();
+      });
+    },
+    setPublic() {
+      this.$store.dispatch("PostPublic/store", this.post.id).then(res => {
+        this.post.is_public=res.data.is_public;
+        this.$q.notify("Telah dibagikan ke SISWA PAI");
+        this.$store.dispatch("Auth/getAuth");
+        this.$forceUpdate();
+      });
+    },
+    unPublic() {
+      this.$store.dispatch("PostPublic/destroy", this.post.id).then(res => {
+        this.post.is_public=res.data.is_public;
+        this.$q.notify("Terhapus dari media SISWA PAI");
         this.$store.dispatch("Auth/getAuth");
         this.$forceUpdate();
       });

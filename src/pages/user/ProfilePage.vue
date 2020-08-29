@@ -23,7 +23,7 @@
           <div class="row">
             <div class="col-3">
               <div class="row justify-start align-center">
-                <q-avatar size="20vw" @click="zoom(user.avatar)">
+                <q-avatar size="80px" @click="zoom(user.avatar)">
                   <q-img
                     :src="`${Setting.storageUrl}/${user.avatar}`"
                     no-default-spinner

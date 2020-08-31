@@ -23,7 +23,7 @@ module.exports = function( /* ctx */ ) {
             "notification",
             "vue-plyr",
             "ads",
-            // "questionnary"
+            //"questionnary"
         ],
 
         // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

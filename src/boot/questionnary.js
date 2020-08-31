@@ -17,7 +17,8 @@ store()
                     // (prop was called "root" in < 1.1.0 and
                     // still works, but recommending to switch
                     // to the more appropriate "parent" name)
-                    item: item
+                    item: item,
+                    store:store
                 })
                 .onOk(() => {
                     console.log("OK");

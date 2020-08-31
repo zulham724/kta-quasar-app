@@ -207,6 +207,22 @@ const routes = [{
         props: true
     },
     {
+        path: "/paymentprovince/:month/:year",
+        beforeEnter: multiguard([auth, actived]),
+        name: "paymentprovince",
+        component: () =>
+            import ("pages/PaymentProvince.vue"),
+        props: true
+    },
+    {
+        path: "/paymentcity/:province_id/:province_name/:month/:year",
+        beforeEnter: multiguard([auth, actived]),
+        name: "paymentcity",
+        component: () =>
+            import ("pages/PaymentCity.vue"),
+        props: true
+    },
+    {
         path: "/district/:name/:id",
         beforeEnter: multiguard([auth, actived]),
         name: "district",
@@ -220,6 +236,14 @@ const routes = [{
         beforeEnter: multiguard([auth, actived]),
         component: () =>
             import ("pages/user/DistrictUserListPage.vue"),
+        props: true
+    },
+    {
+        path: "/paymentcityuserlist/:cityName/:cityId/:month/:year",
+        name: "paymentcityuserlist",
+        beforeEnter: multiguard([auth, actived]),
+        component: () =>
+            import ("pages/user/PaymentCitytUserListPage.vue"),
         props: true
     },
     {

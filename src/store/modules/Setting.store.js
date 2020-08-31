@@ -9,6 +9,7 @@ const state = {
         bgToolbar: "statics/bg-toolbar.jpeg"
     },
     count: {},
+    isQuestionnary:true,
 };
 
 // Mutations
@@ -18,6 +19,10 @@ const mutations = {
     },
     setTotalUser(state, payload) {
         state.count = {...state.count, user_total: payload.user_total };
+    },
+    setIsQuestionnary(state){
+        state.isQuestionnary=!state.isQuestionnary;
+        console.log('matamu')
     }
 };
 
@@ -46,6 +51,9 @@ const actions = {
             })
         })
     },
+    setIsQuestionnary({commit}){
+        commit("setIsQuestionnary")
+    }
 };
 
 // Getter functions

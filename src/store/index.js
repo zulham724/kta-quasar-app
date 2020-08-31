@@ -22,7 +22,7 @@ const debug = process.env.DEV
 const vuexLocal = new VuexPersistence({
     strictMode: true, // This **MUST** be set to true
     storage: localStorage, // wich storage u want to use
-    reducer: (state) => ({ Auth: state.Auth }), // save given modules to storage
+    reducer: (state) => ({ Auth: state.Auth, Setting: state.Setting }), // save given modules to storage
 })
 
 export default function( /* { ssrContext } */ ) {

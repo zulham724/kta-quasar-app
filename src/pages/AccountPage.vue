@@ -1,5 +1,6 @@
 <template>
-<div>
+<q-layout view="hHh Lpr lff">
+
     <q-header elevated>
         <q-toolbar class="bg-white">
             <q-icon name="person_outline" color="teal" size="sm" />
@@ -10,84 +11,86 @@
         </q-toolbar>
     </q-header>
 
-    <q-page>
-        <q-pull-to-refresh @refresh="getAuth" color="teal">
-            <div class="q-pa-md">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="row justify-start align-center">
-                            <q-avatar size="80px" @click="zoom(Auth.auth.avatar)">
-                                <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
-                            </q-avatar>
-                        </div>
-                    </div>
-                    <div class="col-3 self-center">
-                        <div class="row justify-center">
-                            <div class="text-body1 text-bold">
-                                {{ Auth.auth.posts.filter(item => item.files.length).length }}
+    <q-page-container>
+        <q-page>
+            <q-pull-to-refresh @refresh="getAuth" color="teal">
+                <div class="q-pa-md">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="row justify-start align-center">
+                                <q-avatar size="80px" @click="zoom(Auth.auth.avatar)">
+                                    <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
+                                </q-avatar>
                             </div>
                         </div>
-                        <div class="row justify-center">
-                            <div class="text-caption">Media</div>
-                        </div>
-                    </div>
-                    <div class="col-3 self-center" @click="$router.push(`/user/${Auth.auth.id}/event`)">
-                        <div class="row justify-center">
-                            <div class="text-body1 text-bold">
-                                {{ Auth.auth.guest_events.length }}
+                        <div class="col-3 self-center">
+                            <div class="row justify-center">
+                                <div class="text-body1 text-bold">
+                                    {{ Auth.auth.posts.filter(item => item.files.length).length }}
+                                </div>
+                            </div>
+                            <div class="row justify-center">
+                                <div class="text-caption">Media</div>
                             </div>
                         </div>
-                        <div class="row justify-center">
-                            <div class="text-caption">Acara</div>
-                        </div>
-                    </div>
-                    <div class="col-3 self-center" @click="$router.push(`/user/${Auth.auth.id}/book`)">
-                        <div class="row justify-center">
-                            <div class="text-body1 text-bold">
-                                {{ Auth.auth.books_count }}
+                        <div class="col-3 self-center" @click="$router.push(`/user/${Auth.auth.id}/event`)">
+                            <div class="row justify-center">
+                                <div class="text-body1 text-bold">
+                                    {{ Auth.auth.guest_events.length }}
+                                </div>
+                            </div>
+                            <div class="row justify-center">
+                                <div class="text-caption">Acara</div>
                             </div>
                         </div>
-                        <div class="row justify-center">
-                            <div class="text-caption">Buku</div>
+                        <div class="col-3 self-center" @click="$router.push(`/user/${Auth.auth.id}/book`)">
+                            <div class="row justify-center">
+                                <div class="text-body1 text-bold">
+                                    {{ Auth.auth.books_count }}
+                                </div>
+                            </div>
+                            <div class="row justify-center">
+                                <div class="text-caption">Buku</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row q-pt-md">
-                    <div class="text-body2 text-teal q-pb-sm" v-if="Auth.auth.kta_id">
-                        No Anggota: {{ Auth.auth.kta_id }}
+                    <div class="row q-pt-md">
+                        <div class="text-body2 text-teal q-pb-sm" v-if="Auth.auth.kta_id">
+                            No Anggota: {{ Auth.auth.kta_id }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-caption q-pb-sm">
+                            {{ Auth.auth.email }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-caption" v-if="Auth.auth.profile" v-linkified style="overflow-wrap:break-word; white-space:pre-line">
+                            {{ Auth.auth.profile.long_bio }}
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="text-caption q-pb-sm">
-                        {{ Auth.auth.email }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="text-caption" v-if="Auth.auth.profile" v-linkified style="overflow-wrap:break-word; white-space:pre-line">
-                        {{ Auth.auth.profile.long_bio }}
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <q-btn-group spread>
-                        <q-btn dense @click="$router.push('/account/edit')">
-                            <div class="text-caption">Edit Profile</div>
-                        </q-btn>
-                        <q-btn icon-right="keyboard_arrow_down" dense @click="
+                    <div class="col-12">
+                        <q-btn-group spread>
+                            <q-btn dense @click="$router.push('/account/edit')">
+                                <div class="text-caption">Edit Profile</div>
+                            </q-btn>
+                            <q-btn icon-right="keyboard_arrow_down" dense @click="
                   selected_view_post.value == view_posts[0].value
                     ? (selected_view_post = view_posts[1])
                     : (selected_view_post = view_posts[0])
                 ">
-                            <div class="text-caption">{{ selected_view_post.label }}</div>
-                        </q-btn>
-                    </q-btn-group>
+                                <div class="text-caption">{{ selected_view_post.label }}</div>
+                            </q-btn>
+                        </q-btn-group>
+                    </div>
                 </div>
-            </div>
-            <post-photo-component v-if="selected_view_post.value == 'photo'"></post-photo-component>
-            <post-text-component v-if="selected_view_post.value == 'text'"></post-text-component>
-        </q-pull-to-refresh>
-    </q-page>
+                <post-photo-component v-if="selected_view_post.value == 'photo'"></post-photo-component>
+                <post-text-component v-if="selected_view_post.value == 'text'"></post-text-component>
+            </q-pull-to-refresh>
+        </q-page>
+    </q-page-container>
 
     <q-drawer side="right" v-model="drawer" show-if-above bordered :width="200" :breakpoint="500" content-class="bg-grey-3">
         <q-scroll-area class="fit">
@@ -162,7 +165,7 @@
             </q-list>
         </q-scroll-area>
     </q-drawer>
-</div>
+</q-layout>
 </template>
 
 <script>

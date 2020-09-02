@@ -92,6 +92,7 @@ import {
     mapState
 } from "vuex";
 import QuestionnaryComponent from "components/QuestionnaryComponent";
+import InitialQuestionnaryComponent from "components/InitialQuestionnaryComponent";
 
 export default {
     name: "MainLayout",
@@ -155,7 +156,7 @@ export default {
                 .then(res => {
                     res.data.forEach(item => {
                         this.$q.dialog({
-                                component: QuestionnaryComponent,
+                                component: InitialQuestionnaryComponent,
 
                                 // optional if you want to have access to
                                 // Router, Vuex store, and so on, in your
@@ -170,6 +171,11 @@ export default {
                             })
                             .onOk(() => {
                                 console.log("OK");
+                                this.$q.dialog({
+                                    component: QuestionnaryComponent,
+                                    parent: this,
+                                    item: item
+                                })
                             })
                             .onCancel(() => {
                                 console.log("Cancel");

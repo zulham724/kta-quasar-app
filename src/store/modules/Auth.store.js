@@ -106,7 +106,7 @@ const actions = {
     },
     getAuth({ commit }) {
         return new Promise((resolve, reject) => {
-            axios
+           axios
                 .get(`${this.state.Setting.url}/api/user`)
                 .then(res => {
                     const auth = res.data;

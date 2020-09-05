@@ -28,7 +28,8 @@
             </div>
             <div class="col-12" style="position:absolute;bottom:5vh">
                 <div class="row justify-center q-pt-sm">
-                    <q-btn class="text-white" type="a" href="https://wa.me/+6285641161238" label="Butuh bantuan?" />
+                    <!--<q-btn class="text-white" type="a" href="https://wa.me/+6285641161238" label="Butuh bantuan?" />-->
+                    <q-btn class="text-white" type="a" href="https://www.youtube.com/watch?v=b4TklCyil0s&feature=youtu.be" label="Butuh bantuan?" />
                 </div>
             </div>
         </div>

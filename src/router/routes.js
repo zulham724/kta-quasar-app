@@ -30,6 +30,16 @@ const actived = function(to, from, next) {
     }
 };
 
+// cek apakah sudah mengisi status guru (PNS/Non-PNS) apa belum
+const check_teacher_status = function(to, from, next){
+    if(store().getters["Auth/auth"] && store().getters["Auth/auth"].pns_status != null){
+        next();
+    }else{
+        Notify.create("Tolong isi status guru");
+        next("/account/edit");
+    }
+}
+
 const checkProfile = function(to, from, next) {
     if (store().getters["Auth/auth"].profile.district_id != null) {
         next();
@@ -59,14 +69,14 @@ const routes = [{
             {
                 name: "event",
                 path: "event",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/EventPage.vue")
             },
             {
                 path: "feature",
                 name: "feature",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/FeaturePage.vue")
             },
@@ -74,7 +84,7 @@ const routes = [{
             {
                 path: "/user/:userId/book",
                 name: "userbook",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/user/BookPage.vue"),
                 props: true
@@ -82,7 +92,7 @@ const routes = [{
             {
                 path: "/user/:userId/event",
                 name: "userevent",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/user/EventPage.vue"),
                 props: true
@@ -90,7 +100,7 @@ const routes = [{
             {
                 path: "/user/profile/:userId",
                 name: "userprofile",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/user/ProfilePage.vue"),
                 props: true
@@ -98,7 +108,7 @@ const routes = [{
             {
                 path: "/user/photolist/:userId/:postId",
                 name: "userphotolist",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/user/PhotoListPage.vue"),
                 props: true
@@ -106,7 +116,7 @@ const routes = [{
             {
                 path: "/post/like/:postId",
                 name: "postlike",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/post/LikePage.vue"),
                 props: true
@@ -114,21 +124,21 @@ const routes = [{
             {
                 path: "/post/comment/like/:commentId",
                 name: "postcommentlike",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/post/comment/LikePage.vue"),
                 props: true
             },
             {
                 path: "/murottal",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 name: "murottal",
                 component: () =>
                     import ("pages/MurottalPage.vue")
             },
             {
                 path: "/dailyprayer",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 name: "dailyprayer",
                 component: () =>
                     import ("pages/DailyPrayerPage.vue")
@@ -136,7 +146,7 @@ const routes = [{
             {
                 path: "/bookmark",
                 name: "bookmark",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/BookmarkPage.vue")
             },
@@ -149,7 +159,7 @@ const routes = [{
             {
                 path: "/bookmarklist/:userId/:postId",
                 name: "bookmarklist",
-                beforeEnter: multiguard([auth, actived]),
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
                 component: () =>
                     import ("pages/bookmark/ListPage.vue"),
                 props: true
@@ -165,28 +175,28 @@ const routes = [{
     },
     {
         path: "/activity",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "activity",
         component: () =>
             import ("pages/ActivityPage.vue")
     },
     {
         path: "/user/search",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "usersearch",
         component: () =>
             import ("pages/user/SearchPage.vue")
     },
     {
         path: "/information",
-        beforeEnter: multiguard([auth, actived, checkProfile]),
+        beforeEnter: multiguard([auth, actived, checkProfile, check_teacher_status]),
         name: "information",
         component: () =>
             import ("pages/InformationPage.vue")
     },
     {
         path: "/payment/history",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "paymenthistory",
         component: () =>
             import ("pages/payment/HistoryPage.vue")
@@ -224,7 +234,7 @@ const routes = [{
     },
     {
         path: "/district/:name/:id",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "district",
         component: () =>
             import ("pages/DistrictPage.vue"),
@@ -233,7 +243,7 @@ const routes = [{
     {
         path: "/districtuserlist/:districtId",
         name: "districtuserlist",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         component: () =>
             import ("pages/user/DistrictUserListPage.vue"),
         props: true
@@ -241,14 +251,14 @@ const routes = [{
     {
         path: "/paymentcityuserlist/:cityName/:cityId/:month/:year",
         name: "paymentcityuserlist",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         component: () =>
             import ("pages/user/PaymentCitytUserListPage.vue"),
         props: true
     },
     {
         path: "/book/create",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "bookcreate",
         component: () =>
             import ("pages/book/CreatePage.vue")
@@ -269,14 +279,14 @@ const routes = [{
     },
     {
         path: "/book",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "book",
         component: () =>
             import ("pages/BookPage.vue")
     },
     {
         path: "/otherapplication",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "otherapplication",
         component: () =>
             import ("pages/OtherApplicationPage.vue")
@@ -298,14 +308,14 @@ const routes = [{
     },
     {
         path: "/globalchat",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "globalchat",
         component: () =>
             import ("pages/GlobalChatPage.vue")
     },
     {
         path: "/event/:eventId/guest",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "eventguest",
         component: () =>
             import ("pages/event/GuestPage.vue"),
@@ -313,7 +323,7 @@ const routes = [{
     },
     {
         path: "/post/comment/:postId",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "postcomment",
         component: () =>
             import ("pages/post/CommentPage.vue"),
@@ -321,7 +331,7 @@ const routes = [{
     },
     {
         path: "/post/:postId/edit",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         component: () =>
             import ("pages/post/EditPage.vue"),
         name: "postedit",
@@ -329,14 +339,14 @@ const routes = [{
     },
     {
         path: "/event/contribution",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "eventcontribution",
         component: () =>
             import ("pages/event/ContributionPage.vue")
     },
     {
         path: "/event/absent",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "eventabsent",
         component: () =>
             import ("pages/event/AbsentPage.vue"),
@@ -344,21 +354,21 @@ const routes = [{
     },
     {
         path: "/event/create",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "eventcreate",
         component: () =>
             import ("pages/event/CreatePage.vue")
     },
     {
         path: "/post/create",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "postcreate",
         component: () =>
             import ("pages/post/CreatePage.vue")
     },
     {
         path: "/event/participation",
-        beforeEnter: multiguard([auth, actived]),
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "eventparticipation",
         component: () =>
             import ("pages/event/ParticipationPage.vue")

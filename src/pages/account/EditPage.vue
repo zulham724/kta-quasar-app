@@ -68,18 +68,18 @@
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.home_address" label="Alamat" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.contact" label="Nomor HP" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.school_place" label="Asal Sekolah/ Instansi" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
-                <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="provinces" :option-value="item=>item.id" :option-label="item=>item.name" label="Provinsi" v-model="auth.profile.province" @input="item => {
+                <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="provinces" :option-value="item=>item.id" :option-label="item=>item.name" label="DPW Provinsi" v-model="auth.profile.province" @input="item => {
               auth.profile.province_id = item.id
               auth.profile.city = auth.profile.city_id = null
               auth.profile.district = auth.profile.district_id = null
               getCities()
             }" />
-                <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="cities" :option-value="item=>item.id" :option-label="item=>item.name" label="Kab/ Kota" v-model="auth.profile.city" @input="item =>{
+                <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="cities" :option-value="item=>item.id" :option-label="item=>item.name" label="DPD Kabupaten/ Kota" v-model="auth.profile.city" @input="item =>{
                auth.profile.city_id = item.id
                auth.profile.district = auth.profile.district_id = null
                getDistricts()
             }" />
-                <q-select color="teal" dense rounded outlined :options="districts" :option-value="item=>item.id" :option-label="item=>item.name" label="Kecamatan/ Daerah" v-model="auth.profile.district" @input="item => {
+                <q-select color="teal" dense rounded outlined :options="districts" :option-value="item=>item.id" :option-label="item=>item.name" label="DPC Kecamatan" v-model="auth.profile.district" @input="item => {
               auth.profile.district_id ? $q.notify('Merubah kecamatan yang berbeda dari sebelumnya akan merubah nomor KTA anda, harap berhati-hati.') : null
               auth.profile.district_id = item.id
             }" />

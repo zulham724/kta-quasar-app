@@ -4,7 +4,7 @@ import axios from "axios";
 const state = {
     // url: "http://localhost:8000",
     storageUrl: "https://S3.wasabisys.com/agpaiidigital.org",
-    url: process.env.DEV ? 'http://localhost:8000' : 'https://agpaiidigital.org',
+    url: 'https://agpaiidigital.org',
     assets: {
         bgToolbar: "statics/bg-toolbar.jpeg"
     },

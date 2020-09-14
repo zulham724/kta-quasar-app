@@ -23,6 +23,7 @@ module.exports = function( /* ctx */ ) {
             "notification",
             "vue-plyr",
             "ads",
+            "firebase"
             //"questionnary"
         ],
 

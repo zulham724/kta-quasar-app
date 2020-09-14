@@ -34,7 +34,7 @@
                                     <div style="">
                                         <div class="text-body2" @click="$router.push(`/event/${item.id}/guest`)" style="overflow-wrap:break-word; white-space:pre-line" v-linkified>{{ item.description }}</div>
                                         <div v-ripple class="text-caption relative-position text-black q-py-sm">
-                                            <a :href="`https://wa.me/${item.user.profile.contact}`">Hubungi {{item.user.name}}</a>
+                                            <a :href="`https://wa.me/+62${item.user.profile.contact}`">Hubungi {{item.user.name}}</a>
                                         </div>
 
                                         <div class="text-caption text-teal q-pt-md" @click="$router.push(`/event/${item.id}/guest`)">

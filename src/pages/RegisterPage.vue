@@ -29,7 +29,7 @@
             <div class="col-12" style="position:absolute;bottom:5vh">
                 <div class="row justify-center q-pt-sm">
                     <!--<q-btn class="text-white" type="a" href="https://wa.me/+6285641161238" label="Butuh bantuan?" />-->
-                    <q-btn class="text-white" type="a" href="https://www.youtube.com/watch?v=b4TklCyil0s&feature=youtu.be" label="Butuh bantuan?" />
+                    <q-btn class="text-white" @click="show()" label="Butuh bantuan?" />
                 </div>
             </div>
         </div>
@@ -96,6 +96,38 @@ export default {
                 "_blank",
                 "location=no"
             );
+        },
+        show(grid) {
+            this.$q.bottomSheet({
+                message: 'Pilih Bantuan',
+                grid,
+                actions: [{
+                        label: 'Video tutorial',
+                        icon: 'ondemand_video',
+                        id: 'video'
+                    },
+                    {
+                        label: 'Hubungi kontak',
+                        icon: 'person',
+                        id: 'contact'
+                    },
+                ]
+            }).onOk(action => {
+                if (action.id == 'video') {
+                    window.location = 'https://www.youtube.com/watch?v=b4TklCyil0s&feature=youtu.be'
+                } else {
+                    this.$store.dispatch("Setting/getContactNumber").then(res => {
+                        window.location = 'https://wa.me/+' + res
+                    }).catch(err => {
+                        this.$q.notify('Gagal mendapatkan nomor kontak');
+                    })
+                }
+            }).onCancel(() => {
+                // console.log('Dismissed')
+            }).onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+            })
+
         }
     }
 };

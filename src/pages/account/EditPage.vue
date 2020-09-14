@@ -32,13 +32,13 @@
                 <q-input color="teal" outlined rounded type="textarea" v-model="auth.profile.long_bio" label="Bio" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
                 <q-select color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.role" :options="roles" option-label="name" option-value="id" @input="item => (auth.role_id = item.id)" label="Anda sebagai" />
 
-                <q-select color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.pns.status" :options="teacher_status_options" option-label="name" option-value="value" label="Status guru" />
+                <q-select v-if="auth.role_id !=9" color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.pns.status" :options="teacher_status_options" option-label="name" option-value="value" label="Status guru" />
 
-                <q-select v-if="is_pns==1" color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.pns.certification" :options="certification" option-label="name" option-value="value" label="Sudah bersertifikasi?" />
+                <q-select v-if="auth.role_id !=9" color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.pns.certification" :options="certification" option-label="name" option-value="value" label="Sudah bersertifikasi?" />
 
                 <!--Tidak PNS-->
 
-                <q-select v-if="is_pns===0" color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.pns.non_pns_inpassing" :options="inpassing" option-label="name" option-value="value" label="Sudah inpassing atau belum?" />
+                <q-select v-if="auth.role_id !=7 && is_pns===0" color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.pns.non_pns_inpassing" :options="inpassing" option-label="name" option-value="value" label="Sudah inpassing atau belum?" />
 
                 <!--rekening-->
                 <!--<q-input v-if="is_pns===0" color="teal" outlined rounded dense v-model="auth.bank_account.account_number" label="Nomor Rekening" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
@@ -48,6 +48,7 @@
                 <q-input v-if="is_pns===0" color="teal" outlined rounded dense v-model="auth.bank_account.bank_name" label="Nama Bank" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />-->
 
                 <!---------->
+
                 <q-input color="teal" outlined rounded dense v-model="auth.name" label="Nama" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
 
                 <q-select color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.profile.gender" :options="gender_options" option-label="name" option-value="value" label="Jenis kelamin" />
@@ -67,7 +68,11 @@
                 </q-input>
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.home_address" label="Alamat" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.contact" label="Nomor HP" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
-                <q-input color="teal" outlined rounded dense v-model="auth.profile.school_place" label="Asal Sekolah/ Instansi" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
+
+                <q-select v-if="auth.role_id==2 || auth.role_id==11" color="teal" dense rounded outlined :options="school_status_options" label="Status Sekolah" v-model="auth.profile.school_status" />
+
+                <q-input v-if="auth.role_id==2 || auth.role_id==11" color="teal" outlined rounded dense v-model="auth.profile.school_place" label="Asal Sekolah/ Instansi" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
+
                 <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="provinces" :option-value="item=>item.id" :option-label="item=>item.name" label="DPW Provinsi" v-model="auth.profile.province" @input="item => {
               auth.profile.province_id = item.id
               auth.profile.city = auth.profile.city_id = null
@@ -125,6 +130,9 @@ export default {
                     value: 'P',
                     name: 'Perempuan'
                 }
+            ],
+            school_status_options: [
+                'Negeri', 'Swasta'
             ],
             certification: [{
                     value: 0,
@@ -191,7 +199,7 @@ export default {
                 this.init()
             },
             deep: true
-        }
+        },
     },
     methods: {
         init() {
@@ -221,8 +229,13 @@ export default {
 
             //gender
             let gender = null
+            let school_status = null
             if (this.Auth.auth.profile.gender) {
                 gender = this.Auth.auth.profile.gender == 'L' ? this.gender_options[0] : this.gender_options[1];
+            }
+            //school_status
+            if (this.Auth.auth.profile.school_status) {
+                school_status = this.Auth.auth.profile.school_status;
             }
 
             this.auth = {
@@ -237,7 +250,8 @@ export default {
                 },
                 profile: {
                     ...this.Auth.auth.profile,
-                    gender: gender
+                    gender: gender,
+                    school_status: school_status
                 },
             }
             this.getEducationalLevels()
@@ -254,8 +268,15 @@ export default {
             this.$refs.form.validate().then(success => {
                 if (success) {
                     this.loading = true
-                    this.auth.profile.gender = this.auth.profile.gender.value;
-                    this.$store.dispatch('Auth/updateProfile', this.auth).then(res => {
+                    //this.auth.profile.gender = this.auth.profile.gender.value;
+                    let post = {
+                        ...this.auth,
+                        profile: {
+                            ...this.auth.profile,
+                            gender: this.auth.profile.gender.value,
+                        }
+                    }
+                    this.$store.dispatch('Auth/updateProfile', post).then(res => {
                         this.$q.notify('Berhasil update profile')
                         this.$router.back()
                     }).finally(() => {

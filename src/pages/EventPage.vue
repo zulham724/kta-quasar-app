@@ -1,15 +1,36 @@
 <template>
 <div>
-    <q-header elevated>
-        <q-toolbar class="bg-white">
-            <q-icon name="event" color="teal" size="sm" />
-            <q-toolbar-title>
-                <div class="text-body2 text-teal text-bold">Acara</div>
-            </q-toolbar-title>
-            <q-space />
-            <q-btn flat color="teal" icon="playlist_add_check" @click="$router.push('/event/participation')" />
-            <q-btn flat color="teal" icon="playlist_add" @click="$router.push('/event/contribution')" />
-        </q-toolbar>
+    <q-header>
+        <div class="row q-pt-md q-pb-md" style="background-color:white">
+              <div class="col-4">
+                <div class="row justify-center">
+                  <q-img src="statics/images/calendar.png" width="6vw"></q-img>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row q-pb-sm">
+                  <div class="text-h4" style="color:#333333">Acara</div>
+                </div>
+                <div class="row q-gutter-sm">
+                  <q-btn
+                    size="sm"
+                    rounded
+                    style="background-color:#B2DFDB"
+                    @click="$router.push('/event/contribution')"
+                  >
+                    <div class="text-caption" style="color:#4A5251">Acara anda</div>
+                  </q-btn>
+                  <q-btn
+                    size="sm"
+                    rounded
+                    style="background-color:#B2DFDB"
+                    @click="$router.push('/event/participation')"
+                  >
+                    <div class="text-caption" style="color:#4A5251">Partisipasi</div>
+                  </q-btn>
+                </div>
+              </div>
+            </div>
     </q-header>
     <q-page>
         <q-pull-to-refresh @refresh="refresh" color="teal">
@@ -28,10 +49,11 @@
                         <div v-for="(event, e) in events" :key="e">
                             <h4 style="color:teal">{{ event.monthyear }}</h4>
 
-                            <q-timeline-entry v-for="item in event.data" :key="item.id" :title="item.name" :subtitle="moment(item.start_at).format('LLLL')">
+                            <q-timeline-entry v-for="item in event.data" :key="item.id" :title="item.name" :subtitle="moment(item.start_at).format('LLLL')" class="q-mb-sm">
                                 <template v-slot:default>
 
-                                    <div style="">
+                                    <div class="q-gutter-sm">
+                                        <div class="text-caption text-grey text-weight-bold" v-linkified><q-icon name="place"/> {{item.address}}</div>
                                         <div class="text-body2" @click="$router.push(`/event/${item.id}/guest`)" style="overflow-wrap:break-word; white-space:pre-line" v-linkified>{{ item.description }}</div>
                                         <div v-ripple class="text-caption relative-position text-black q-py-sm">
                                             <a :href="`https://wa.me/+62${item.user.profile.contact}`">Hubungi {{item.user.name}}</a>

@@ -144,7 +144,7 @@
               <q-btn
                 flat
                 round
-                :color="post.liked_count ? 'red' : null"
+                :color="post.liked_count ? 'red' : 'grey'"
                 :icon="post.liked_count ? 'favorite' : 'favorite_border'"
                 @click="post.liked_count ? dislike() : like()"
               />
@@ -152,12 +152,14 @@
                 flat
                 round
                 icon="message"
+                color="grey"
                 @click="$router.push(`/post/comment/${post.id}`)"
               />
               <q-btn
                 v-if="post.files.length"
                 flat
                 round
+                color="grey"
                 :icon="post.bookmarked ? 'bookmark' : 'bookmark_border'"
                 @click="post.bookmarked ? unBookmark() : bookmark()"
               />

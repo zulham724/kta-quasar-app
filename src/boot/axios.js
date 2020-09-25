@@ -24,7 +24,7 @@ if (token.access_token) {
             ) {
                 Notify.create({
                     position: "center",
-                    message: "Masa Penggunaan RPP DIGITAL anda sudah habis. Silahkan lakukan iuran untuk menambah masa pemakaian. atau melalui halaman riwayat pembayaran.",
+                    message: "Masa Penggunaan aplikasi  RPP DIGITAL, PENILAIAN DIGITAL, dan MODUL DIGITAL sudah habis.  Silakan melakukan pembayaran iuran untuk menambah masa pemakaian.",
                     textColor: "white",
                     actions: [{
                             label: "Konfirmasi",

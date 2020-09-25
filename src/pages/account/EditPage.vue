@@ -12,7 +12,8 @@
         <div class="q-pa-md">
             <div class="row q-pb-md">
                 <div class="col-3">
-                    <q-avatar size="15vw">
+                    <!--<q-avatar size="15vw">-->
+                    <q-avatar size="80px">
                         <q-img :src="`${Setting.storageUrl}/${Auth.auth.avatar}`" no-default-spinner />
                     </q-avatar>
                 </div>
@@ -53,7 +54,7 @@
 
                 <q-select color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.profile.gender" :options="gender_options" option-label="name" option-value="value" label="Jenis kelamin" />
 
-                <div v-if=" auth.role_id !=7">
+                <div v-if="auth.role_id !=7 && auth.role_id !=9">
                     <q-select color="teal" dense rounded outlined :options="educationallevels" :option-value="item=>item.id" :option-label="item=>item.name" label="Jenjang pendidikan yang diajar" v-model="auth.profile.educational_level" @input="item => auth.profile.educational_level_id = item.id" />
                 </div>
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.nik" label="NIK" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
@@ -69,9 +70,9 @@
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.home_address" label="Alamat" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.contact" label="Nomor HP" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
 
-                <q-select v-if="auth.role_id==2 || auth.role_id==11" color="teal" dense rounded outlined :options="school_status_options" label="Status Sekolah" v-model="auth.profile.school_status" />
+                <q-select v-if="auth.role_id==2 || auth.role_id==11 || auth.role_id==7 || auth.role_id==9" color="teal" dense rounded outlined :options="school_status_options" label="Status Sekolah" v-model="auth.profile.school_status" />
 
-                <q-input v-if="auth.role_id==2 || auth.role_id==11" color="teal" outlined rounded dense v-model="auth.profile.school_place" label="Asal Sekolah/ Instansi" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
+                <q-input v-if="auth.role_id==2 || auth.role_id==11 || auth.role_id==7 || auth.role_id==9" color="teal" outlined rounded dense v-model="auth.profile.school_place" label="Asal Sekolah/ Instansi" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
 
                 <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="provinces" :option-value="item=>item.id" :option-label="item=>item.name" label="DPW Provinsi" v-model="auth.profile.province" @input="item => {
               auth.profile.province_id = item.id
@@ -167,7 +168,7 @@ export default {
                 },
                 {
                     id: 9,
-                    name: "Pembina"
+                    name: "Anggota Luar Biasa"
                 },
             ]
         };

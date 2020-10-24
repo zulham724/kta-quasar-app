@@ -12,9 +12,9 @@
             <!--<q-btn color="teal" flat round icon="send" style="transform: rotate(-20deg);" @click="$q.notify('Dalam kontruksi')" />-->
         </q-toolbar>
     </q-header>
-    <q-page>
+    <q-page style="background-color:#E0F2F1">
         <q-pull-to-refresh @refresh="refresh" color="teal">
-            <q-card v-if="Auth.auth">
+            <q-card v-if="Auth.auth" style="background-color:#F2F2F2">
                 <q-card-section>
                     <div class="row">
                         <div class="col-2 self-center">

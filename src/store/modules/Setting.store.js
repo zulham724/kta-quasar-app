@@ -10,7 +10,7 @@ const state = {
         bgToolbar: "statics/bg-toolbar.jpeg"
     },
     count: {},
-    isQuestionnary:true,
+    isQuestionnary: true,
 };
 
 // Mutations
@@ -21,8 +21,8 @@ const mutations = {
     setTotalUser(state, payload) {
         state.count = {...state.count, user_total: payload.user_total };
     },
-    setIsQuestionnary(state){
-        state.isQuestionnary=!state.isQuestionnary;
+    setIsQuestionnary(state) {
+        state.isQuestionnary = !state.isQuestionnary;
         console.log('matamu')
     }
 };
@@ -52,15 +52,15 @@ const actions = {
             })
         })
     },
-    setIsQuestionnary({commit}){
+    setIsQuestionnary({ commit }) {
         commit("setIsQuestionnary")
     },
-    getContactNumber(){
+    getContactNumber() {
         return new Promise((resolve, reject) => {
             axios
                 .get(`${this.state.Setting.url}/getcontactnumber`)
                 .then(res => {
-                   resolve(res.data);
+                    resolve(res.data);
                 });
         });
     }

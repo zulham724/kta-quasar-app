@@ -89,9 +89,9 @@
                 <div class="col-6">
                     <div class="row justify-end">
                         <!--<q-btn v-if="post.files.length && post.author_id.id == (Auth.auth ? Auth.auth.id : null)" flat round :icon="post.is_public ? 'share' : 'o_share'" @click="post.is_public ? unPublic() : setPublic()" />-->
-                        <q-btn flat round :color="post.liked_count ? 'red' : null" :icon="post.liked_count ? 'favorite' : 'favorite_border'" @click="post.liked_count ? dislike() : like()" />
-                        <q-btn flat round icon="message" @click="$router.push(`/post/comment/${post.id}`)" />
-                        <q-btn v-if="post.files.length" flat round :icon="post.bookmarked ? 'bookmark' : 'bookmark_border'" @click="post.bookmarked ? unBookmark() : bookmark()" />
+                        <q-btn flat round :color="post.liked_count ? 'red' : 'grey'" :icon="post.liked_count ? 'favorite' : 'favorite_border'" @click="post.liked_count ? dislike() : like()" />
+                        <q-btn flat round icon="message" color="grey" @click="$router.push(`/post/comment/${post.id}`)" />
+                        <q-btn v-if="post.files.length" flat round color="grey" :icon="post.bookmarked ? 'bookmark' : 'bookmark_border'" @click="post.bookmarked ? unBookmark() : bookmark()" />
 
                     </div>
                 </div>

@@ -9,7 +9,7 @@
 
             <q-btn flat round icon="search" color="teal" @click="$router.push({ name: 'usersearch' })" />
             <q-btn flat round icon="favorite_outline" color="teal" @click="$q.notify('Dalam kontruksi')" />
-            <q-btn color="teal" flat round icon="send" style="transform: rotate(-20deg);" @click="$q.notify('Dalam kontruksi')" />
+            <!--<q-btn color="teal" flat round icon="send" style="transform: rotate(-20deg);" @click="$q.notify('Dalam kontruksi')" />-->
         </q-toolbar>
     </q-header>
     <q-page>
@@ -66,9 +66,9 @@
                 `min-height: ${
                   post.size
                     ? `${post.size.height}`
-                    : post.files.length
-                    ? '80vh'
-                    : '30vh'
+                    : (post.files.length
+                    ?  (post.files[0].value=='document'?'40vh': '80vh')
+                    : '30vh')
                 };width: 100vw`
               ">
                         <item-component :post="post"></item-component>

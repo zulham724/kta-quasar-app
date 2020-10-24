@@ -114,6 +114,14 @@ const routes = [{
                 props: true
             },
             {
+                path: "/user/documentlist/:userId",
+                name: "userdocumentlist",
+                beforeEnter: multiguard([auth, actived, check_teacher_status]),
+                component: () =>
+                    import ("pages/user/DocumentListPage.vue"),
+                props: true
+            },
+            {
                 path: "/post/like/:postId",
                 name: "postlike",
                 beforeEnter: multiguard([auth, actived, check_teacher_status]),

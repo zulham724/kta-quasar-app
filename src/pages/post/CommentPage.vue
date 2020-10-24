@@ -38,6 +38,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="row q-pt-md" v-if="isDocument">
+                    <div class="col-12">
+                        <q-input filled :value="post.files[0].name" readonly>
+                            <template v-slot:prepend>
+                                <q-icon name="note" @click.stop />
+                            </template>
+                            <template v-slot:append>
+                                <q-icon name="vertical_align_bottom" @click.stop="downloadFile" class="cursor-pointer" />
+                            </template>
+
+                        </q-input>
+                    </div>
+                </div>
                 <div class="row justify-start q-pt-md">
                     <div class="text-caption text-grey">
                         {{ post.created_at | moment("from", "now") }}
@@ -76,7 +89,13 @@ export default {
         postId: null
     },
     computed: {
-        ...mapState(["Setting", "Auth"])
+        ...mapState(["Setting", "Auth"]),
+        isDocument: function () {
+            if (this.post.files && this.post.files.length > 0) {
+                return this.post.files[0].value == 'document' ? true : false;
+            }
+            return false;
+        }
     },
     data() {
         return {
@@ -133,6 +152,10 @@ export default {
             this.$store.dispatch('Notif/send', payload).then(res => {
                 console.log(res)
             })
+        },
+        downloadFile() {
+            console.log(this.Setting.storageUrl + '/' + this.post.files[0].src);
+            cordova.InAppBrowser.open(`${this.Setting.storageUrl}/${this.post.files[0].src}`, "_system", "location=no");
         }
     }
 };

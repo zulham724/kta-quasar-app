@@ -26,7 +26,7 @@
                         <div class="col-3 self-center">
                             <div class="row justify-center">
                                 <div class="text-body1 text-bold">
-                                    {{ Auth.auth.posts.filter(item => item.files.length).length }}
+                                    {{ Auth.auth.posts.filter(item => item.files.length && item.files[0].value!='document').length }}
                                 </div>
                             </div>
                             <div class="row justify-center">
@@ -75,6 +75,9 @@
                         <q-btn-group spread>
                             <q-btn dense @click="$router.push('/account/edit')">
                                 <div class="text-caption">Edit Profile</div>
+                            </q-btn>
+                            <q-btn dense @click="$router.push('/user/documentlist/'+Auth.auth.id)">
+                                <div class="text-caption">Dokumen</div>
                             </q-btn>
                             <q-btn icon-right="keyboard_arrow_down" dense @click="
                   selected_view_post.value == view_posts[0].value

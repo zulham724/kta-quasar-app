@@ -1,6 +1,6 @@
 {
     "name": "kta-quasar-app",
-    "version": "2.0.43",
+    "version": "2.0.45",
     "description": "KARTU TANDA ANGGOTA ASOSIASI GURU PENDIDIKAN AGAMA ISLAM INDONESIA",
     "productName": "KTA AGPAII DIGITAL",
     "cordovaId": "org.agpaiidigital.kta2",
@@ -15,10 +15,10 @@
         "@quasar/extras": "^1.6.4",
         "axios": "^0.18.1",
         "compressorjs": "^1.0.6",
-        "core-js": "^2.6.5",
         "cropperjs": "^1.5.6",
         "firebase": "^7.20.0",
         "moment": "^2.24.0",
+        "node-sass": "^4.13.1",
         "plyr": "^3.6.2",
         "qrcode": "^1.4.4",
         "quasar": "^1.9.14",
@@ -30,7 +30,6 @@
         "vue-plyr": "^6.0.4",
         "vue-read-more-smooth": "^0.1.8",
         "vue-router-multiguard": "^1.0.3",
-        "vue-template-compiler": "^2.6.12",
         "vue-zoomer": "^0.3.6",
         "vuex-persist": "^2.2.0"
     },
@@ -40,7 +39,8 @@
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.9.0",
         "eslint-loader": "^3.0.3",
-        "eslint-plugin-vue": "^6.1.2"
+        "eslint-plugin-vue": "^6.1.2",
+        "gulp-sass": "^3.1.0"
     },
     "engines": {
         "node": ">= 10.18.1",

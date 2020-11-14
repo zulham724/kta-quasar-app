@@ -22,7 +22,7 @@
             Aplikasi KTA Digital Anda dalam kondisi aktif.<br><br>Masa Penggunaan aplikasi RPP DIGITAL, PENILAIAN DIGITAL, dan MODUL DIGITAL sudah habis. Silakan melakukan pembayaran iuran untuk menambah masa pemakaian.
 
             <template v-slot:action>
-                <q-btn flat color="white" @click="checkAuth()" label="Konfirmasi" />
+                <q-btn flat color="white" @click="check" label="Konfirmasi" />
                 <q-btn flat color="white" @click="makePayment()" label="Bayar" />
             </template>
         </q-banner>
@@ -78,6 +78,22 @@ export default {
     },
     methods: {
         moment,
+        check() {
+            this.$store.dispatch("Auth/getPaymentStatus").then(res => {
+                //alert('test')
+
+                if (res.data.user_activated_at == null) {
+                    this.$q.notify("Terimakasih silahkan tunggu 1x24 jam");
+                } else {
+                    this.$store.commit("Auth/setAuth_user_activated_at", res.data.user_activated_at);
+                    // this.$store.dispatch("Auth/getAuth").then(res => {
+                    //     this.$q.notify("Pembayaran anda sudah kami terima");
+                    //     this.$router.push("/");
+                    // });
+
+                }
+            });
+        },
         checkAuth() {
             this.$store.dispatch("Auth/getAuth").then(res => {
                 if (

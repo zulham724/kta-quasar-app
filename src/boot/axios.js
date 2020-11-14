@@ -31,7 +31,7 @@ if (token.access_token) {
                             color: "white",
                             handler: () => {
                                 store()
-                                    .dispatch("Auth/getAuth")
+                                    .dispatch("Auth/getPaymentStatus")
                                     .then(res => {
                                         if (moment(new Date()).diff(
                                                 new Date(res.data.user_activated_at),

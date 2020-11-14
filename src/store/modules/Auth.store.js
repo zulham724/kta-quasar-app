@@ -18,6 +18,9 @@ const mutations = {
     setAuth(state, payload) {
         state.auth = payload.auth;
     },
+    setAuth_user_activated_at(state, user_activated_at){
+        state.auth.user_activated_at = user_activated_at
+    },
     logout(state) {
         state.token = {};
         state.auth = "";

@@ -15,6 +15,7 @@ module.exports = function( /* ctx */ ) {
         // https://quasar.dev/quasar-cli/cli-documentation/boot-files
         boot: [
             "axios",
+            "pusher-js",
             "moment",
             "vue-chat-scroll",
             "app-version",

@@ -31,6 +31,17 @@ const mutations = {
             profile: payload.profile
         }
     },
+    addPayment(state, payment){
+        const index=state.auth.payments.findIndex(e=>e.id==payment.id);
+        if(index>-1){
+            state.auth.payments[index] = {...payment}
+        }else{
+            state.auth.payments.push({
+                ...payment
+            })
+        }
+        
+    }
 };
 
 // Actions

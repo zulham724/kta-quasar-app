@@ -178,6 +178,12 @@ const routes = [{
                 component: () =>
                     import ("pages/sharedmedia/ListPage.vue"),
                 props: true
+            },
+            {
+                path: "/announcement",
+                beforeEnter: multiguard([auth]),
+                component: () =>
+                    import ("pages/AnnouncementPage.vue")
             }
         ]
     },

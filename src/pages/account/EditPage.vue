@@ -55,7 +55,7 @@
                 <q-select color="teal" :rules="[val => !!val || 'Harus diisi']" style="opacity:0.8" dense class="q-pa-none" rounded outlined bg-color="white" v-model="auth.profile.gender" :options="gender_options" option-label="name" option-value="value" label="Jenis kelamin" />
 
                 <div v-if="auth.role_id !=7 && auth.role_id !=9">
-                    <q-select color="teal" dense rounded outlined :options="educationallevels" :option-value="item=>item.id" :option-label="item=>item.name" label="Jenjang pendidikan yang diajar" v-model="auth.profile.educational_level" @input="item => auth.profile.educational_level_id = item.id" />
+                    <q-select color="teal" dense rounded outlined :options="educationallevels" option-value="id" option-label="name" label="Jenjang pendidikan yang diajar" v-model="auth.profile.educational_level" @input="item => auth.profile.educational_level_id = item.id" />
                 </div>
                 <q-input color="teal" outlined rounded dense v-model="auth.profile.nik" label="NIK" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
                 <q-input color="teal" @click="$refs.datepicker.show()" readonly v-model="auth.profile.birthdate" rounded outlined dense label="Tanggal Lahir*" lazy-rules :rules="[ val => val && val.length > 0 || 'Please type something']">
@@ -74,18 +74,18 @@
 
                 <q-input v-if="auth.role_id==2 || auth.role_id==11 || auth.role_id==7 || auth.role_id==9" color="teal" outlined rounded dense v-model="auth.profile.school_place" label="Asal Sekolah/ Instansi" lazy-rules :rules="[val => (val && val.length > 0) || 'Please type something']" />
 
-                <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="provinces" :option-value="item=>item.id" :option-label="item=>item.name" label="DPW Provinsi" v-model="auth.profile.province" @input="item => {
+                <q-select :loading="isLoadingProvinces" color="teal" :readonly="isDisabled" dense rounded outlined :options="provinces" option-value="id" option-label="name" label="DPW Provinsi" v-model="auth.profile.province" @input="item => {
               auth.profile.province_id = item.id
               auth.profile.city = auth.profile.city_id = null
               auth.profile.district = auth.profile.district_id = null
               getCities()
             }" />
-                <q-select color="teal" :readonly="isDisabled" dense rounded outlined :options="cities" :option-value="item=>item.id" :option-label="item=>item.name" label="DPD Kabupaten/ Kota" v-model="auth.profile.city" @input="item =>{
+                <q-select :loading="isLoadingCities" :disable="!provinces.length" color="teal" :readonly="isDisabled" dense rounded outlined :options="cities" option-value="id" option-label="name" label="DPD Kabupaten/ Kota" v-model="auth.profile.city" @input="item =>{
                auth.profile.city_id = item.id
                auth.profile.district = auth.profile.district_id = null
                getDistricts()
             }" />
-                <q-select color="teal" dense rounded outlined :options="districts" :option-value="item=>item.id" :option-label="item=>item.name" label="DPC Kecamatan" v-model="auth.profile.district" @input="item => {
+                <q-select :loading="isLoadingDistricts" :disable="!cities.length" color="teal" dense rounded outlined :options="districts" option-value="id" option-label="name" label="DPC Kecamatan" v-model="auth.profile.district" @input="item => {
               auth.profile.district_id ? $q.notify('Merubah kecamatan yang berbeda dari sebelumnya akan merubah nomor KTA anda, harap berhati-hati.') : null
               auth.profile.district_id = item.id
             }" />
@@ -106,6 +106,9 @@ import moment from 'moment'
 export default {
     data() {
         return {
+            isLoadingProvinces:false,
+            isLoadingCities:false,
+            isLoadingDistricts:false,
             educationallevels: [],
             auth: null,
             provinces: [],
@@ -203,6 +206,9 @@ export default {
         },
     },
     methods: {
+        babi(cok){
+            console.log(cok)
+        },
         init() {
             let certificate = null;
             let status = null;
@@ -255,8 +261,8 @@ export default {
                     school_status: school_status
                 },
             }
-            this.getEducationalLevels()
-            this.getProvinces()
+            this.getEducationalLevels();
+            this.getProvinces();
             if (this.auth.profile.province_id) {
                 this.getCities().then(res => {
                     if (this.auth.profile.city_id) {
@@ -292,9 +298,11 @@ export default {
             });
         },
         getProvinces() {
+            this.isLoadingProvinces=true;
             return new Promise((resolve, reject) => {
                 this.$store.dispatch('Province/index').then(res => {
                     this.provinces = res.data
+                    this.isLoadingProvinces=false;
                     resolve(res)
                 }).catch(err => {
                     reject(err)
@@ -302,9 +310,11 @@ export default {
             })
         },
         getCities() {
+            this.isLoadingCities = true;
             return new Promise((resolve, reject) => {
                 this.$store.dispatch('City/byProvinceId', this.auth.profile.province_id).then(res => {
                     this.cities = res.data.cities
+                    this.isLoadingCities = false;
                     resolve(res)
                 }).catch(err => {
                     reject(err)
@@ -312,9 +322,11 @@ export default {
             })
         },
         getDistricts() {
+            this.isLoadingDistricts = true;
             return new Promise((resolve, rejeve) => {
                 this.$store.dispatch('District/byCityId', this.auth.profile.city_id).then(res => {
                     this.districts = res.data.districts
+                    this.isLoadingDistricts = false;
                     resolve(res)
                 }).catch(err => {
                     reject(err)

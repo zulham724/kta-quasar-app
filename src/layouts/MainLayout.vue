@@ -109,7 +109,10 @@ export default {
         };
     },
     computed: {
-        ...mapState(["Setting", 'Auth', 'MusicPlayer', 'Questionnary'])
+        ...mapState(["Setting", 'Auth', 'MusicPlayer', 'Questionnary','EchoNotification'])
+    },
+    created(){
+         this.initNotification();
     },
     mounted() {
         setInterval(() => {
@@ -128,6 +131,18 @@ export default {
 
     },
     methods: {
+        initNotification() {
+            this.$store.dispatch("EchoNotification/initNotification");
+            // if (!this.EchoNotification.items.data) {
+            //     Promise.all([this.$store.dispatch("EchoNotification/index"), this.$store.dispatch('EchoNotification/getCount')]).then(res => {
+            //         this.subscribeNotification();
+            //     });
+            //     // this.$store.dispatch("EchoNotification/index");
+            //     // this.$store.dispatch('EchoNotification/getCount');
+            // } else {
+            //     this.subscribeNotification();
+            // }
+        },
         pause() {
             this.$store.commit('MusicPlayer/pause')
         },

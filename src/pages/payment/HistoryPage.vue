@@ -92,6 +92,10 @@ export default {
                     // });
 
                 }
+
+                if(res.data.payment_success){
+                    this.$store.commit("Auth/addPayment",res.data.payment_success)
+                }
             });
         },
         checkAuth() {

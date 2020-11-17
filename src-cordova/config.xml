@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.agpaiidigital.kta2" version="2.0.43" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.agpaiidigital.kta2" version="2.0.45" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>KTA AGPAII DIGITAL</name>
     <description>KARTU TANDA ANGGOTA ASOSIASI GURU PENDIDIKAN AGAMA ISLAM INDONESIA</description>
     <author email="ardata.indonesia@gmail.com" href="https://ardata.co.id">
@@ -24,4 +24,5 @@
     </platform>
     <allow-navigation href="about:*" />
     <allow-navigation href="http://192.168.1.10:8080" />
+    <preference name="android-targetSdkVersion" value="29" />
 </widget>

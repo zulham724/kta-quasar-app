@@ -1,5 +1,6 @@
 /* Module1.store.js */
 import axios from "axios";
+import Vue from "vue";
 
 // State object
 const state = {
@@ -24,6 +25,7 @@ const mutations = {
     logout(state) {
         state.token = {};
         state.auth = "";
+
     },
     setProfile(state, payload) {
         state.auth = {
@@ -114,6 +116,9 @@ const actions = {
     logout({ commit }) {
         return new Promise((resolve, reject) => {
             commit("logout");
+            commit("EchoNotification/deleteItems",null,{root:true});
+            window.Echo=null;
+            // console.log(rootState.EchoNotification.items)
             delete axios.defaults.headers.common.Authorization;
             resolve();
         });

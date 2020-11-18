@@ -46,7 +46,8 @@
             Penilaian Digital
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple disable>
+        <q-item clickable  v-ripple
+          @click="goToApp(null, 'org.agpaiidigital.modul')">
           <q-item-section>
             Modul Digital
           </q-item-section>

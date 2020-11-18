@@ -1,6 +1,6 @@
 <template>
 <div>
-    <q-item clickable @click="goToComment(item.data.data.like_id)" :disable="loading">
+    <q-item clickable @click="goToComment(item.data.data.likeable.comment_id)" :disable="loading">
         <q-item-section avatar top>
             <q-avatar>
                 <q-img no-default-spinner v-if="item.data.data.user" :src="`${Setting.storageUrl}/${item.data.data.user.avatar}`"></q-img>
@@ -47,17 +47,12 @@ export default {
     methods: {
         goToComment: function (comment_id) {
             this.loading = true;
-            this.$store.dispatch("PostComment/getPostByCommentId", comment_id).then(res => {
-                //console.log(res)
-                this.$router.push({
+             this.$router.push({
                     name: 'postcomment',
                     params: {
-                        postId: res.commentable.id
+                        postId: comment_id
                     }
                 })
-            }).finally(() => {
-                this.loading = false;
-            })
 
         }
     },

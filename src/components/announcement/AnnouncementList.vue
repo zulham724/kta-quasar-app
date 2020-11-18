@@ -3,13 +3,13 @@
    <div v-if="announcementList">
         <div v-for="(item, n) in announcementList" :key="`announcement-${n}`" class="q-py-xs bg-teal-1">
             <div v-if="item.data">
-                <q-intersection style="min-height:50px" v-if="item.type=='App\\Notifications\\CommentedPostNotification'">
+                <q-intersection style="min-height:50px" v-if="item.type=='App\\Notifications\\CommentedPostNotification' || item.type=='CommentedPostEvent'">
                     <announcement-item-post-comment :item="item"></announcement-item-post-comment>
                 </q-intersection>
-                <q-intersection style="min-height:50px" v-else-if="item.type=='App\\Notifications\\LikedCommentNotification'">
+                <q-intersection style="min-height:50px" v-else-if="item.type=='App\\Notifications\\LikedCommentNotification' || item.type=='LikedCommentEvent'">
                     <announcement-item-comment-like :item="item"></announcement-item-comment-like>
                 </q-intersection>
-                <q-intersection style="min-height:50px" v-else-if="item.type=='App\\Notifications\\LikedPostNotification'">
+                <q-intersection style="min-height:50px" v-else-if="item.type=='App\\Notifications\\LikedPostNotification' || item.type=='LikedPostEvent'">
                     <announcement-item-post-like :item="item"></announcement-item-post-like>
                 </q-intersection>
 

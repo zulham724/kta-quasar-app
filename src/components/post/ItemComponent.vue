@@ -1,7 +1,7 @@
 <template>
-<div style="width:100%">
+<div style="height:100%;width:100%">
     <!--<q-card v-if="post != null" :style="`${post.files.length ? 'min-height:80vh' : 'min-height:30vh'}`">-->
-    <q-card v-if="post != null">
+    <q-card v-if="post != null" style="height:100%;" :ref="`post_${post.id}`" >
         <q-card-section style="padding-bottom:0">
             <div class="row">
                 <div class="col-2 self-center">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </q-card-section>
-        <q-card-section style="padding-bottom:0;" class="q-pt-md">
+        <q-card-section style="padding-bottom:0" class="q-pt-md">
             <div class="row">
                 <div class="col-12">
                     <div class="text-caption" style="overflow-wrap:break-word; white-space:pre-line" v-html="
@@ -51,6 +51,8 @@
         />
       </q-card-section> -->
         <q-card-section class="q-pa-none" v-if="post.files.length">
+            <div class="row">
+                <div class="col-12">
             <div v-if="post.files[0].value=='document'">
                 <q-input filled :value="post.files[0].name" readonly>
                     <template v-slot:prepend>
@@ -70,23 +72,25 @@
                                 <div class="bg-grey-2" style="height:100%;width:100%"></div>
                             </template>
                         </q-img>
-                        <vue-plyr v-if="file.type.includes('video')" style="width:100vw">
+                        <vue-plyr v-if="file.type.includes('video')" style="width:100%">
                             <video preload="none" :poster="`${Setting.storageUrl}/${file.value}`" :src="`${Setting.storageUrl}/${file.src}`"></video>
                         </vue-plyr>
                     </q-carousel-slide>
                 </q-carousel>
             </div>
+                </div>
+            </div>
         </q-card-section>
         <q-card-section>
             <div class="row">
-                <div class="col-6 self-center">
+                <div class="col self-center">
                     <div class="row">
                         <div class="text-caption text-bold" v-show="post.likes_count" @click="$router.push(`/post/like/${post.id}`)">
                             {{ post.likes_count }} Suka
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col">
                     <div class="row justify-end">
                         <!--<q-btn v-if="post.files.length && post.author_id.id == (Auth.auth ? Auth.auth.id : null)" flat round :icon="post.is_public ? 'share' : 'o_share'" @click="post.is_public ? unPublic() : setPublic()" />-->
                         <q-btn flat round :color="post.liked_count ? 'red' : 'grey'" :icon="post.liked_count ? 'favorite' : 'favorite_border'" @click="post.liked_count ? dislike() : like()" />
@@ -124,7 +128,8 @@ import {
 
 export default {
     props: {
-        post: null
+        post: null,
+        height:null
     },
     components: {},
     computed: {
@@ -140,9 +145,25 @@ export default {
         };
     },
     mounted() {
+        const height=this.$refs['post_'+this.post.id].$el.clientHeight
 
+        this.$store.commit('Post/setSize',{id:this.post.id, size:{height:height}})
+        this.$emit("update-height");
+        // console.log(document.getElementById("post-"+this.post.id).clientHeight) 
+        // console.log(document.getElementById("intersection-"+this.post.id).clientHeight) 
+        // document.getElementById("intersection-"+this.post.id).style.minHeight=document.getElementById("post-"+this.post.id).clientHeight+'px';
+        //this.$emit('update:height', this.$refs['post_'+this.post.id].$el.clientHeight)
+
+        // const id='intersection_'+this.post.id;
+        // console.log(height)
+        // this.$parent.$el.style.minHeight=111//.minHeight=this.$refs['post_'+this.post.id].$el.clientHeight)
+        // console.log(this.$refs)
+        console.log('---------')
     },
     methods: {
+        updateHeight(){
+
+        },
         bookmark() {
             this.$store.dispatch("PostBookmark/store", this.post.id).then(res => {
                 this.post.bookmarked = res.data.bookmarked;

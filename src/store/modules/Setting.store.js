@@ -15,7 +15,7 @@ const state = {
 
 // Mutations
 const mutations = {
-    setTotalMemberEachRegion(state, payload) {
+setTotalMemberEachRegion(state, payload) {
         state.count = {...state.count, ...payload.totalMember };
     },
     setTotalUser(state, payload) {

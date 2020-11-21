@@ -83,18 +83,13 @@
                             </q-card-section>
                         </q-card>
                     </div>
-                    <q-intersection v-for="post in Post.posts.data" :key="post.id" :style="
-                `min-height: ${
-                  post.size
-                    ? `${post.size.height}`
-                    : (post.files.length
-                    ?  (post.files[0].value=='document'?'40vh': '80vh')
-                    : '30vh')
-                };width: 100vw`
+                    <q-intersection :id="`intersection_${post.id}`" :ref="`intersection_${post.id}`"  v-for="post in Post.posts.data" :key="post.id" :style="
+                `min-height:${getItemPostHeight(post)}vh;width:100vw`
               ">
-                        <item-component :post="post"></item-component>
+              <div style="position:absolute;z-index:1">{{post.height}}</div>
+                        <item-component v-on:update-height="updateHeight(post)" :post="post" :style="`position:relative;height:100%`"></item-component>
                     </q-intersection>
-                </div>
+                </div><!--end row-->
                 <template v-slot:loading>
                     <div class="row justify-center q-my-md">
                         <q-spinner-dots color="teal" size="40px" />
@@ -124,6 +119,31 @@ export default {
         if (!this.Post.posts.data) this.$store.dispatch("Post/index");
     },
     methods: {
+        updateHeight(post){
+            // this.$refs["intersection_"+post.id].$el.style.minHeight=post.size.height;
+            console.log(post.size.height)
+            this.$refs["intersection_"+post.id][0].$el.style.minHeight=post.size.height+'px'
+            // let $ref=this.$refs["intersection_"+post.id];
+            // console.log($ref)
+            console.log(this.$refs["intersection_"+post.id][0].$el.style.minHeight)
+            // alert(post.size.height)
+        },
+        getItemPostHeight(post){
+            // return `${
+            //       post.size
+            //         ? `${post.size.height}`
+            //         : (post.files.length
+            //         ?  (post.files[0].value=='document'?'30vh': '80vh')
+            //         : '30vh')
+            //     }`;
+            return `${
+                  post.size
+                    ? `${post.size.height}`
+                    : (post.files.length
+                    ?  (post.files[0].value=='document'?'35': '80')
+                    : '30')
+                }`;
+        },
         onLoad(index, done) {
             this.Post.posts.next_page_url ?
                 this.$store.dispatch("Post/next").then(res => done()) :

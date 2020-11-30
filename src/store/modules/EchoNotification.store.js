@@ -65,7 +65,7 @@ const actions = {
   index({ commit }) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${this.state.Setting.url}/api/v1/notification?type=likedpostnotification,likedcommentnotification,commentedpostnotification`)
+        .get(`${this.state.Setting.url}/api/v1/notification?type=likedpostnotification,likedcommentnotification,commentedpostnotification,alsocommentedpostnotification`)
         .then(res => {
           commit("set", { items: res.data });
           resolve(res);
@@ -185,7 +185,7 @@ const actions = {
       let channel = "notification." + this.state.Auth.auth.id;
       console.log("Subscribing to notification channel: " + channel);
       //console.log(Vue.prototype.$echo)
-      const events = ["LikedPostEvent", "LikedCommentEvent", "CommentedPostEvent"];
+      const events = ["LikedPostEvent", "LikedCommentEvent", "CommentedPostEvent","AlsoCommentedPostEvent"];
       window.Echo.private(channel).listen(events[0], notification => {
         console.log(notification.data);
         notification.type = events[0];
@@ -197,6 +197,10 @@ const actions = {
       }).listen(events[2], notification=>{
         console.log(notification.data);
         notification.type = events[2];
+        commit("addNotification", notification);
+      }).listen(events[3], notification=>{
+        console.log(notification.data);
+        notification.type = events[3];
         commit("addNotification", notification);
       });
     } else {

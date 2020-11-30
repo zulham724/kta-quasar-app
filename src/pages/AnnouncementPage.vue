@@ -47,6 +47,9 @@
                         <q-intersection style="min-height:50px" v-else-if="item.type=='App\\Notifications\\LikedPostNotification'">
                             <announcement-item-post-like :item="item"></announcement-item-post-like>
                         </q-intersection>
+                        <q-intersection style="min-height:50px" v-else-if="item.type=='App\\Notifications\\AlsoCommentedPostNotification'">
+                            <announcement-item-also-commented :item="item"></announcement-item-also-commented>
+                        </q-intersection>
                     </div>
                 </div>
                 <template v-slot:loading>
@@ -70,6 +73,7 @@ export default {
        AnnouncementItemPostComment: () => import('components/announcement/postcomment/AnnouncementItem.vue'),
         AnnouncementItemCommentLike: () => import('components/announcement/commentlike/AnnouncementItem.vue'),
         AnnouncementItemPostLike: () => import('components/announcement/postlike/AnnouncementItem.vue'),    //     AnnouncementItemAssigmentLike: () => import('components/announcement/assigmentlike/AnnouncementItem.vue'),
+        AnnouncementItemAlsoCommented: ()=>import('components/announcement/alsocommentedpost/AnnouncementItem.vue'),
     },
     data() {
         return {

@@ -148,13 +148,13 @@ export default {
             this.$refs.form.validate().then(success => {
                 if (success) {
                     if (this.selectType == 'photos_videos') {
-                        if (this.files.filter(file => file.size > 20000000).length) {
-                            this.$q.notify('File anda terlalu besar, maksimal size upload 20mb')
+                        if (this.files.filter(file => file.size > 100000000).length) {
+                            this.$q.notify('File anda terlalu besar, maksimal size upload 100MB')
                             return false
                         }
                     } else if (this.selectType == 'file') {
-                        if (this.files.size > 20000000) {
-                            this.$q.notify('File anda terlalu besar, maksimal size upload 20mb')
+                        if (this.files.size > 100000000) {
+                            this.$q.notify('File anda terlalu besar, maksimal size upload 100MB')
                             return false
                         }
                     }

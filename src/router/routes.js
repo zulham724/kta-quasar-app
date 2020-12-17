@@ -33,6 +33,11 @@ const actived = function(to, from, next) {
 
 // cek apakah sudah mengisi status guru (PNS/Non-PNS) apa belum
 const check_teacher_status = function(to, from, next){
+    // console.log('check all guard')
+    // console.log(store().getters["Auth/auth"].pns_status)
+    // console.log(store().getters["Auth/isLoggedIn"])
+    // console.log(store().getters["Auth/isUnAuthorized"])
+
     if(store().getters["Auth/auth"] && store().getters["Auth/auth"].pns_status != null){
         next();
     }else{

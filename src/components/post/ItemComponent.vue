@@ -66,13 +66,13 @@
             </div>
             <div v-else>
                 <q-carousel v-model="slide" transition-prev="slide-right" transition-next="slide-left" animated :navigation="post.files.length > 1" control-color="teal" swipeable class="rounded-borders q-pa-none">
-                    <q-carousel-slide style="q-pa-none" v-for="(file, f) in post.files" :key="file.id" :name="f" class="column no-wrap flex-center">
+                    <q-carousel-slide style="q-pa-none" v-for="(file, f) in post.files" :key="file.id" :name="f" class="" >
                         <q-img v-if="file.type.includes('image')" :src="`${Setting.storageUrl}/${file.src}`" ratio="1" @click="zoom(file)">
                             <template v-slot:loading>
                                 <div class="bg-grey-2" style="height:100%;width:100%"></div>
                             </template>
                         </q-img>
-                        <vue-plyr v-if="file.type.includes('video')" style="width:100%">
+                        <vue-plyr v-if="file.type.includes('video')" >
                             <video preload="none" :poster="`${Setting.storageUrl}/${file.value}`" :src="`${Setting.storageUrl}/${file.src}`"></video>
                         </vue-plyr>
                     </q-carousel-slide>

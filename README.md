@@ -1,6 +1,6 @@
-# KTA AGPAII DIGITAL (kta-quasar-app)
+# Quasar App (test7)
 
-KARTU TANDA ANGGOTA ASOSIASI GURU PENDIDIKAN AGAMA ISLAM INDONESIA
+A Quasar Framework app
 
 ## Install the dependencies
 ```bash
@@ -12,10 +12,6 @@ npm install
 quasar dev
 ```
 
-### Lint the files
-```bash
-npm run lint
-```
 
 ### Build the app for production
 ```bash

@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.agpaiidigital.kta2" version="2.0.51" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.agpaiidigital.kta2" version="2.0.52" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>KTA AGPAII DIGITAL</name>
     <description>KARTU TANDA ANGGOTA ASOSIASI GURU PENDIDIKAN AGAMA ISLAM INDONESIA</description>
-    <author email="ardata.indonesia@gmail.com" href="https://ardata.co.id">
-        CV ARDATA MEDIA
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
     </author>
     <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -23,6 +22,8 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <allow-navigation href="about:*" />
-    <allow-navigation href="http://192.168.1.10:8080" />
-    <preference name="android-targetSdkVersion" value="29" />
+    <preference name="AndroidXEnabled" value="true" />
+    <feature name="Launcher">
+        <param name="android-package" value="com.hutchind.cordova.plugins.launcher.Launcher" />
+    </feature>
 </widget>

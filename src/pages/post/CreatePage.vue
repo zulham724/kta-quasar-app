@@ -46,7 +46,7 @@
                                 </q-img>
                                 <q-card v-if="item.type.includes('video')">
                                     <q-card-section class="q-pa-none">
-                                        <vue-plyr v-if="item.type.includes('video')">
+                                        <vue-plyr :options='{"ratio":"1:1"}' v-if="item.type.includes('video')">
                                             <video preload="metadata" :src="`${item.src}#t=0.1}`" style="margin-left:auto;margin-right:auto;display:block;height:90vw">
                                             </video>
                                         </vue-plyr>
@@ -148,13 +148,13 @@ export default {
             this.$refs.form.validate().then(success => {
                 if (success) {
                     if (this.selectType == 'photos_videos') {
-                        if (this.files.filter(file => file.size > 100000000).length) {
-                            this.$q.notify('File anda terlalu besar, maksimal size upload 100MB')
+                        if (this.files.filter(file => file.size > 20000000).length) {
+                            this.$q.notify('File anda terlalu besar, maksimal size upload 20mb')
                             return false
                         }
                     } else if (this.selectType == 'file') {
-                        if (this.files.size > 100000000) {
-                            this.$q.notify('File anda terlalu besar, maksimal size upload 100MB')
+                        if (this.files.size > 20000000) {
+                            this.$q.notify('File anda terlalu besar, maksimal size upload 20mb')
                             return false
                         }
                     }

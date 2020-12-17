@@ -1,59 +1,60 @@
 {
-    "name": "kta-quasar-app",
-    "version": "2.0.51",
-    "description": "KARTU TANDA ANGGOTA ASOSIASI GURU PENDIDIKAN AGAMA ISLAM INDONESIA",
-    "productName": "KTA AGPAII DIGITAL",
-    "cordovaId": "org.agpaiidigital.kta2",
-    "capacitorId": "",
-    "author": "CV ARDATA MEDIA",
-    "private": true,
-    "scripts": {
-        "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
-        "test": "echo \"No test specified\" && exit 0"
-    },
-    "dependencies": {
-        "@quasar/extras": "^1.6.4",
-        "axios": "^0.18.1",
-        "compressorjs": "^1.0.6",
-        "core-js": "^2.6.5",
-        "cropperjs": "^1.5.6",
-        "firebase": "^7.20.0",
-        "laravel-echo": "^1.9.0",
-        "moment": "^2.24.0",
-        "plyr": "^3.6.2",
-        "pusher": "^4.0.1",
-        "qrcode": "^1.4.4",
-        "quasar": "^1.9.14",
-        "vue-chat-scroll": "^1.4.0",
-        "vue-drag-sortable": "^0.2.2",
-        "vue-echo-laravel": "0.0.6",
-        "vue-linkify": "^1.0.1",
-        "vue-marquee-text-component": "^1.1.1",
-        "vue-moment": "^4.1.0",
-        "vue-plyr": "^6.0.4",
-        "vue-read-more-smooth": "^0.1.8",
-        "vue-router-multiguard": "^1.0.3",
-        "vue-template-compiler": "^2.6.12",
-        "vue-zoomer": "^0.3.6",
-        "vuex-persist": "^2.2.0"
-    },
-    "devDependencies": {
-        "@quasar/app": "^1.7.0",
-        "babel-eslint": "^10.0.1",
-        "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.9.0",
-        "eslint-loader": "^3.0.3",
-        "eslint-plugin-vue": "^6.1.2"
-    },
-    "engines": {
-        "node": ">= 10.18.1",
-        "npm": ">= 6.13.4",
-        "yarn": ">= 1.21.1"
-    },
-    "browserslist": [
-        "last 1 version, not dead, ie >= 11"
-    ],
-    "resolutions": {
-        "@babel/parser": "7.7.5"
-    }
+  "name": "kta-quasar-app",
+  "version": "2.0.52",
+  "description": "KARTU TANDA ANGGOTA ASOSIASI GURU PENDIDIKAN AGAMA ISLAM INDONESIA",
+  "productName": "KTA AGPAII DIGITAL",
+  "author": "CV ARDATA MEDIA",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "compressorjs": "^1.0.6",
+    "core-js": "^3.6.5",
+    "cropperjs": "^1.5.6",
+    "firebase": "^7.20.0",
+    "intersection-observer": "^0.12.0",
+    "moment": "^2.24.0",
+    "plyr": "^3.6.3",
+    "qrcode": "^1.4.4",
+    "quasar": "^1.0.0",
+    "vue-chat-scroll": "^1.4.0",
+    "vue-drag-sortable": "^0.2.2",
+    "vue-echo-laravel": "0.0.6",
+    "vue-i18n": "^8.0.0",
+    "vue-linkify": "^1.0.1",
+    "vue-marquee-text-component": "^1.1.1",
+    "vue-moment": "^4.1.0",
+    "vue-plyr": "^7.0.0",
+    "vue-read-more-smooth": "^0.1.8",
+    "vue-router-multiguard": "^1.0.3",
+    "vue-template-compiler": "^2.6.12",
+    "vue-zoomer": "^0.3.6",
+    "vuex-persist": "^3.1.3",
+    "vuex-persistedstate": "^4.0.0-beta.1"
+  },
+  "devDependencies": {
+    "@quasar/app": "^2.0.0",
+    "laravel-echo": "^1.9.0",
+    "pusher-js": "^7.0.2"
+  },
+  "browserslist": [
+    "ie >= 11",
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
 }

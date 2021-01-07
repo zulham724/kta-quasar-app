@@ -60,8 +60,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="text-caption q-pb-sm">
+                        <div class="text-caption q-pb">
                             {{ Auth.auth.email }}
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="text-caption q-pb-sm">
+                          <appreciation-badge-component :items="Auth.auth.appreciations"></appreciation-badge-component>
                         </div>
                     </div>
                     <div class="row">
@@ -176,12 +181,14 @@ import {
     mapState
 } from "vuex";
 import ImageZoomer from "components/ImageZoomerComponent.vue";
+import AppreciationBadgeComponent from 'components/user/AppreciationBadgeComponent.vue';
 
 export default {
     components: {
         PostPhotoComponent: () =>
             import("components/account/PostPhotoComponent.vue"),
-        PostTextComponent: () => import("components/account/PostTextComponent.vue")
+        PostTextComponent: () => import("components/account/PostTextComponent.vue"),
+        AppreciationBadgeComponent
     },
     created() {
         this.isQuestionnary = this.Setting.isQuestionnary;

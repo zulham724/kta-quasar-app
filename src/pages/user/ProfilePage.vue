@@ -59,8 +59,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="text-caption q-pb-sm">
+                    <div class="text-caption">
                         {{ user.email }}
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="text-caption q-pb-sm">
+                        <appreciation-badge-component :items="user.appreciations"></appreciation-badge-component>
                     </div>
                 </div>
                 <div class="row">
@@ -100,6 +105,7 @@ import {
     mapState
 } from "vuex";
 import ImageZoomer from "components/ImageZoomerComponent.vue";
+import AppreciationBadgeComponent from 'components/user/AppreciationBadgeComponent.vue';
 
 export default {
     props: {
@@ -107,7 +113,8 @@ export default {
     },
     components: {
         PostPhotoComponent: () => import("components/user/PostPhotoComponent.vue"),
-        PostTextComponent: () => import("components/user/PostTextComponent.vue")
+        PostTextComponent: () => import("components/user/PostTextComponent.vue"),
+        AppreciationBadgeComponent
     },
     created() {
         if (this.userId == this.Auth.auth.id)

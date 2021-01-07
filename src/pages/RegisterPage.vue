@@ -11,7 +11,11 @@
                 <q-form @submit="onSubmit" ref="form" class="q-gutter-md">
                     <q-input color="teal" dense class="q-pa-none" style="opacity:0.8" bg-color="white" rounded outlined label="Nama anda" v-model="credential.name" lazy-rules :rules="[val => (val && val.length > 0) || 'Harus diisi']" />
                     <q-input color="teal" dense class="q-pa-none" style="opacity:0.8" bg-color="white" rounded outlined label="Email anda" type="email" v-model="credential.email" lazy-rules :rules="[val => (val && val.length > 0) || 'Harus diisi']" />
-                    <q-input color="teal" dense class="q-pa-none" style="opacity:0.8" bg-color="white" rounded outlined label="Password" v-model="credential.password" type="password" lazy-rules :rules="[val => !!val || 'Harus diisi']" />
+                    <q-input color="teal" dense class="q-pa-none" style="opacity:0.8" bg-color="white" rounded outlined label="Password" v-model="credential.password" :type="show_password?'text':'password'" lazy-rules :rules="[val => !!val || 'Harus diisi']" >
+                         <template v-slot:append>
+                            <q-btn flat round color="teal" :icon="show_password?'visibility':'visibility_off'" @click="show_password=!show_password" />
+                        </template>
+                    </q-input>
                     <q-input color="teal" dense class="q-pa-none" style="opacity:0.8" bg-color="white" rounded outlined label="Ulangi Password" v-model="credential.password_confirmation" type="password" lazy-rules :rules="[
                 val => !!val || 'Harus diisi',
                 val => val == credential.password || 'Password tidak sama'
@@ -44,6 +48,7 @@ import {
 export default {
     data() {
         return {
+            show_password:false,
             credential: {},
             loading: false,
             roles: [{

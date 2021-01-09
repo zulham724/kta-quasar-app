@@ -5,7 +5,16 @@
         <q-toolbar class="bg-white">
             <q-icon name="person_outline" color="teal" size="sm" />
             <q-toolbar-title>
-                <div class="text-body2 text-teal text-bold">{{ Auth.auth.name }}</div>
+                <!-- <div class="row q-pa-2">
+                    <div class="text-body2 text-teal text-bold">{{ Auth.auth.name }}</div>
+                </div> -->
+                  <div class="col">
+                    <div class="text-body2 text-teal text-bold">{{ Auth.auth.name }}</div>
+
+                    <div class="text-caption">
+                          <appreciation-badge-component :items="Auth.auth.appreciations"></appreciation-badge-component>
+                        </div>
+                    </div>
             </q-toolbar-title>
             <q-btn flat dense icon="more_vert" color="teal" @click="drawer = true" />
         </q-toolbar>
@@ -64,11 +73,23 @@
                             {{ Auth.auth.email }}
                         </div>
                     </div>
-                     <div class="row">
+                    <div class="col">
+                        <div class="text-caption q-pb text-bold"  v-if="Auth.auth.profile.province">
+                            DPW {{ Auth.auth.profile.province.name }}
+                        </div>
+                         <div class="text-caption q-pb text-bold"  v-if="Auth.auth.profile.city">
+                            DPD {{ Auth.auth.profile.city.name }}
+                        </div>
+                         <div class="text-caption q-pb text-bold"  v-if="Auth.auth.profile.district">
+                            DPC {{ Auth.auth.profile.district.name }}
+                        </div>
+                    </div>
+                    
+                     <!-- <div class="row">
                         <div class="text-caption q-pb-sm">
                           <appreciation-badge-component :items="Auth.auth.appreciations"></appreciation-badge-component>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="text-caption" v-if="Auth.auth.profile" v-linkified style="overflow-wrap:break-word; white-space:pre-line">
                             {{ Auth.auth.profile.long_bio }}

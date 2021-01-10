@@ -4,7 +4,7 @@
         <div class="row justify-center align-center full-height full-width">
             <div class="col-12">
                 <div class="row justify-center" style="text-align:center">
-                    <img src="statics/images/agpaii-logo-transparent.png" style="height:15vh" />
+                    <img src="/statics/images/agpaii-logo-transparent.png" style="height:15vh" />
                     <div class="text-body2 q-pt-md text-white">Jika sudah mendaftar. Silahkan masuk dengan email dan password anda</div>
                 </div>
             </div>

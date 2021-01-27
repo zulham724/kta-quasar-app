@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
+import VuexPersistence from 'vuex-persist'
 
 import createLogger from 'vuex/dist/logger'
 
@@ -45,10 +45,11 @@ Vue.use(Vuex);
  */
 const debug = process.env.DEV
 
-const dataState = createPersistedState({
-  paths: ['Auth', 'Setting']
+const vuexLocal = new VuexPersistence({
+  strictMode: true, // This **MUST** be set to true
+  storage: localStorage, // wich storage u want to use
+  reducer: (state) => ({ Auth: state.Auth, Setting: state.Setting }), // save given modules to storage
 })
-
 
 
 export default function(/* { ssrContext } */) {
@@ -88,10 +89,10 @@ export default function(/* { ssrContext } */) {
     // for dev mode only
     strict: debug,
     // state: {},
-    // mutations: {
-    //       RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION // this mutation **MUST** be named "RESTORE_MUTATION"
-    // },
-    plugins: debug ? [createLogger(), dataState] : [dataState] 
+    mutations: {
+          RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION // this mutation **MUST** be named "RESTORE_MUTATION"
+    },
+    plugins: debug ? [createLogger(), vuexLocal.plugin, ] : [vuexLocal.plugin, ] // set logger only for development
     // plugins: debug ? [createLogger(), vuexLocal.plugin] : [vuexLocal.plugin] // set logger only for development
   });
 

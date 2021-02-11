@@ -4,6 +4,7 @@ import store from "./../store";
 import moment from "moment";
 import { Notify } from "quasar";
 // import router from "../router"
+console.log('store()',store());
 axios.interceptors.response.use(function (config) {
     // Do something before request is sent
     return config;

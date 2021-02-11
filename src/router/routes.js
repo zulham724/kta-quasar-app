@@ -208,6 +208,13 @@ const routes = [{
             import ("pages/user/SearchPage.vue")
     },
     {
+        path: "/userchat/search",
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
+        name: "userchatsearch",
+        component: () =>
+            import ("pages/user/ChatSearchPage.vue")
+    },
+    {
         path: "/information",
         beforeEnter: multiguard([auth, actived, checkProfile, check_teacher_status]),
         name: "information",
@@ -410,7 +417,23 @@ const routes = [{
         name: "payment",
         component: () =>
             import ("pages/PaymentPage.vue")
-    }
+    },
+    {
+        path: "/chat/:conversationId",
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
+        name: "chat",
+        component: () =>
+            import ("pages/ChatPage.vue"),
+        props: true
+    },
+    {
+        path: "/conversations",
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
+        name: "conversations",
+        component: () =>
+            import ("pages/ConversationsPage.vue"),
+        props: true
+    },
 ];
 
 // Always leave this as last one

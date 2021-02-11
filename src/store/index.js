@@ -32,6 +32,9 @@ import SampleModule from "./SampleModule";
 import Setting from "./Setting";
 import User from "./User";
 import UserDocument from "./UserDocument";
+import Conversation from "./Conversation";
+import Chat from "./Chat";
+import SocketIO from "./SocketIO";
 
 Vue.use(Vuex);
 
@@ -82,7 +85,10 @@ export default function(/* { ssrContext } */) {
       SampleModule,
       Setting,
       User,
-      UserDocument
+      UserDocument,
+      Conversation,
+      Chat,
+      SocketIO
     },
 
     // enable strict mode (adds overhead!)

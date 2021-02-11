@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const actions = {
-  login({ commit }, credential) {
+  login({ commit,dispatch }, credential) {
     return new Promise((resolve, reject) => {
       const access = {
         grant_type: "password",
@@ -26,6 +26,8 @@ const actions = {
                 auth: auth
               };
               commit("auth_success", payload);
+              console.log('connect to socket.io after login');
+              dispatch("SocketIO/connect",{},{root:true});
               resolve(resp);
             })
             .catch(err => {
@@ -67,7 +69,7 @@ const actions = {
         });
     });
   },
-  logout({ commit, state }) {
+  logout({ commit,dispatch, state }) {
     return new Promise((resolve, reject) => {
       const user_id = state.auth.id;
       const channel = 'notification.' + user_id;
@@ -76,6 +78,7 @@ const actions = {
         window.Echo.leave(channel);
         window.Echo = null;
       }
+      // dispatch("SocketIO/disconnect",{},{root:true});
       commit("logout");
       commit("EchoNotification/deleteItems", null, { root: true });
       // console.log(rootState.EchoNotification.items)

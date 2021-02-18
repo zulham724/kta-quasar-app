@@ -1,5 +1,5 @@
 const state = {
-  items: [],
+  items: {},
 
   item: {
     conversation_id: null, //conversation_id

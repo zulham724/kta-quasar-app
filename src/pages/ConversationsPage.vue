@@ -1,8 +1,9 @@
 <template>
+ <q-pull-to-refresh @refresh="refresh">
   <q-layout view="hHh Lpr fFf">
     <q-header elevated>
       <q-toolbar class="bg-white">
-        <q-btn color="teal" flat dense icon="arrow_back" @click="$router.back()" />
+        <q-btn color="teal" flat dense icon="arrow_back" @click="$router.push('/')" />
         <q-toolbar-title>
           <div class="text-body2 text-teal text-bold">Conversations</div>
         </q-toolbar-title>
@@ -53,6 +54,7 @@
       </q-page>
     </q-page-container>
   </q-layout>
+ </q-pull-to-refresh>
 </template>
 
 <script>
@@ -95,6 +97,11 @@ export default {
         ? this.$store.dispatch("Conversation/next").then((res) => done())
         : done();
     },
+    refresh (done) {
+       this.$store.dispatch("Conversation/index").then((res) => {
+        done();
+      });
+    }
   },
 };
 </script>

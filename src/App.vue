@@ -1,8 +1,6 @@
 <template>
   <div id="q-app">
-    <platform-mobile-component
-      v-if="$q.platform.is.mobile"
-    ></platform-mobile-component>
+    <platform-mobile-component v-if="$q.platform.is.mobile"></platform-mobile-component>
     <platform-desktop-component v-else></platform-desktop-component>
   </div>
 </template>
@@ -10,80 +8,93 @@
 export default {
   name: "App",
   components: {
-    PlatformMobileComponent: () =>
-      import("components/PlatformMobileComponent.vue"),
-    PlatformDesktopComponent: () =>
-      import("components/PlatformDesktopComponent.vue")
+    PlatformMobileComponent: () => import("components/PlatformMobileComponent.vue"),
+    PlatformDesktopComponent: () => import("components/PlatformDesktopComponent.vue"),
   },
+  created() {},
   sockets: {
     connect() {
       console.log("connected");
+
+      const auth = this.$store.getters["Auth/auth"];
+      if (auth) {
+        const conversation_room_name = "conversation_list_" + auth.id;
+        console.log("joining individual room:", conversation_room_name);
+        this.$socket.emit("join_individual_room", conversation_room_name);
+
+        // this.sockets.unsubscribe(conversation_event_name);
+        // console.log("subscribing to:", conversation_event_name);
+        // this.sockets.subscribe(conversation_event_name, ({ conversation, data }) => {
+        //   // alert('kontol');
+        //   console.log("conversation:", conversation);
+        //   console.log("message:", data);
+        //   // jika conversation list sudah ada, maka tambah di urutan paling atas
+        //   if (this.$store.getters["Conversation/items"].data) {
+        //     this.$store.commit("Conversation/add", { item: conversation });
+        //   }
+        //   // jika conversation list belum ada, maka fetch dlu bru tambah
+        //   else {
+        //     this.$store.dispatch("Conversation/index").then((res) => {
+        //       this.$store.commit("Conversation/add", { item: conversation });
+        //     });
+        //   }
+        // });
+      }
       // console.log(this.sockets);
-      // console.log(this.$socket);
-      // this.sockets.subscribe("test", payload => {
-      //   console.log("payload:", payload);
-      // });
-      // this.sockets.subscribe("conversation.1", () => {});
-      // this.sockets.subscribe("message", payload => {
-      //   // console.log(payload);
-      //   this.$store.commit("Chat/removeTypingUser", {
-      //     conversation_id: payload.conversation_id,
-      //     user: payload.item.user
-      //   });
-      //   this.$store.commit("Chat/add", payload);
-      // });
-      // this.sockets.subscribe("typing", ({ room, user }) => {
-      //   console.log("typing", room, user);
-      //   const conversation_id = parseInt(room.split("_").pop());
-      //   this.$store.commit("Chat/addTypingUser", {
-      //     conversation_id: conversation_id,
-      //     user: user
-      //   });
-      // });
-      // this.sockets.subscribe("stopped_typing", ({ room, user }) => {
-      //   console.log("stopped_typing", room, user);
-      //   const conversation_id = parseInt(room.split("_").pop());
-      //   this.$store.commit("Chat/removeTypingUser", {
-      //     conversation_id: conversation_id,
-      //     user: user
-      //   });
-      // });
-      // this.sockets.subscribe("invite", ({ room, user }) => {
-      //   //ketika diinvite, maka akan otomatis akan dijoin ke room
-      //   console.log("invite", room, user);
-      //   this.$socket.emit("join", room);
-      // });
     },
-    message(payload) {
+    message(payload) { // ke sender
       this.$store.commit("Chat/removeTypingUser", {
         conversation_id: payload.conversation_id,
-        user: payload.item.user
+        user: payload.item.user, // sender
       });
       this.$store.commit("Chat/add", payload);
     },
-    typing({ room, user }) {
-      console.log("typing", room, user);
-      const conversation_id = parseInt(room.split("_").pop());
+    typing({ conversation, sender }) {
+      console.log('user:',sender,"typing in:", conversation);
+      const conversation_id = conversation.id;
       this.$store.commit("Chat/addTypingUser", {
         conversation_id: conversation_id,
-        user: user
+        sender: sender,
       });
     },
-    stopped_typing({ room, user }) {
-      console.log("stopped_typing", room, user);
-      const conversation_id = parseInt(room.split("_").pop());
+    stopped_typing({ conversation, sender }) {
+      console.log("stopped_typing on conversation_id:", conversation.id, "user:",sender);
+      const conversation_id = conversation.id;
       this.$store.commit("Chat/removeTypingUser", {
         conversation_id: conversation_id,
-        user: user
+        sender: sender,
       });
+    },
+    // ke penerima
+    conversation({ conversation, payload }) {
+      console.log("new conversation:", conversation);
+      console.log("message:", payload);
+      /////
+      this.$store.commit("Chat/removeTypingUser", {
+        conversation_id: conversation.id,
+        sender: payload.item.user, // sender
+      });
+      this.$store.commit("Chat/add", {conversation_id:conversation.id,item:payload.item});
+
+      // jika conversation list sudah ada, maka tambah di urutan paling atas
+      if (this.$store.getters["Conversation/items"].data) {
+        this.$store.commit("Conversation/addTop", { item: conversation });
+      }
+      // jika conversation list belum ada, maka fetch data terbaru
+      else {
+        this.$store.dispatch("Conversation/index").then((res) => {
+          // this.$store.commit("Conversation/add", { item: conversation });
+        });
+      }
+
     },
     disconnect() {
       // alert("socket.io disconnected");
       console.log("socket.io disconnected");
     },
-    error(err){
-      console.log('error socket.io',err)
-    }
-  }
+    error(err) {
+      console.log("error socket.io", err);
+    },
+  },
 };
 </script>

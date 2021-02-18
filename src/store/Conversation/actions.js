@@ -14,6 +14,7 @@ const actions = {
         });
     });
   },
+  //jika conversation belum ada, maak dibuat jika sudah ada, maka hanya akan diambil id'nya
   create({ commit }, payload) {
     return new Promise((resolve, reject) => {
       axios
@@ -55,6 +56,19 @@ const actions = {
         .catch(err => {
           reject(err);
         });
+    });
+  },
+  setUpdatedAt({},conversation){
+    return new Promise((resolve,reject)=>{
+      axios
+      .put(`${this.state.Setting.url}/api/v1/conversation/${conversation.id}`,conversation)
+      .then(res => {
+        // commit("next", { items: res.data });
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
     });
   },
   prev() { },

@@ -1,5 +1,4 @@
 import store from "./../store";
-import jwt from "jsonwebtoken";
 import Vue from "vue";
 import VueSocketIO from "vue-socket.io";
 
@@ -16,8 +15,9 @@ if(auth){
   const payload = {
     sub:user_id
   }
-  token = jwt.sign(payload,client_secret);
+  token = store().getters["Auth/token"].access_token;
 }
+
 
 
 Vue.use(
@@ -35,3 +35,4 @@ Vue.use(
     } //Optional options
   })
 );
+

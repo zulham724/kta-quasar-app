@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import store from "../index";
 
 const actions = {
-  connect({ commit, dispatch }) {
+  connect({ commit, dispatch, rootState }) {
     const client_secret = this.state.Auth.client_secret;
     const user_id = this.state.Auth.auth.id;
     const payload = {
@@ -13,7 +13,9 @@ const actions = {
 
     // const store_f = store();
     // console.log('store_f',store._actions);
-    const token = jwt.sign(payload, client_secret);
+    // const token =   rootGetters["Auth/token"];
+  
+    const token = rootState.Auth.token.access_token;
     const socketUrl = this.state.Setting.socketUrl;
 
     if (Vue.prototype.$socket) {

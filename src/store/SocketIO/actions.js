@@ -5,6 +5,8 @@ import store from "../index";
 
 const actions = {
   connect({ commit, dispatch, rootState }) {
+  
+
     const client_secret = this.state.Auth.client_secret;
     const user_id = this.state.Auth.auth.id;
     const payload = {
@@ -25,7 +27,7 @@ const actions = {
       console.log('VueSocketIo.connect()');
       Vue.prototype.$vueSocketIo.io = Vue.prototype.$vueSocketIo.connect(socketUrl, {
         query: `token=${token}`,
-        forceNew : false,
+        forceNew : true,
       });
       Vue.prototype.$socket = Vue.prototype.$vueSocketIo.listener.io = Vue.prototype.$vueSocketIo.io;
       Vue.prototype.$vueSocketIo.listener.register();
@@ -36,7 +38,7 @@ const actions = {
     alert("socket.io action gan");
   },
   disconnect() {
-    console.log("disconnect socket.io");
+    this._vm.$devLogger("disconnect socket.io");
     Vue.prototype.$socket.disconnect();
   }
 };

@@ -35,6 +35,7 @@ import UserDocument from "./UserDocument";
 import Conversation from "./Conversation";
 import Chat from "./Chat";
 import SocketIO from "./SocketIO";
+import UnreadConversation from "./UnreadConversation";
 
 Vue.use(Vuex);
 
@@ -88,7 +89,8 @@ export default function(/* { ssrContext } */) {
       UserDocument,
       Conversation,
       Chat,
-      SocketIO
+      SocketIO,
+      UnreadConversation
     },
 
     // enable strict mode (adds overhead!)

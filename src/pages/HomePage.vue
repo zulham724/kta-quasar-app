@@ -49,7 +49,11 @@
             </q-list>
           </q-menu>
         </q-btn>
-        <q-btn color="teal" flat round icon="send" style="transform: rotate(-20deg);transition-duration:2s" @click="$router.push('/conversations')" />
+        <q-btn color="teal" flat round icon="send" style="/*transform: rotate(-20deg);transition-duration:2s*/" @click="$router.push('/conversations')">
+         <q-badge v-if="UnreadConversation.items.data && UnreadConversation.items.data.length" color="red" floating>{{
+            UnreadConversation.items.data.length
+          }}</q-badge>
+        </q-btn>
       </q-toolbar>
     </q-header>
     <q-page style="background-color: #e0f2f1">
@@ -152,7 +156,7 @@ export default {
     AnnouncementItemList: () => import("components/announcement/AnnouncementList.vue"),
   },
   computed: {
-    ...mapState(["Post", "Setting", "Auth", "EchoNotification"]),
+    ...mapState(["Post", "Setting", "Auth", "EchoNotification","UnreadConversation"]),
   },
   created() {
     if (!this.Post.posts.data) this.$store.dispatch("Post/index");

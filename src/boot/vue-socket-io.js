@@ -18,6 +18,11 @@ if(auth){
   token = store().getters["Auth/token"].access_token;
 }
 
+if(Vue.prototype.$socket){
+  Vue.prototype.$socket.disconnect();
+  Vue.prototype.$devLogger('disconnect socket.io');
+
+}
 
 
 Vue.use(

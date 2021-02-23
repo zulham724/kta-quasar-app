@@ -42,15 +42,17 @@ export default {
       }
       // console.log(this.sockets);
     },
-    message(payload) { // ke sender
+    message(payload) {
+      // ke sender
       this.$store.commit("Chat/removeTypingUser", {
         conversation_id: payload.conversation_id,
-        user: payload.item.user, // sender
+        sender: payload.item.user, // sender
       });
       this.$store.commit("Chat/add", payload);
+      scrollToBottom();
     },
     typing({ conversation, sender }) {
-      console.log('user:',sender,"typing in:", conversation);
+      console.log("user:", sender, "typing in:", conversation);
       const conversation_id = conversation.id;
       this.$store.commit("Chat/addTypingUser", {
         conversation_id: conversation_id,
@@ -58,7 +60,7 @@ export default {
       });
     },
     stopped_typing({ conversation, sender }) {
-      console.log("stopped_typing on conversation_id:", conversation.id, "user:",sender);
+      console.log("stopped_typing on conversation_id:", conversation.id, "user:", sender);
       const conversation_id = conversation.id;
       this.$store.commit("Chat/removeTypingUser", {
         conversation_id: conversation_id,
@@ -67,16 +69,43 @@ export default {
     },
     // ke penerima
     conversation({ conversation, payload }) {
+      // alert(this.$route.path);
+
+      // BEGIN //
+      // jika penerima tidak dalam path /chat/{conversation_id}, maka chat.read_at = null
+      const path = this.$route.path;
+      const regex = new RegExp("chat\/"+conversation.id+"$")
+      if (!regex.test(path)) {
+        // jika UnreadConversation.items.data belum ada, maka fetch index dulu
+        if (!this.$store.getters["UnreadConversation/items"].data) {
+          this.$store.dispatch("UnreadConversation/index").then((res) => {
+            this.$store.commit("UnreadConversation/add", {
+              conversation_id: conversation.id,
+            });
+          });
+        } else {
+          this.$store.commit("UnreadConversation/add", {
+            conversation_id: conversation.id,
+          });
+        }
+      }
+      // END
+
       console.log("new conversation:", conversation);
       console.log("message:", payload);
-      /////
+
+      // BEGIN //
       this.$store.commit("Chat/removeTypingUser", {
         conversation_id: conversation.id,
         sender: payload.item.user, // sender
       });
-      this.$store.commit("Chat/add", {conversation_id:conversation.id,item:payload.item});
+      this.$store.commit("Chat/add", {
+        conversation_id: conversation.id,
+        item: payload.item,
+      });
+      // END //
 
-      // jika conversation list sudah ada, maka tambah di urutan paling atas
+      //BEGIN = jika conversation list sudah ada, maka tambah di urutan paling atas //
       if (this.$store.getters["Conversation/items"].data) {
         this.$store.commit("Conversation/addTop", { item: conversation });
       }
@@ -86,7 +115,18 @@ export default {
           // this.$store.commit("Conversation/add", { item: conversation });
         });
       }
+      // END //
 
+    },
+    read_conversation({ conversation_id, unread_conversations, read_chats }) {
+      this.$devLogger("total unread_count now:", unread_conversations.length);
+      this.$store.commit("UnreadConversation/set", {
+        items: unread_conversations,
+      });
+      this.$store.commit("Chat/updateItems", {
+        conversation_id: conversation_id,
+        items: read_chats,
+      });
     },
     disconnect() {
       // alert("socket.io disconnected");

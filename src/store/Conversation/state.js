@@ -1,5 +1,8 @@
 const state = {
- items:{}
+ items:{
+     data:[]
+ },
+ unread_count:null,
 }
 
 export default state

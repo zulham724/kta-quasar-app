@@ -1,10 +1,14 @@
 const state = {
+  unread_count:null,
   items: {},
 
   item: {
     conversation_id: null, //conversation_id
     data: [],
-    typing_user: []
+    participants: [],
+    typing_users: [],
+    next_page_url:null,
+    prev_page_url:null,
   },
   //struktur untuk item.data
   data_:{
@@ -15,7 +19,8 @@ const state = {
           id:null,
           name:null,
           avatar:null
-      }
+      },
+      read_at:null
 }
 
 };

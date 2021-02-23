@@ -22,6 +22,7 @@ module.exports = function (/* ctx */) {
       'polyfill',
       'i18n',
       "axios",
+      "logger-dev",
             "pusher-js",
             "moment",
             "vue-chat-scroll",

@@ -4,10 +4,9 @@ const actions = {
   index({ commit }, payload) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${this.state.Setting.url}/api/v1/conversation`)
+        .get(`${this.state.Setting.chatUrl}/getunreadconversationbymessages`)
         .then(res => {
           commit("set", { items: res.data });
-          commit("Chat/setParticipants", { items: res.data.data }, {root:true});
           resolve(res.data);
         })
         .catch(err => {

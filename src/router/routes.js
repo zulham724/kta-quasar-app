@@ -427,6 +427,15 @@ const routes = [{
         props: true
     },
     {
+        path: "/chat2/:conversationId",
+        beforeEnter: multiguard([auth, actived, check_teacher_status]),
+        name: "chat",
+        component: () =>
+            import ("pages/ChatPage2.vue"),
+        props: true
+    },
+    
+    {
         path: "/conversations",
         beforeEnter: multiguard([auth, actived, check_teacher_status]),
         name: "conversations",

@@ -16,47 +16,56 @@
     </q-header>
 
     <q-page-container>
-      <q-page v-if="Chat.items['personal_conversation_'+conversationId]">
-        <transition
-          v-for="(item, i) in Chat.items['personal_conversation_'+conversationId].data"
-          :key="i"
-          appear
-          :enter-active-class="`animated ${
-            item.user.id == Auth.auth.id ? 'bounceInRight' : 'bounceInLeft'
-          }`"
-        >
-          <q-chat-message
-            :name="item.user.name"
-            :avatar="`${Setting.storageUrl}/${item.user.avatar}`"
-            :text="[item.message.value]"
-            :sent="item.user.id == Auth.auth.id ? true : false"
+      <q-page v-if="Chat.items['personal_conversation_' + conversationId]">
+        <q-infinite-scroll @load="onLoad" reverse>
+          <template slot="loading">
+            <div class="row justify-center q-my-md">
+              <q-spinner color="teal" name="dots" size="40px" />
+            </div>
+          </template>
+
+          <transition
+            v-for="(item, i) in Chat.items['personal_conversation_' + conversationId]
+              .data"
+            :key="i"
+            appear
+            :enter-active-class="`animated ${
+              item.user.id == Auth.auth.id ? 'bounceInRight' : 'bounceInLeft'
+            }`"
           >
-            <template v-slot:avatar>
-              <q-avatar :class="item.user.id == Auth.auth.id ? 'q-ml-sm' : 'q-mr-sm'">
-                <q-img :src="`${Setting.storageUrl}/${item.user.avatar}`">
-                  <template v-slot:loading>
-                    <div class="bg-grey-2" style="height: 100%; width: 100%"></div>
-                  </template>
-                </q-img>
-              </q-avatar>
-            </template>
-          </q-chat-message>
-        </transition>
-        <transition
-          v-for="(item, i) in Chat.items['personal_conversation_'+conversationId].typing_users"
-          :key="`typing-${i}`"
-          appear
-          enter-active-class="animated bounceInLeft"
-        >
-          <q-chat-message
-            :name="item.name"
-            :avatar="`${Setting.storageUrl}/${item.avatar}`"
-            bg-color="amber"
+            <q-chat-message
+              :name="item.user.name"
+              :avatar="`${Setting.storageUrl}/${item.user.avatar}`"
+              :text="[item.message.value]"
+              :sent="item.user.id == Auth.auth.id ? true : false"
+            >
+              <template v-slot:avatar>
+                <q-avatar :class="item.user.id == Auth.auth.id ? 'q-ml-sm' : 'q-mr-sm'">
+                  <q-img :src="`${Setting.storageUrl}/${item.user.avatar}`">
+                    <template v-slot:loading>
+                      <div class="bg-grey-2" style="height: 100%; width: 100%"></div>
+                    </template>
+                  </q-img>
+                </q-avatar>
+              </template>
+            </q-chat-message>
+          </transition>
+          <transition
+            v-for="(item, i) in Chat.items['personal_conversation_' + conversationId]
+              .typing_users"
+            :key="`typing-${i}`"
+            appear
+            enter-active-class="animated bounceInLeft"
           >
-            <q-spinner-dots size="2rem" />
-          </q-chat-message>
-        </transition>
-        <!-- <q-chat-message
+            <q-chat-message
+              :name="item.name"
+              :avatar="`${Setting.storageUrl}/${item.avatar}`"
+              bg-color="amber"
+            >
+              <q-spinner-dots size="2rem" />
+            </q-chat-message>
+          </transition>
+          <!-- <q-chat-message
           name="Jane"
           avatar="https://cdn.quasar.dev/img/avatar2.jpg"
           :text="['doing fine, how r you?']"
@@ -68,11 +77,12 @@
         >
           <q-spinner-dots size="2rem" />
         </q-chat-message> -->
-        <template v-slot:loading>
-          <div class="row justify-center q-my-md">
-            <q-spinner-dots color="primary" size="40px" />
-          </div>
-        </template>
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-dots color="primary" size="40px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
       </q-page>
     </q-page-container>
 
@@ -120,7 +130,7 @@ export default {
   },
   watch: {
     message(newValue) {
-      if (newValue && !this.isTypingSent) {
+      if (newValue && !this.isTypingSent && this.conversation) {
         const sender = {
           id: this.Auth.auth.id,
           name: this.Auth.auth.name,
@@ -146,6 +156,7 @@ export default {
   mounted() {
     // this.post == null ? this.getPost() : null;
     // this.$refs.keyboard.focus()
+    this.$devLogger("chats gan", this.Chat);
   },
 
   created() {
@@ -154,24 +165,55 @@ export default {
     //mendapatkan user_id pengirim dan penerima di store Conversation
     this.$store
       .dispatch("Conversation/get", this.conversationId)
-      .then((res) => {
-        this.conversation = res;
-        // this.room = `personal_conversation_${res.id}`;
-        // console.log("joining room:", this.room, "dgn user_id:", this.Auth.auth.id);
-        // this.$socket.emit("join", this.room);
+      .then((data) => {
+        this.conversation = data;
+
+        // mengirim event read_conversation ke nodejs 
+        this.$socket.emit("read_conversation", { conversation_id: data.id });
+
+        const conversation_ids = [data.id];
+        // get latest messages from conversation_ids
+        this.$store
+          .dispatch("Chat/setLatestChatByIds", conversation_ids)
+        .then((data2) => {
+            this.$devLogger("latest message from chatpage", data2);
+          });
       })
       .catch((err) => {
-        console.log(err);
+        this.$devLogger(err);
       });
   },
   methods: {
     onLoad(index, done) {
-      setTimeout(() => {
-        if (this.items) {
-          this.items.push({}, {}, {}, {}, {}, {}, {});
-          done();
-        }
-      }, 2000);
+      const key = "personal_conversation_" + this.conversationId;
+      if (this.Chat.items[key].next_page_url) {
+        this.$store
+          .dispatch("Chat/nextPage", { conversation_id: this.conversationId })
+          .then((res) => {
+            this.$devLogger("next gan");
+            done();
+          })
+          .catch((err) => {
+            alert("error get next chat", err);
+            console.log(err);
+            done();
+          });
+      } else {
+        done();
+      }
+      // this.Conversation.items.next_page_url
+      //   ? this.$store.dispatch("Conversation/next").then((data) => {
+      //       const conversation_ids = data.data.map((e) => e.id);
+      //       // get latest messages from conversation_ids
+      //       this.$store
+      //         .dispatch("Chat/setLatestChatByIds", conversation_ids)
+      //         .then((data2) => {
+      //           done();
+      //           this.$devLogger("latest message...", data2);
+      //         });
+
+      //     })
+      //   : done();
     },
     stopTyping() {
       const sender = {
@@ -180,7 +222,10 @@ export default {
         avatar: this.Auth.auth.avatar,
       };
       // const room = `personal_conversation_${this.conversationId}`;
-      this.$socket.emit("stopped_typing", { conversation: this.conversation, sender: sender });
+      this.$socket.emit("stopped_typing", {
+        conversation: this.conversation,
+        sender: sender,
+      });
       this.isTypingSent = false;
     },
     sendMessage() {
@@ -190,12 +235,14 @@ export default {
       const item = {
         message: {
           value: this.message,
+          id:null,
         },
         user: {
           id: this.Auth.auth.id,
           name: this.Auth.auth.name,
           avatar: this.Auth.auth.avatar,
         },
+        read_at:null
       };
       this.conversation.latest_message_at = new Date().getTime(); //milisecond
       // emit ke nodejs server
@@ -208,7 +255,29 @@ export default {
         this.$store.commit("Conversation/moveTop", this.conversationId);
       });
 
+      // kirim FCM ke semua penerima kecuali pengirim
+      this.conversation.users.forEach((participant) => {
+        const topic = `message_${participant.id}`;
+        this.sendNotif(topic);
+      });
+
       this.message = "";
+    },
+    sendNotif(topic) {
+      const payload = {
+        title: `AGPAII DIGITAL`,
+        body: `Pesan baru dari ${this.Auth.auth.name} - ${this.message}`,
+        params: {
+          sender_id: this.Auth.auth.id,
+          target_id: this.conversation.id,
+          target_type: `Post`,
+          text: `Pesan baru dari ${this.Auth.auth.name} - ${this.message}`,
+        },
+        to: `/topics/${topic}`,
+      };
+      this.$store.dispatch("Notif/send", payload).then((res) => {
+        console.log("FCM response", res);
+      });
     },
   },
 };

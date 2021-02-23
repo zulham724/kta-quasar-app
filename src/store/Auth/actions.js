@@ -28,6 +28,7 @@ const actions = {
               commit("auth_success", payload);
               console.log('connect to socket.io after login');
               dispatch("SocketIO/connect",{},{root:true});
+              dispatch("Notif/init",{},{root:true});
               resolve(resp);
             })
             .catch(err => {
@@ -78,7 +79,7 @@ const actions = {
         window.Echo.leave(channel);
         window.Echo = null;
       }
-      // dispatch("SocketIO/disconnect",{},{root:true});
+      dispatch("SocketIO/disconnect",{},{root:true});
       commit("logout");
       commit("EchoNotification/deleteItems", null, { root: true });
       // console.log(rootState.EchoNotification.items)

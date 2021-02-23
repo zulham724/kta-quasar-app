@@ -2,34 +2,50 @@ import axios from "axios";
 
 const actions = {
   init({ commit, dispatch }) {
-    FCMPlugin.getToken(function (token) {
-      console.log(token);
-      dispatch("subscribeEvent");
-      dispatch("subscribePost");
-      dispatch('subscribeBook');
-      dispatch("subscribeUserPostComment");
-      dispatch("subscribeUserPostLike");
-      dispatch("listen");
+    return new Promise((resolve,reject)=>{
+      FCMPlugin.getToken(function (token) {
+        console.log(token);
+        dispatch("subscribeEvent");
+        dispatch("subscribePost");
+        dispatch('subscribeBook');
+        dispatch("subscribeUserPostComment");
+        dispatch("subscribeUserPostLike");
+        dispatch("subscribeMessage");
+        dispatch("listen");
+        resolve(token);
+      });
     });
+ 
   },
   subscribeEvent() {
+    FCMPlugin.unsubscribeFromTopic("events");
     FCMPlugin.subscribeToTopic("events");
   },
   subscribePost() {
+    FCMPlugin.unsubscribeFromTopic("posts");
     FCMPlugin.subscribeToTopic("posts");
   },
   subscribeBook() {
+    FCMPlugin.unsubscribeFromTopic("books");
     FCMPlugin.subscribeToTopic("books");
+  },
+  subscribeMessage(){
+    console.groupCollapsed("subscribe ke ",`message_${this.state.Auth.auth.id}`);
+    FCMPlugin.unsubscribeFromTopic(`message_${this.state.Auth.auth.id}`);
+    FCMPlugin.subscribeToTopic(`message_${this.state.Auth.auth.id}`);
+    console.groupEnd();
   },
   subscribeUserPostComment() {
     console.groupCollapsed("subscribe ke komentar post milik user ini");
     this.state.Auth.auth.posts.forEach(post => {
       const topic = `user_${this.state.Auth.auth.id}_post_${post.id}_comment`;
+      FCMPlugin.unsubscribeFromTopic(topic);
       FCMPlugin.subscribeToTopic(topic);
       console.log("listen to notif channel ", topic);
     });
     console.groupEnd();
   },
+  
   subscribeUserPostLike() {
     console.groupCollapsed(
       "subscribe ke post-post yang di like milik user ini"

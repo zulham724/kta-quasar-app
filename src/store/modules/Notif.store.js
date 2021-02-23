@@ -29,12 +29,13 @@ const mutations = {
 const actions = {
     init({ commit, dispatch }) {
         FCMPlugin.getToken(function(token) {
-            console.log(token);
+           this._vm.$devLogger('FCM tokenn',token);
             dispatch("subscribeEvent");
             dispatch("subscribePost");
             dispatch('subscribeBook');
             dispatch("subscribeUserPostComment");
             dispatch("subscribeUserPostLike");
+            dispatch("subscribeMessage");
             dispatch("listen");
         });
     },
@@ -46,6 +47,11 @@ const actions = {
     },
     subscribeBook() {
         FCMPlugin.subscribeToTopic("books");
+    },
+    subscribeMessage(){
+        console.groupCollapsed("subscribe ke ",`message_${this.state.Auth.auth.id}`);
+        FCMPlugin.subscribeToTopic(`message_${this.state.Auth.auth.id}`);
+        console.groupEnd();
     },
     subscribeUserPostComment() {
         console.groupCollapsed("subscribe ke komentar post milik user ini");
@@ -70,7 +76,7 @@ const actions = {
     listen() {
         console.log("listen notification...");
         FCMPlugin.onNotification(function(data) {
-            console.log(JSON.stringify(data));
+            console.log('onNotification',JSON.stringify(data));
         });
     },
     send({ commit }, payload) {

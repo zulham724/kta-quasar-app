@@ -109,10 +109,14 @@ export default {
         };
     },
     computed: {
-        ...mapState(["Setting", 'Auth', 'MusicPlayer', 'Questionnary','EchoNotification'])
+        ...mapState(["Setting", 'Auth', 'MusicPlayer', 'Questionnary','EchoNotification','UnreadConversation'])
     },
     created(){
          this.initNotification();
+         // cek conversation
+         if(!this.UnreadConversation.items.data){
+             this.$store.dispatch("UnreadConversation/index");
+         }
     },
     mounted() {
         setInterval(() => {

@@ -216,6 +216,7 @@ export default {
       //   : done();
     },
     stopTyping() {
+      this.$devLogger('stopped_typing');
       const sender = {
         id: this.Auth.auth.id,
         name: this.Auth.auth.name,
@@ -265,7 +266,7 @@ export default {
     },
     sendNotif(topic) {
       const payload = {
-        title: `AGPAII DIGITAL`,
+        title: `Chat AGPAII DIGITAL`,
         body: `Pesan baru dari ${this.Auth.auth.name} - ${this.message}`,
         params: {
           sender_id: this.Auth.auth.id,

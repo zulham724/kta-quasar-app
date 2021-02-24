@@ -30,6 +30,7 @@ module.exports = function (/* ctx */) {
             "vue-linkify",
             "vue-zoomer",
             "notification",
+            "notification-sound",
             "vue-plyr",      
             "ads",
             "firebase"

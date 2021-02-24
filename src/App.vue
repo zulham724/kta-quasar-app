@@ -117,6 +117,11 @@ export default {
       }
       // END //
 
+      // BEGIN play audio
+      this.$devLogger('play notification sound');
+      this.$notificationSound.play();
+      // END
+
     },
     read_conversation({ conversation_id, unread_conversations, read_chats }) {
       this.$devLogger("total unread_count now:", unread_conversations.length);

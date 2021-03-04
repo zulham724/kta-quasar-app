@@ -9,7 +9,8 @@ const mutation = {
         [key]: { //referensi: https://stackoverflow.com/questions/41292468/adding-a-key-from-a-variable-string-es6-when-using-spread-syntax
           conversation_id: payload.conversation_id,
           data: [payload.item], //data = untuk menampung message
-          typing_users: [] //typing_user = untuk menampung user list yg sedang mengetik
+          typing_users: [], //typing_user = untuk menampung user list yg sedang mengetik
+          participants: []
         }
       };
     }
@@ -29,6 +30,7 @@ const mutation = {
   },
   addBulk(state, { conversation_id, data }) {
     const key = "personal_conversation_" + conversation_id;
+    // filter pesan berdasarkan ID yang belum ada di data array
     const new_data = data.filter(e=>!state.items[key].data.find(e2=>e2.message.id==e.message.id))
 
     if (state.items[key]) {        

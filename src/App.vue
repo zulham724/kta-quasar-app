@@ -43,13 +43,17 @@ export default {
       // console.log(this.sockets);
     },
     message(payload) {
-      // ke sender
+      // ke sender, BUKAN penerima
       this.$store.commit("Chat/removeTypingUser", {
         conversation_id: payload.conversation_id,
         sender: payload.item.user, // sender
       });
       this.$store.commit("Chat/add", payload);
-      scrollToBottom();
+      this.$chatSound.play();
+      setTimeout(()=>{
+         scrollToBottom();
+      },100);
+     
     },
     typing({ conversation, sender }) {
       console.log("user:", sender, "typing in:", conversation);
@@ -75,7 +79,8 @@ export default {
       // jika penerima tidak dalam path /chat/{conversation_id}, maka chat.read_at = null
       const path = this.$route.path;
       const regex = new RegExp("chat\/"+conversation.id+"$")
-      if (!regex.test(path)) {
+      const isChatPath = regex.test(path)?true:false;
+      if (!isChatPath) {
         // jika UnreadConversation.items.data belum ada, maka fetch index dulu
         if (!this.$store.getters["UnreadConversation/items"].data) {
           this.$store.dispatch("UnreadConversation/index").then((res) => {
@@ -103,6 +108,7 @@ export default {
         conversation_id: conversation.id,
         item: payload.item,
       });
+      scrollToBottom();
       // END //
 
       //BEGIN = jika conversation list sudah ada, maka tambah di urutan paling atas //
@@ -119,8 +125,10 @@ export default {
 
       // BEGIN play audio
       this.$devLogger('play notification sound');
-      this.$notificationSound.play();
+      if(isChatPath)this.$chatSound.play();
+      else this.$notificationSound.play();
       // END
+
 
     },
     read_conversation({ conversation_id, unread_conversations, read_chats }) {

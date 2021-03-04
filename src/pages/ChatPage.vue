@@ -157,6 +157,9 @@ export default {
     // this.post == null ? this.getPost() : null;
     // this.$refs.keyboard.focus()
     this.$devLogger("chats gan", this.Chat);
+    setTimeout(()=>{
+      scrollToBottom();
+    },100);
   },
 
   created() {
